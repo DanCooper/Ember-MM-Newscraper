@@ -35,7 +35,7 @@ Public Class Notifications
         Added_TVEpisode
         Added_TVShow
         [Error]
-        Info
+        Information
         Scraped_Movie
         Scraped_Movieset
         Scraped_TVEpisode
@@ -48,40 +48,77 @@ Public Class Notifications
 
 #Region "Methods"
 
+    Private Shared Function IsEnabled(ByVal type As Type) As Boolean
+        With Master.eSettings
+            Select Case type
+                Case Type.Added_Movie
+                    Return .GeneralNotificationAddedMovie
+                Case Type.Added_Movieset
+                    Return .GeneralNotificationAddedMovieset
+                Case Type.Added_TVEpisode
+                    Return .GeneralNotificationAddedTVEpisode
+                Case Type.Added_TVShow
+                    Return .GeneralNotificationAddedTVShow
+                Case Type.Error
+                    Return .GeneralNotificationError
+                Case Type.Information
+                    Return .GeneralNotificationInformation
+                Case Type.Scraped_Movie
+                    Return .GeneralNotificationScrapedMovie
+                Case Type.Scraped_Movieset
+                    Return .GeneralNotificationScrapedMovieset
+                Case Type.Scraped_TVEpisode
+                    Return .GeneralNotificationScrapedTVEpisode
+                Case Type.Scraped_TVSeason
+                    Return .GeneralNotificationScrapedTVSeason
+                Case Type.Scraped_TVShow
+                    Return .GeneralNotificationScrapedTVShow
+                Case Type.Warning
+                    Return .GeneralNotificationWarning
+                Case Else
+                    Return False
+            End Select
+        End With
+    End Function
+
     Public Shared Sub NewNotification(ByVal [type] As Type, ByVal message As String)
         NewNotification(type, String.Empty, message)
     End Sub
 
     Public Shared Sub NewNotification(ByVal [type] As Type, ByVal title As String, ByVal message As String)
-        Dim iTimeout As Integer = 3000
-        Dim nIcon As Windows.Forms.ToolTipIcon = Windows.Forms.ToolTipIcon.Info
-        Dim strTitle As String = title
-        Select Case type
-            Case Type.Added_Movie
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(817, "New Movie Added"))
-            Case Type.Added_Movieset
-            Case Type.Added_TVEpisode
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(818, "New Episode Added"))
-            Case Type.Added_TVShow
-            Case Type.Error
-                iTimeout = 5000
-                nIcon = Windows.Forms.ToolTipIcon.Error
-            Case Type.Info
-            Case Type.Scraped_Movie
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(813, "Movie Scraped"))
-            Case Type.Scraped_Movieset
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(1204, "MovieSet Scraped"))
-            Case Type.Scraped_TVEpisode
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(883, "Episode Scraped"))
-            Case Type.Scraped_TVSeason
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(247, "Season Scraped"))
-            Case Type.Scraped_TVShow
-                strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(248, "Show Scraped"))
-            Case Type.Warning
-                iTimeout = 5000
-                nIcon = Windows.Forms.ToolTipIcon.Warning
-        End Select
-        RaiseEvent ShowNotification(iTimeout, strTitle, message, nIcon)
+        If IsEnabled(type) Then
+            Dim iTimeout As Integer = 5000
+            Dim nIcon As Windows.Forms.ToolTipIcon = Windows.Forms.ToolTipIcon.Info
+            Dim strTitle As String = title
+            Select Case type
+                Case Type.Added_Movie
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(817, "New Movie Added"))
+                Case Type.Added_Movieset
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(477, "New MovieSet Added"))
+                Case Type.Added_TVEpisode
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(818, "New Episode Added"))
+                Case Type.Added_TVShow
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(476, "New Show Added"))
+                Case Type.Error
+                    iTimeout = 15000
+                    nIcon = Windows.Forms.ToolTipIcon.Error
+                Case Type.Information
+                Case Type.Scraped_Movie
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(813, "Movie Scraped"))
+                Case Type.Scraped_Movieset
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(1204, "MovieSet Scraped"))
+                Case Type.Scraped_TVEpisode
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(883, "Episode Scraped"))
+                Case Type.Scraped_TVSeason
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(247, "Season Scraped"))
+                Case Type.Scraped_TVShow
+                    strTitle = If(Not String.IsNullOrEmpty(title), title, Master.eLang.GetString(248, "Show Scraped"))
+                Case Type.Warning
+                    iTimeout = 15000
+                    nIcon = Windows.Forms.ToolTipIcon.Warning
+            End Select
+            RaiseEvent ShowNotification(iTimeout, strTitle, message, nIcon)
+        End If
     End Sub
 
 #End Region 'Methods

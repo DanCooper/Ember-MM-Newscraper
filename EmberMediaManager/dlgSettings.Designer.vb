@@ -1719,6 +1719,20 @@ Partial Class dlgSettings
         Me.cbGeneralMovieTheme = New System.Windows.Forms.ComboBox()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.pnlSettingsFooter = New System.Windows.Forms.Panel()
+        Me.gbGeneralNotification = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralNotification = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkGeneralNotificationError = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationInformation = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationWarning = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationAdded_Movie = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationAdded_MovieSet = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationAdded_TVEpisode = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationScraped_Movie = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationScraped_MovieSet = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationScraped_TVEpisode = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationScraped_TVSeason = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationAdded_TVShow = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralNotificationScraped_TVShow = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbFileSystemCleanFiles.SuspendLayout
@@ -2139,6 +2153,8 @@ Partial Class dlgSettings
         Me.scSettingsMain.SuspendLayout
         Me.tblSettingsFooter.SuspendLayout
         Me.pnlSettingsFooter.SuspendLayout
+        Me.gbGeneralNotification.SuspendLayout
+        Me.tblGeneralNotification.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMiscOpts
@@ -2147,10 +2163,10 @@ Partial Class dlgSettings
         Me.gbGeneralMiscOpts.Controls.Add(Me.tblGeneralMisc)
         Me.gbGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbGeneralMiscOpts.Location = New System.Drawing.Point(247, 268)
+        Me.gbGeneralMiscOpts.Location = New System.Drawing.Point(252, 268)
         Me.gbGeneralMiscOpts.Name = "gbGeneralMiscOpts"
         Me.tblGeneral.SetRowSpan(Me.gbGeneralMiscOpts, 2)
-        Me.gbGeneralMiscOpts.Size = New System.Drawing.Size(367, 256)
+        Me.gbGeneralMiscOpts.Size = New System.Drawing.Size(367, 259)
         Me.gbGeneralMiscOpts.TabIndex = 1
         Me.gbGeneralMiscOpts.TabStop = False
         Me.gbGeneralMiscOpts.Text = "Miscellaneous"
@@ -2181,7 +2197,7 @@ Partial Class dlgSettings
         Me.tblGeneralMisc.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralMisc.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralMisc.Name = "tblGeneralMisc"
-        Me.tblGeneralMisc.RowCount = 13
+        Me.tblGeneralMisc.RowCount = 14
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -2195,7 +2211,8 @@ Partial Class dlgSettings
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralMisc.Size = New System.Drawing.Size(361, 235)
+        Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralMisc.Size = New System.Drawing.Size(361, 238)
         Me.tblGeneralMisc.TabIndex = 17
         '
         'chkGeneralImageFilterAutoscraper
@@ -4581,6 +4598,7 @@ Partial Class dlgSettings
         Me.tblGeneral.Controls.Add(Me.gbGeneralDateAdded, 0, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMainWindowOpts, 1, 0)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMiscOpts, 1, 1)
+        Me.tblGeneral.Controls.Add(Me.gbGeneralNotification, 0, 2)
         Me.tblGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneral.Location = New System.Drawing.Point(0, 0)
         Me.tblGeneral.Name = "tblGeneral"
@@ -4600,9 +4618,9 @@ Partial Class dlgSettings
         Me.gbGeneralDaemon.Controls.Add(Me.tblGeneralDaemon)
         Me.gbGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralDaemon.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralDaemon.Location = New System.Drawing.Point(3, 530)
+        Me.gbGeneralDaemon.Location = New System.Drawing.Point(3, 533)
         Me.gbGeneralDaemon.Name = "gbGeneralDaemon"
-        Me.gbGeneralDaemon.Size = New System.Drawing.Size(611, 70)
+        Me.gbGeneralDaemon.Size = New System.Drawing.Size(616, 70)
         Me.gbGeneralDaemon.TabIndex = 17
         Me.gbGeneralDaemon.TabStop = False
         Me.gbGeneralDaemon.Text = "Configuration ISO Filescanning"
@@ -4626,7 +4644,7 @@ Partial Class dlgSettings
         Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDaemon.Size = New System.Drawing.Size(605, 49)
+        Me.tblGeneralDaemon.Size = New System.Drawing.Size(610, 49)
         Me.tblGeneralDaemon.TabIndex = 17
         '
         'btnGeneralDaemonPathBrowse
@@ -4692,7 +4710,7 @@ Partial Class dlgSettings
         Me.gbGeneralInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbGeneralInterface.Location = New System.Drawing.Point(3, 3)
         Me.gbGeneralInterface.Name = "gbGeneralInterface"
-        Me.gbGeneralInterface.Size = New System.Drawing.Size(238, 259)
+        Me.gbGeneralInterface.Size = New System.Drawing.Size(243, 259)
         Me.gbGeneralInterface.TabIndex = 0
         Me.gbGeneralInterface.TabStop = False
         Me.gbGeneralInterface.Text = "Interface"
@@ -4718,7 +4736,7 @@ Partial Class dlgSettings
         Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralInterface.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralInterface.Size = New System.Drawing.Size(232, 238)
+        Me.tblGeneralInterface.Size = New System.Drawing.Size(237, 238)
         Me.tblGeneralInterface.TabIndex = 17
         '
         'lblGeneralTheme
@@ -4756,7 +4774,7 @@ Partial Class dlgSettings
         Me.gbGeneralDateAdded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbGeneralDateAdded.Location = New System.Drawing.Point(3, 268)
         Me.gbGeneralDateAdded.Name = "gbGeneralDateAdded"
-        Me.gbGeneralDateAdded.Size = New System.Drawing.Size(238, 71)
+        Me.gbGeneralDateAdded.Size = New System.Drawing.Size(243, 71)
         Me.gbGeneralDateAdded.TabIndex = 16
         Me.gbGeneralDateAdded.TabStop = False
         Me.gbGeneralDateAdded.Text = "Adding Date"
@@ -4776,7 +4794,7 @@ Partial Class dlgSettings
         Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralDateAdded.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDateAdded.Size = New System.Drawing.Size(232, 50)
+        Me.tblGeneralDateAdded.Size = New System.Drawing.Size(237, 50)
         Me.tblGeneralDateAdded.TabIndex = 17
         '
         'cbGeneralDateTime
@@ -4796,7 +4814,7 @@ Partial Class dlgSettings
         Me.gbGeneralMainWindowOpts.Controls.Add(Me.tblGeneralMainWindow)
         Me.gbGeneralMainWindowOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralMainWindowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralMainWindowOpts.Location = New System.Drawing.Point(247, 3)
+        Me.gbGeneralMainWindowOpts.Location = New System.Drawing.Point(252, 3)
         Me.gbGeneralMainWindowOpts.Name = "gbGeneralMainWindowOpts"
         Me.gbGeneralMainWindowOpts.Size = New System.Drawing.Size(367, 259)
         Me.gbGeneralMainWindowOpts.TabIndex = 14
@@ -24077,6 +24095,174 @@ Partial Class dlgSettings
         Me.pnlSettingsFooter.Size = New System.Drawing.Size(1384, 36)
         Me.pnlSettingsFooter.TabIndex = 1
         '
+        'gbGeneralNotification
+        '
+        Me.gbGeneralNotification.AutoSize = True
+        Me.gbGeneralNotification.Controls.Add(Me.tblGeneralNotification)
+        Me.gbGeneralNotification.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralNotification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGeneralNotification.Location = New System.Drawing.Point(3, 345)
+        Me.gbGeneralNotification.Name = "gbGeneralNotification"
+        Me.gbGeneralNotification.Size = New System.Drawing.Size(243, 182)
+        Me.gbGeneralNotification.TabIndex = 18
+        Me.gbGeneralNotification.TabStop = False
+        Me.gbGeneralNotification.Text = "Notifications"
+        '
+        'tblGeneralNotification
+        '
+        Me.tblGeneralNotification.AutoSize = True
+        Me.tblGeneralNotification.ColumnCount = 3
+        Me.tblGeneralNotification.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralNotification.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralNotification.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationError, 0, 0)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationInformation, 0, 1)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationAdded_Movie, 0, 2)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationAdded_MovieSet, 0, 3)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationAdded_TVEpisode, 0, 4)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationScraped_Movie, 1, 2)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationScraped_MovieSet, 1, 3)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationScraped_TVEpisode, 1, 4)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationScraped_TVSeason, 1, 5)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationAdded_TVShow, 0, 6)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationScraped_TVShow, 1, 6)
+        Me.tblGeneralNotification.Controls.Add(Me.chkGeneralNotificationWarning, 1, 0)
+        Me.tblGeneralNotification.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralNotification.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.tblGeneralNotification.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralNotification.Name = "tblGeneralNotification"
+        Me.tblGeneralNotification.RowCount = 8
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralNotification.Size = New System.Drawing.Size(237, 161)
+        Me.tblGeneralNotification.TabIndex = 0
+        '
+        'chkGeneralNotificationError
+        '
+        Me.chkGeneralNotificationError.AutoSize = True
+        Me.chkGeneralNotificationError.Location = New System.Drawing.Point(3, 3)
+        Me.chkGeneralNotificationError.Name = "chkGeneralNotificationError"
+        Me.chkGeneralNotificationError.Size = New System.Drawing.Size(51, 17)
+        Me.chkGeneralNotificationError.TabIndex = 0
+        Me.chkGeneralNotificationError.Text = "Error"
+        Me.chkGeneralNotificationError.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationInformation
+        '
+        Me.chkGeneralNotificationInformation.AutoSize = True
+        Me.chkGeneralNotificationInformation.Location = New System.Drawing.Point(3, 26)
+        Me.chkGeneralNotificationInformation.Name = "chkGeneralNotificationInformation"
+        Me.chkGeneralNotificationInformation.Size = New System.Drawing.Size(87, 17)
+        Me.chkGeneralNotificationInformation.TabIndex = 0
+        Me.chkGeneralNotificationInformation.Text = "Information"
+        Me.chkGeneralNotificationInformation.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationWarning
+        '
+        Me.chkGeneralNotificationWarning.AutoSize = True
+        Me.chkGeneralNotificationWarning.Location = New System.Drawing.Point(118, 3)
+        Me.chkGeneralNotificationWarning.Name = "chkGeneralNotificationWarning"
+        Me.chkGeneralNotificationWarning.Size = New System.Drawing.Size(71, 17)
+        Me.chkGeneralNotificationWarning.TabIndex = 0
+        Me.chkGeneralNotificationWarning.Text = "Warning"
+        Me.chkGeneralNotificationWarning.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationAdded_Movie
+        '
+        Me.chkGeneralNotificationAdded_Movie.AutoSize = True
+        Me.chkGeneralNotificationAdded_Movie.Location = New System.Drawing.Point(3, 49)
+        Me.chkGeneralNotificationAdded_Movie.Name = "chkGeneralNotificationAdded_Movie"
+        Me.chkGeneralNotificationAdded_Movie.Size = New System.Drawing.Size(93, 17)
+        Me.chkGeneralNotificationAdded_Movie.TabIndex = 0
+        Me.chkGeneralNotificationAdded_Movie.Text = "Movie added"
+        Me.chkGeneralNotificationAdded_Movie.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationAdded_MovieSet
+        '
+        Me.chkGeneralNotificationAdded_MovieSet.AutoSize = True
+        Me.chkGeneralNotificationAdded_MovieSet.Location = New System.Drawing.Point(3, 72)
+        Me.chkGeneralNotificationAdded_MovieSet.Name = "chkGeneralNotificationAdded_MovieSet"
+        Me.chkGeneralNotificationAdded_MovieSet.Size = New System.Drawing.Size(109, 17)
+        Me.chkGeneralNotificationAdded_MovieSet.TabIndex = 0
+        Me.chkGeneralNotificationAdded_MovieSet.Text = "MovieSet added"
+        Me.chkGeneralNotificationAdded_MovieSet.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationAdded_TVEpisode
+        '
+        Me.chkGeneralNotificationAdded_TVEpisode.AutoSize = True
+        Me.chkGeneralNotificationAdded_TVEpisode.Location = New System.Drawing.Point(3, 95)
+        Me.chkGeneralNotificationAdded_TVEpisode.Name = "chkGeneralNotificationAdded_TVEpisode"
+        Me.chkGeneralNotificationAdded_TVEpisode.Size = New System.Drawing.Size(103, 17)
+        Me.chkGeneralNotificationAdded_TVEpisode.TabIndex = 0
+        Me.chkGeneralNotificationAdded_TVEpisode.Text = "Episode added"
+        Me.chkGeneralNotificationAdded_TVEpisode.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationScraped_Movie
+        '
+        Me.chkGeneralNotificationScraped_Movie.AutoSize = True
+        Me.chkGeneralNotificationScraped_Movie.Location = New System.Drawing.Point(118, 49)
+        Me.chkGeneralNotificationScraped_Movie.Name = "chkGeneralNotificationScraped_Movie"
+        Me.chkGeneralNotificationScraped_Movie.Size = New System.Drawing.Size(100, 17)
+        Me.chkGeneralNotificationScraped_Movie.TabIndex = 0
+        Me.chkGeneralNotificationScraped_Movie.Text = "Movie scraped"
+        Me.chkGeneralNotificationScraped_Movie.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationScraped_MovieSet
+        '
+        Me.chkGeneralNotificationScraped_MovieSet.AutoSize = True
+        Me.chkGeneralNotificationScraped_MovieSet.Location = New System.Drawing.Point(118, 72)
+        Me.chkGeneralNotificationScraped_MovieSet.Name = "chkGeneralNotificationScraped_MovieSet"
+        Me.chkGeneralNotificationScraped_MovieSet.Size = New System.Drawing.Size(116, 17)
+        Me.chkGeneralNotificationScraped_MovieSet.TabIndex = 0
+        Me.chkGeneralNotificationScraped_MovieSet.Text = "MovieSet scraped"
+        Me.chkGeneralNotificationScraped_MovieSet.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationScraped_TVEpisode
+        '
+        Me.chkGeneralNotificationScraped_TVEpisode.AutoSize = True
+        Me.chkGeneralNotificationScraped_TVEpisode.Location = New System.Drawing.Point(118, 95)
+        Me.chkGeneralNotificationScraped_TVEpisode.Name = "chkGeneralNotificationScraped_TVEpisode"
+        Me.chkGeneralNotificationScraped_TVEpisode.Size = New System.Drawing.Size(110, 17)
+        Me.chkGeneralNotificationScraped_TVEpisode.TabIndex = 0
+        Me.chkGeneralNotificationScraped_TVEpisode.Text = "Episode scraped"
+        Me.chkGeneralNotificationScraped_TVEpisode.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationScraped_TVSeason
+        '
+        Me.chkGeneralNotificationScraped_TVSeason.AutoSize = True
+        Me.chkGeneralNotificationScraped_TVSeason.Location = New System.Drawing.Point(118, 118)
+        Me.chkGeneralNotificationScraped_TVSeason.Name = "chkGeneralNotificationScraped_TVSeason"
+        Me.chkGeneralNotificationScraped_TVSeason.Size = New System.Drawing.Size(106, 17)
+        Me.chkGeneralNotificationScraped_TVSeason.TabIndex = 0
+        Me.chkGeneralNotificationScraped_TVSeason.Text = "Season scraped"
+        Me.chkGeneralNotificationScraped_TVSeason.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationAdded_TVShow
+        '
+        Me.chkGeneralNotificationAdded_TVShow.AutoSize = True
+        Me.chkGeneralNotificationAdded_TVShow.Location = New System.Drawing.Point(3, 141)
+        Me.chkGeneralNotificationAdded_TVShow.Name = "chkGeneralNotificationAdded_TVShow"
+        Me.chkGeneralNotificationAdded_TVShow.Size = New System.Drawing.Size(107, 17)
+        Me.chkGeneralNotificationAdded_TVShow.TabIndex = 0
+        Me.chkGeneralNotificationAdded_TVShow.Text = "TV Show added"
+        Me.chkGeneralNotificationAdded_TVShow.UseVisualStyleBackColor = True
+        '
+        'chkGeneralNotificationScraped_TVShow
+        '
+        Me.chkGeneralNotificationScraped_TVShow.AutoSize = True
+        Me.chkGeneralNotificationScraped_TVShow.Location = New System.Drawing.Point(118, 141)
+        Me.chkGeneralNotificationScraped_TVShow.Name = "chkGeneralNotificationScraped_TVShow"
+        Me.chkGeneralNotificationScraped_TVShow.Size = New System.Drawing.Size(114, 17)
+        Me.chkGeneralNotificationScraped_TVShow.TabIndex = 0
+        Me.chkGeneralNotificationScraped_TVShow.Text = "TV Show scraped"
+        Me.chkGeneralNotificationScraped_TVShow.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -24913,6 +25099,10 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.PerformLayout
         Me.pnlSettingsFooter.ResumeLayout(False)
         Me.pnlSettingsFooter.PerformLayout
+        Me.gbGeneralNotification.ResumeLayout(False)
+        Me.gbGeneralNotification.PerformLayout
+        Me.tblGeneralNotification.ResumeLayout(False)
+        Me.tblGeneralNotification.PerformLayout
         Me.ResumeLayout(False)
         Me.PerformLayout
 
@@ -26608,4 +26798,18 @@ End Sub
     Friend WithEvents chkTVShowKeyartPrefSizeOnly As CheckBox
     Friend WithEvents StatusStrip As StatusStrip
     Friend WithEvents pnlSettingsFooter As Panel
+    Friend WithEvents gbGeneralNotification As GroupBox
+    Friend WithEvents tblGeneralNotification As TableLayoutPanel
+    Friend WithEvents chkGeneralNotificationError As CheckBox
+    Friend WithEvents chkGeneralNotificationInformation As CheckBox
+    Friend WithEvents chkGeneralNotificationAdded_Movie As CheckBox
+    Friend WithEvents chkGeneralNotificationAdded_MovieSet As CheckBox
+    Friend WithEvents chkGeneralNotificationAdded_TVEpisode As CheckBox
+    Friend WithEvents chkGeneralNotificationScraped_Movie As CheckBox
+    Friend WithEvents chkGeneralNotificationScraped_MovieSet As CheckBox
+    Friend WithEvents chkGeneralNotificationScraped_TVEpisode As CheckBox
+    Friend WithEvents chkGeneralNotificationScraped_TVSeason As CheckBox
+    Friend WithEvents chkGeneralNotificationAdded_TVShow As CheckBox
+    Friend WithEvents chkGeneralNotificationScraped_TVShow As CheckBox
+    Friend WithEvents chkGeneralNotificationWarning As CheckBox
 End Class

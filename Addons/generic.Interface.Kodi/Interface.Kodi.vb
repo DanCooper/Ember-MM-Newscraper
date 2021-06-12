@@ -258,7 +258,7 @@ Public Class KodiInterface
         ChangeTaskManagerStatus(lblTaskManagerStatus, "No Pending Tasks")
         If Not getError Then
             Notifications.NewNotification(
-                Notifications.Type.Info,
+                Notifications.Type.Information,
                 Master.eLang.GetString(1422, "Kodi Interface"),
                 Master.eLang.GetString(251, "All Tasks Done")
                 )
@@ -318,7 +318,7 @@ Public Class KodiInterface
                                                 mDBElement.Movie.PlayCount = Result.PlayCount
                                             End If
                                             Notifications.NewNotification(
-                                                Notifications.Type.Info,
+                                                Notifications.Type.Information,
                                                 Master.eLang.GetString(1422, "Kodi Interface"),
                                                 String.Format("{0} | {1}: {2}",
                                                               mHost.Label,
@@ -361,7 +361,7 @@ Public Class KodiInterface
                                                 mDBElement.TVEpisode.Playcount = Result.PlayCount
                                             End If
                                             Notifications.NewNotification(
-                                                Notifications.Type.Info,
+                                                Notifications.Type.Information,
                                                 Master.eLang.GetString(1422, "Kodi Interface"),
                                                 String.Format("{0} | {1}: {2}",
                                                               mHost.Label,
@@ -405,7 +405,7 @@ Public Class KodiInterface
                                                         tEpisode.TVEpisode.Playcount = Result.PlayCount
                                                     End If
                                                     Notifications.NewNotification(
-                                                        Notifications.Type.Info,
+                                                        Notifications.Type.Information,
                                                         Master.eLang.GetString(1422, "Kodi Interface"),
                                                         String.Format("{0} | {1}: {2}",
                                                                       mHost.Label,
@@ -443,7 +443,7 @@ Public Class KodiInterface
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                     Notifications.NewNotification(
-                                        Notifications.Type.Info,
+                                        Notifications.Type.Information,
                                         Master.eLang.GetString(1422, "Kodi Interface"),
                                         String.Format("{0} | {1}: {2}",
                                                       mHost.Label,
@@ -474,7 +474,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           tHost.Label,
@@ -514,7 +514,7 @@ Public Class KodiInterface
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                     Notifications.NewNotification(
-                                        Notifications.Type.Info,
+                                        Notifications.Type.Information,
                                         Master.eLang.GetString(1422, "Kodi Interface"),
                                         String.Format("{0} | {1}: {2}",
                                                       mHost.Label,
@@ -545,7 +545,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           tHost.Label,
@@ -584,7 +584,7 @@ Public Class KodiInterface
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                     Notifications.NewNotification(
-                                        Notifications.Type.Info,
+                                        Notifications.Type.Information,
                                         Master.eLang.GetString(1422, "Kodi Interface"),
                                         String.Format("{0} | {1}: {2}",
                                                       mHost.Label,
@@ -615,7 +615,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           tHost.Label,
@@ -655,7 +655,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           mHost.Label,
@@ -686,7 +686,7 @@ Public Class KodiInterface
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.NewNotification(
-                                                Notifications.Type.Info,
+                                                Notifications.Type.Information,
                                                 Master.eLang.GetString(1422, "Kodi Interface"),
                                                 String.Format("{0} | {1}: {2}",
                                                               tHost.Label,
@@ -731,7 +731,7 @@ Public Class KodiInterface
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _SpecialSettings.SendNotifications)) Then
                                     Notifications.NewNotification(
-                                        Notifications.Type.Info,
+                                        Notifications.Type.Information,
                                         Master.eLang.GetString(1422, "Kodi Interface"),
                                         String.Format("{0} | {1}: {2}",
                                                       mHost.Label,
@@ -762,7 +762,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _SpecialSettings.SendNotifications)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           tHost.Label,
@@ -803,7 +803,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           mHost.Label,
@@ -834,7 +834,7 @@ Public Class KodiInterface
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.NewNotification(
-                                                Notifications.Type.Info,
+                                                Notifications.Type.Information,
                                                 Master.eLang.GetString(1422, "Kodi Interface"),
                                                 String.Format("{0} | {1}: {2}",
                                                               tHost.Label,
@@ -880,7 +880,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           mHost.Label,
@@ -911,7 +911,7 @@ Public Class KodiInterface
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.NewNotification(
-                                                Notifications.Type.Info,
+                                                Notifications.Type.Information,
                                                 Master.eLang.GetString(1422, "Kodi Interface"),
                                                 String.Format("{0} | {1}: {2}",
                                                               tHost.Label,
@@ -957,7 +957,7 @@ Public Class KodiInterface
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.NewNotification(
-                                            Notifications.Type.Info,
+                                            Notifications.Type.Information,
                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                             String.Format("{0} | {1}: {2}",
                                                           mHost.Label,
@@ -988,7 +988,7 @@ Public Class KodiInterface
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _SpecialSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.NewNotification(
-                                                Notifications.Type.Info,
+                                                Notifications.Type.Information,
                                                 Master.eLang.GetString(1422, "Kodi Interface"),
                                                 String.Format("{0} | {1}: {2}",
                                                               tHost.Label,
@@ -1049,7 +1049,7 @@ Public Class KodiInterface
                                                             RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
                                                         End If
                                                         Notifications.NewNotification(
-                                                            Notifications.Type.Info,
+                                                            Notifications.Type.Information,
                                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                                             String.Format("{0} | {1}: {2}",
                                                                           mHost.Label,
@@ -1081,7 +1081,7 @@ Public Class KodiInterface
                                                             RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
                                                         End If
                                                         Notifications.NewNotification(
-                                                            Notifications.Type.Info,
+                                                            Notifications.Type.Information,
                                                             Master.eLang.GetString(1422, "Kodi Interface"),
                                                             String.Format("{0} | {1}: {2}",
                                                                           mHost.Label,
@@ -1115,7 +1115,7 @@ Public Class KodiInterface
                                                                     RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
                                                                 End If
                                                                 Notifications.NewNotification(
-                                                                    Notifications.Type.Info,
+                                                                    Notifications.Type.Information,
                                                                     Master.eLang.GetString(1422, "Kodi Interface"),
                                                                     String.Format("{0} | {1}: {2}",
                                                                                   mHost.Label,

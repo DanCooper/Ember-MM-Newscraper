@@ -1974,7 +1974,7 @@ Namespace Kodi
         Private Sub VideoLibrary_OnCleanFinished()
             'Finished cleaning of video library
             Notifications.NewNotification(
-                Notifications.Type.Info,
+                Notifications.Type.Information,
                 Master.eLang.GetString(1422, "Kodi Interface"),
                 String.Format("{0} | {1}: {2}",
                               _currenthost.Label,
@@ -1991,7 +1991,7 @@ Namespace Kodi
         Private Sub VideoLibrary_OnScanFinished()
             'Finished updating video library
             Notifications.NewNotification(
-                Notifications.Type.Info,
+                Notifications.Type.Information,
                 Master.eLang.GetString(1422, "Kodi Interface"),
                 String.Format("{0} | {1}: {2}",
                               _currenthost.Label,
