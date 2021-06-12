@@ -2119,17 +2119,14 @@ Public Class dlgEdit_Movie
         Dim tResults As New MediaContainers.MediaFile
         Dim dlgTrlS As dlgMediaFileSelect
         Dim tList As New List(Of MediaContainers.MediaFile)
-        Dim tURL As String = String.Empty
 
         Try
             dlgTrlS = New dlgMediaFileSelect(Enums.ModifierType.MainTrailer)
             If dlgTrlS.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
-                tURL = dlgTrlS.Result.UrlWebsite
-            End If
-
-            If Not String.IsNullOrEmpty(tURL) Then
-                btnLinkTrailerPlay.Enabled = True
-                txtLinkTrailer.Text = tURL
+                If dlgTrlS.Result.UrlForNfoSpecified Then
+                    btnLinkTrailerPlay.Enabled = True
+                    txtLinkTrailer.Text = dlgTrlS.Result.UrlForNfo
+                End If
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

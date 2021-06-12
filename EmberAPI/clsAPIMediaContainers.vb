@@ -691,6 +691,17 @@ Namespace MediaContainers
 
         Public Property Title As String = String.Empty
         ''' <summary>
+        ''' URL that has to be used for NFO trailer links
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property UrlForNfo As String = String.Empty
+
+        Public ReadOnly Property UrlForNfoSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(UrlForNfo)
+            End Get
+        End Property
+        ''' <summary>
         ''' Download URL of the selected audio stream
         ''' </summary>
         ''' <value></value>
@@ -806,6 +817,7 @@ Namespace MediaContainers
                 With streamVariant
                     UrlAudioStream = If(.AudioStream IsNot Nothing, .AudioStream.StreamUrl, String.Empty)
                     UrlVideoStream = If(.VideoStream IsNot Nothing, .VideoStream.StreamUrl, String.Empty)
+                    If Not String.IsNullOrEmpty(.UrlForNfo) Then UrlForNfo = .UrlForNfo
                 End With
             End If
         End Sub
@@ -943,6 +955,7 @@ Namespace MediaContainers
                     nVariant.VideoStream = videoStream
                 End If
                 If audioStream IsNot Nothing Then
+                    'use audio description from audioStream
                     nDescription = String.Format("{0} {1} {2}",
                                                  nDescription,
                                                  If(videoStream IsNot Nothing, "|", String.Empty),
@@ -952,6 +965,7 @@ Namespace MediaContainers
                     nVariant.AudioCodec = audioStream.Codec
                     nVariant.AudioStream = audioStream
                 Else
+                    'use audio description from videoStream
                     nDescription = String.Format("{0} {1} {2}",
                                                  nDescription,
                                                  "|",
@@ -968,8 +982,18 @@ Namespace MediaContainers
                 ElseIf audioStream IsNot Nothing AndAlso Not String.IsNullOrEmpty(audioStream.FileExtension) Then
                     nDescription = String.Format("{0} | {1}", nDescription, audioStream.FileExtension)
                 End If
-
                 nVariant.Description = nDescription.Trim
+
+                'set UrlForNfo
+                If videoStream IsNot Nothing AndAlso audioStream IsNot Nothing Then
+                    'video is adpative and can't be stored as single URL because the video and audio streams are separated
+                ElseIf videoStream IsNot Nothing Then
+                    'set video stream URL as UrlForNfo
+                    nVariant.UrlForNfo = videoStream.StreamUrl
+                ElseIf audioStream IsNot Nothing Then
+                    'set audio stream URL as UrlForNfo
+                    nVariant.UrlForNfo = audioStream.StreamUrl
+                End If
 
                 Return nVariant
             End Function
@@ -999,6 +1023,8 @@ Namespace MediaContainers
                 End Property
 
                 Public Property StreamType As StreamType = StreamType.Unknown
+
+                Public Property UrlForNfo As String = String.Empty
 
                 Public Property VideoCodec As Enums.VideoCodec = Enums.VideoCodec.UNKNOWN
 

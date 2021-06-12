@@ -540,7 +540,7 @@ Public Class Scraper
         'Trailer
         If FilteredOptions.bMainTrailer Then
             Dim nTrailers As New List(Of TMDbLib.Objects.General.Video)
-            If Result.Videos Is Nothing AndAlso Result.Videos.Results.Count > 0 Then
+            If Result.Videos IsNot Nothing AndAlso Result.Videos.Results.Count > 0 Then
                 nTrailers = Result.Videos.Results
             ElseIf RunFallback_Movie(Result.Id) AndAlso _Fallback_Movie.Videos Is Nothing AndAlso _Fallback_Movie.Videos.Results.Count > 0 Then
                 nTrailers = _Fallback_Movie.Videos.Results
@@ -549,7 +549,7 @@ Public Class Scraper
             For Each aTrailer In nTrailers
                 Dim nTrailer = YouTube.Scraper.GetVideoDetails(aTrailer.Key)
                 If nTrailer IsNot Nothing Then
-                    nMovie.Trailer = nTrailer.UrlWebsite
+                    nMovie.Trailer = nTrailer.UrlForNfo
                     Exit For
                 End If
             Next

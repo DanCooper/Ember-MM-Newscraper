@@ -260,6 +260,7 @@ Public Class dlgMediaFileSelect
                     If Not String.IsNullOrEmpty(Args.SearchString) Then
                         Dim nMediaFile = YouTube.Scraper.GetVideoDetails(Args.SearchString)
                         If nMediaFile IsNot Nothing Then
+                            nMediaFile.Streams.BuildStreamVariants()
                             _MediaFileList.Add(nMediaFile)
                         End If
                     End If
@@ -429,25 +430,25 @@ Public Class dlgMediaFileSelect
                 'Local file
                 '
                 lblStatus.Text = String.Concat(Master.eLang.GetString(907, "Copying specified file"), "...")
-                If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(txtCustomLocalFile.Text)) AndAlso File.Exists(txtCustomLocalFile.Text) Then
+                If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(txtCustomLocalFile.Text.Trim)) AndAlso File.Exists(txtCustomLocalFile.Text.Trim) Then
                     If _NoDownload Then
                         Result = New MediaContainers.MediaFile With {
-                            .UrlWebsite = txtCustomLocalFile.Text
+                            .UrlForNfo = txtCustomLocalFile.Text.Trim
                         }
                     Else
                         Result = New MediaContainers.MediaFile
-                        Result.FileOriginal.LoadFromFile(txtCustomLocalFile.Text)
+                        Result.FileOriginal.LoadFromFile(txtCustomLocalFile.Text.Trim)
                     End If
                     DialogResult = DialogResult.OK
                 Else
                     MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     didCancel = True
                 End If
-            Case YouTube.UrlUtils.IsYouTubeUrl(txtCustomURL.Text)
+            Case YouTube.UrlUtils.IsYouTubeUrl(txtCustomURL.Text.Trim)
                 '
                 'Manual YouTube URL
                 '
-                Dim strYouTubeUrl = txtCustomURL.Text
+                Dim strYouTubeUrl = txtCustomURL.Text.Trim
                 txtCustomLocalFile.Text = String.Empty
                 txtCustomURL.Text = String.Empty
                 SetControlsEnabled(False)
@@ -466,19 +467,21 @@ Public Class dlgMediaFileSelect
                 bwCompileList.RunWorkerAsync(New Arguments With {
                                      .SearchString = strYouTubeUrl,
                                      .Type = CompileType.YouTubeParse})
-            Case StringUtils.isValidURL(txtCustomURL.Text)
+            Case StringUtils.isValidURL(txtCustomURL.Text.Trim)
                 '
                 'Manual direct URL
                 '
                 If _NoDownload Then
-                    Result.UrlWebsite = txtCustomURL.Text
+                    Result = New MediaContainers.MediaFile With {
+                        .UrlForNfo = txtCustomURL.Text.Trim
+                    }
                     DialogResult = DialogResult.OK
                 Else
                     Select Case _MediaType
                         Case Enums.ModifierType.MainTheme
-                            Result = New MediaContainers.MediaFile With {.UrlAudioStream = txtCustomURL.Text}
+                            Result = New MediaContainers.MediaFile With {.UrlAudioStream = txtCustomURL.Text.Trim}
                         Case Enums.ModifierType.MainTrailer
-                            Result = New MediaContainers.MediaFile With {.UrlVideoStream = txtCustomURL.Text}
+                            Result = New MediaContainers.MediaFile With {.UrlVideoStream = txtCustomURL.Text.Trim}
                     End Select
                     bwDownloadMediaFile = New ComponentModel.BackgroundWorker With {
                         .WorkerReportsProgress = True,
@@ -494,17 +497,24 @@ Public Class dlgMediaFileSelect
                 '
                 Result = DirectCast(dgvMediaFiles.SelectedRows(0).Tag, MediaContainers.MediaFile)
                 If Result IsNot Nothing Then
-                    If _NoDownload Then DialogResult = DialogResult.OK
                     If Result.StreamsSpecified Then
                         Dim selStreamVaraint = DirectCast(dgvMediaFiles.SelectedRows(0).Cells(colMediaFileVariant.Name).Value, MediaContainers.MediaFile.StreamCollection.StreamVariant)
                         If selStreamVaraint IsNot Nothing Then
                             Result.SetVariant(selStreamVaraint)
-                            StartDownload()
+                            If _NoDownload Then
+                                DialogResult = DialogResult.OK
+                            Else
+                                StartDownload()
+                            End If
                         Else
                             didCancel = True
                         End If
                     ElseIf Result.UrlVideoStreamSpecified OrElse Result.UrlAudioStreamSpecified Then
-                        StartDownload()
+                        If _NoDownload Then
+                            DialogResult = DialogResult.OK
+                        Else
+                            StartDownload()
+                        End If
                     Else
                         didCancel = True
                     End If

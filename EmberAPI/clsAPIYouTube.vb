@@ -98,6 +98,7 @@ Namespace YouTube
                             .Source = "YouTube",
                             .Streams = nStreams,
                             .Title = nResults(0).Title,
+                            .UrlForNfo = String.Concat("http://www.youtube.com/watch?v=", strVideoId),
                             .UrlWebsite = String.Concat("http://www.youtube.com/watch?v=", strVideoId)
                         }
                     End If
