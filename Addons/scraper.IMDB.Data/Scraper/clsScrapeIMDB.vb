@@ -1303,7 +1303,7 @@ Public Class Scraper
         If selNodeRating IsNot Nothing AndAlso selNodeVotes IsNot Nothing Then
             Dim dblRating As Double
             Dim iVotes As Integer
-            If Double.TryParse(selNodeRating.InnerText.Trim, dblRating) AndAlso
+            If Double.TryParse(selNodeRating.InnerText.Trim, Globalization.NumberStyles.AllowDecimalPoint, Globalization.CultureInfo.InvariantCulture, dblRating) AndAlso
                 Integer.TryParse(NumUtils.CleanVotes(Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,.]+").Value), iVotes) Then
                 Return New MediaContainers.RatingDetails With {
                     .Max = 10,
@@ -1530,7 +1530,7 @@ Public Class Scraper
                     R.ExactMatches.Add(New MediaContainers.Movie With {
                                            .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strTitle).ToLower, nResult.SelectSingleNode("a").InnerText),
                                            .Title = nResult.SelectSingleNode("a").InnerText,
-                                           .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.OriginalName)},
+                                           .UniqueIDs = New MediaContainers.UniqueidContainer(Enums.ContentType.Movie) With {.IMDbId = StringUtils.GetIMDBIDFromString(nResult.InnerHtml)},
                                            .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
                                            })
                 Next

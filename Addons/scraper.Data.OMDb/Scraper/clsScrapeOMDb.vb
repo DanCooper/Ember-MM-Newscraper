@@ -101,7 +101,7 @@ Public Class Scraper
             If _addonSettings.IMDb AndAlso Result.ImdbRating IsNot Nothing AndAlso Result.ImdbVotes IsNot Nothing Then
                 Dim dblRating As Double
                 Dim iVotes As Integer
-                If Double.TryParse(Result.ImdbRating, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(Result.ImdbVotes), iVotes) Then
+                If Double.TryParse(Result.ImdbRating, Globalization.NumberStyles.AllowDecimalPoint, Globalization.CultureInfo.InvariantCulture, dblRating) AndAlso Integer.TryParse(NumUtils.CleanVotes(Result.ImdbVotes), iVotes) Then
                     nRatings.Add(New MediaContainers.RatingDetails With {
                                  .Max = 10,
                                  .Type = "imdb",
@@ -113,7 +113,7 @@ Public Class Scraper
             'Metascore
             If _addonSettings.Metascore AndAlso Result.Metascore IsNot Nothing Then
                 Dim dblRating As Double
-                If Double.TryParse(Result.Metascore, dblRating) Then
+                If Double.TryParse(Result.Metascore, Globalization.NumberStyles.AllowDecimalPoint, Globalization.CultureInfo.InvariantCulture, dblRating) Then
                     nRatings.Add(New MediaContainers.RatingDetails With {
                                  .Max = 100,
                                  .Type = "metacritic",
@@ -128,7 +128,7 @@ Public Class Scraper
                         If _addonSettings.Tomatometer Then
                             Dim dblRating As Double
                             Dim strRating = Regex.Match(tRating.Value, "\d*").Value
-                            If Double.TryParse(strRating, dblRating) Then
+                            If Double.TryParse(strRating, Globalization.NumberStyles.AllowDecimalPoint, Globalization.CultureInfo.InvariantCulture, dblRating) Then
                                 nRatings.Add(New MediaContainers.RatingDetails With {
                                              .Max = 100,
                                              .Type = "tomatometerallcritics",
