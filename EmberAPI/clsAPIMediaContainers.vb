@@ -258,7 +258,11 @@ Namespace MediaContainers
             End Get
             Set(ByVal value As String)
                 Dim dblRatings As Double
-                If Double.TryParse(value.Replace(",", "."), dblRatings) Then
+                If Double.TryParse(value.Replace(",", "."),
+                                   Globalization.NumberStyles.AllowDecimalPoint,
+                                   Globalization.CultureInfo.InvariantCulture,
+                                   dblRatings
+                                   ) Then
                     _rating = dblRatings
                     If Not _votes = 0 Then Ratings.Add(New RatingDetails With {
                                                        .IsDefault = True,
@@ -1383,7 +1387,11 @@ Namespace MediaContainers
             End Get
             Set(ByVal value As String)
                 Dim dblRatings As Double
-                If Double.TryParse(value.Replace(",", "."), dblRatings) Then
+                If Double.TryParse(value.Replace(",", "."),
+                                   Globalization.NumberStyles.AllowDecimalPoint,
+                                   Globalization.CultureInfo.InvariantCulture,
+                                   dblRatings
+                                   ) Then
                     _rating = dblRatings
                     If Not _votes = 0 Then Ratings.Add(New RatingDetails With {
                                                        .IsDefault = True,
@@ -2771,7 +2779,11 @@ Namespace MediaContainers
             End Get
             Set(ByVal value As String)
                 Dim dblRatings As Double
-                If Double.TryParse(value.Replace(",", "."), dblRatings) Then
+                If Double.TryParse(value.Replace(",", "."),
+                                   Globalization.NumberStyles.AllowDecimalPoint,
+                                   Globalization.CultureInfo.InvariantCulture,
+                                   dblRatings
+                                   ) Then
                     _rating = dblRatings
                     If Not _votes = 0 Then Ratings.Add(New RatingDetails With {
                                                        .IsDefault = True,
