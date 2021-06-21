@@ -170,6 +170,7 @@ Public Class dlgEdit_TVShow
             lblTitle.Text = String.Concat(.GetString(21, "Title"), ":")
             lblTopDetails.Text = .GetString(664, "Edit the details for the selected show.")
             lblTopTitle.Text = .GetString(663, "Edit Show")
+            lblUserNote.Text = String.Concat(.GetString(666, "Note"), ":")
             lblUserRating.Text = String.Concat(.GetString(1467, "User Rating"), ":")
             tpDetails.Text = .GetString(26, "Details")
             tsslFilename.Text = tmpDBElement.ShowPath

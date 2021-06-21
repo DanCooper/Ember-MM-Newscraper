@@ -151,6 +151,7 @@ Public Class dlgEdit_TVEpisode
             lblTitle.Text = String.Concat(.GetString(21, "Title"), ":")
             lblTopDetails.Text = .GetString(656, "Edit the details for the selected episode.")
             lblTopTitle.Text = .GetString(657, "Edit Episode")
+            lblUserNote.Text = String.Concat(.GetString(666, "Note"), ":")
             lblUserRating.Text = String.Concat(.GetString(1467, "User Rating"), ":")
             lblVideoSource.Text = String.Concat(.GetString(824, "Video Source"), ":")
             tpDetails.Text = .GetString(26, "Details")

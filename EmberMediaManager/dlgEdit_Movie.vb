@@ -200,6 +200,7 @@ Public Class dlgEdit_Movie
             lblTopDetails.Text = .GetString(224, "Edit the details for the selected movie.")
             lblTopTitle.Text = .GetString(25, "Edit Movie")
             lblTVShowLinks.Text = String.Concat(.GetString(1236, "TV Show Links"), ":")
+            lblUserNote.Text = String.Concat(.GetString(666, "Note"), ":")
             lblUserRating.Text = String.Concat(.GetString(1467, "User Rating"), ":")
             lblVideoSource.Text = String.Concat(.GetString(824, "Video Source"), ":")
             tpDetails.Text = .GetString(26, "Details")
