@@ -790,7 +790,7 @@ Public Class frmMain
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub btnFilePlay_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFilePlay.Click
-        If Not String.IsNullOrEmpty(txtFilePath.Text) Then Functions.Launch(txtFilePath.Text)
+        If Not String.IsNullOrEmpty(txtFilePath.Text) Then Functions.Launch(txtFilePath.Text, True)
     End Sub
     ''' <summary>
     ''' Launch trailer using system default player
@@ -800,7 +800,7 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub btnTrailerPlay_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTrailerPlay.Click
         If txtTrailerPath.Text.StartsWith("plugin://plugin.video.youtube") Then
-            Functions.Launch(StringUtils.ConvertFromKodiTrailerFormatToYouTubeURL(txtTrailerPath.Text), True)
+            Functions.Launch(StringUtils.ConvertFromKodiTrailerFormatToYouTubeURL(txtTrailerPath.Text))
         Else
             Functions.Launch(txtTrailerPath.Text, True)
         End If
