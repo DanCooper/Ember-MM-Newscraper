@@ -3750,10 +3750,9 @@ Public Class frmMain
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                     Using Explorer As New Process
-
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
-                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells("TVShowPath").Value.ToString)
+                            Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", sRow.Cells("TVShowPath").Value.ToString)
                         Else
                             Explorer.StartInfo.FileName = "xdg-open"
                             Explorer.StartInfo.Arguments = String.Format("""{0}""", sRow.Cells("TVShowPath").Value.ToString)
@@ -3947,7 +3946,6 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(ePath) Then
                                 Using Explorer As New Process
-
                                     If Master.isWindows Then
                                         Explorer.StartInfo.FileName = "explorer.exe"
                                         Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", ePath)
@@ -13414,7 +13412,6 @@ Public Class frmMain
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     Using Explorer As New Process
-
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
                             Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells("MoviePath").Value)
@@ -17410,6 +17407,13 @@ Public Class frmMain
         mnuMainToolsRewriteContentMovieSetNFO.Text = strNFOOnly
         mnuMainToolsRewriteContentTVShowNFO.Text = strNFOOnly
 
+        'Open Containing Folder
+        Dim strOpenContainingFolder = Master.eLang.GetString(33, "Open Containing Folder")
+        cmnuEpisodeOpenFolder.Text = strOpenContainingFolder
+        cmnuMovieOpenFolder.Text = strOpenContainingFolder
+        cmnuSeasonOpenFolder.Text = strOpenContainingFolder
+        cmnuShowOpenFolder.Text = strOpenContainingFolder
+
         'Open Fanart.tv-Page
         Dim strOpenFanartTVPage As String = Master.eLang.GetString(1093, "Open Fanart.tv-Page")
 
@@ -17712,7 +17716,6 @@ Public Class frmMain
         cmnuMovieMarkAsCustom3.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
         cmnuMovieMarkAsCustom4.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
         cmnuMovieMarkAsCustom4.ForeColor = Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
-        cmnuMovieOpenFolder.Text = Master.eLang.GetString(33, "Open Containing Folder")
         cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
         cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
         cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
@@ -17860,12 +17863,9 @@ Public Class frmMain
         rbFilterOr_Shows.Text = rbFilterOr_Movies.Text
         tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
 
-        cmnuEpisodeOpenFolder.Text = cmnuMovieOpenFolder.Text
         cmnuMovieSetLock.Text = cmnuMovieLock.Text
         cmnuMovieSetReload.Text = cmnuMovieReload.Text
         cmnuMovieSetRemove.Text = cmnuMovieRemove.Text
-        cmnuSeasonOpenFolder.Text = cmnuMovieOpenFolder.Text
-        cmnuShowOpenFolder.Text = cmnuMovieOpenFolder.Text
         cmnuTrayToolsBackdrops.Text = mnuMainToolsBackdrops.Text
         cmnuTrayToolsCleanFiles.Text = mnuMainToolsCleanFiles.Text
         cmnuTrayToolsClearCache.Text = mnuMainToolsClearCache.Text
