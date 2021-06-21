@@ -1953,7 +1953,7 @@ Namespace FileUtils
             Select Case mType
                 Case Enums.ModifierType.MainBanner
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetBannerMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "banner.jpg"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetBannerMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "banner.jpg"))
                         If .MovieSetUseExtended AndAlso .MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-banner.jpg")))
                         If .MovieSetUseMSAA AndAlso .MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-banner.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetBannerExpertSingle) Then
@@ -1965,7 +1965,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainClearArt
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetClearArtMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "clearart.png"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetClearArtMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "clearart.png"))
                         If .MovieSetUseExtended AndAlso .MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-clearart.png")))
                         If .MovieSetUseMSAA AndAlso .MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-clearart.png")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearArtExpertSingle) Then
@@ -1977,7 +1977,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainClearLogo
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetClearLogoMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "clearlogo.png"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetClearLogoMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "clearlogo.png"))
                         If .MovieSetUseExtended AndAlso .MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-clearlogo.png")))
                         If .MovieSetUseMSAA AndAlso .MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-logo.png")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetClearLogoExpertSingle) Then
@@ -1989,7 +1989,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainDiscArt
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetDiscArtMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "discart.png"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetDiscArtMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "discart.png"))
                         If .MovieSetUseExtended AndAlso .MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-discart.png")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetDiscArtExpertSingle) Then
                             For Each a In .MovieSetDiscArtExpertSingle.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -2000,7 +2000,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainFanart
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetFanartMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "fanart1.jpg"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetFanartMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "fanart1.jpg"))
                         If .MovieSetUseExtended AndAlso .MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-fanart.jpg")))
                         If .MovieSetUseMSAA AndAlso .MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-fanart.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetFanartExpertSingle) Then
@@ -2012,7 +2012,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainKeyart
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetKeyartMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "keyart.jpg"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetKeyartMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "keyart.jpg"))
                         If .MovieSetUseExtended AndAlso .MovieSetKeyartExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-keyart.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetKeyartExpertSingle) Then
                             For Each a In .MovieSetKeyartExpertSingle.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
@@ -2023,7 +2023,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainLandscape
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetLandscapeMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "landscape.jpg"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetLandscapeMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "landscape.jpg"))
                         If .MovieSetUseExtended AndAlso .MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-landscape.jpg")))
                         If .MovieSetUseMSAA AndAlso .MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-landscape.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetLandscapeExpertSingle) Then
@@ -2044,7 +2044,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainPoster
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetPosterMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitle, "poster.jpg"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetPosterMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, CleanDirectoryForKodi(fSetTitle), "poster.jpg"))
                         If .MovieSetUseExtended AndAlso .MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-poster.jpg")))
                         If .MovieSetUseMSAA AndAlso .MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-poster.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetPosterExpertSingle) Then
@@ -2464,6 +2464,23 @@ Namespace FileUtils
             FilenameList = FilenameList.Distinct().ToList() 'remove double entries
             Return FilenameList
         End Function
+
+#Region "Nested Types"
+
+        ''' <summary>
+        ''' Replaces all invalid chars in a directory name with "_"
+        ''' </summary>
+        ''' <param name="directoryName"></param>
+        ''' <returns></returns>
+        Private Shared Function CleanDirectoryForKodi(ByVal directoryName As String) As String
+            Dim invalidPathChars() As Char = Path.GetInvalidPathChars()
+            For Each someChar In invalidPathChars
+                directoryName = directoryName.Replace(someChar, "_")
+            Next
+            Return directoryName
+        End Function
+
+#End Region 'Nested Types
 
 #End Region 'Methods
 
