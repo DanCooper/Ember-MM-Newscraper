@@ -199,7 +199,7 @@ Public Class TaskManager
                 For Each tID In tTaskItem.ListOfID
                     _bHasChanged = False
                     If bwTaskManager.CancellationPending Then Return
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
                     If Not tmpDBElement.IsLock Then
                         With tTaskItem.ScrapeOptions
@@ -551,7 +551,7 @@ Public Class TaskManager
                 Case Enums.ContentType.MovieSet
                     For Each tID In tTaskItem.ListOfID
                         If bwTaskManager.CancellationPending Then Return
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
                         If Not tmpDBElement.Language = strNewLanguage Then
                             tmpDBElement.Language = strNewLanguage
@@ -632,7 +632,7 @@ Public Class TaskManager
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(tID)
 
                     If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLock Then
@@ -681,7 +681,7 @@ Public Class TaskManager
                     End If
 
                     If bHasChanged Then
-                        lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromEpisode(tmpDBElement))
+                        lstTVSeasonIDs.Add(Master.DB.Get_TVSeasonIdByEpisode(tmpDBElement))
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
@@ -870,7 +870,7 @@ Public Class TaskManager
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                                 .Message = SQLReader_Get("SetName").ToString})
+                                                                 .Message = SQLReader_Get("Title").ToString})
                                     par_ID.Value = tID
                                     par_Mark.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
@@ -905,7 +905,7 @@ Public Class TaskManager
                                     par_ID.Value = tID
                                     par_Mark.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
-                                    lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromShowIDAndSeasonNumber(CLng(SQLReader_Get("idShow")), CInt(SQLReader_Get("Season"))))
+                                    lstTVSeasonIDs.Add(Master.DB.Get_TVSeasonIdByShowIdAndSeasonNumber(CLng(SQLReader_Get("idShow")), CInt(SQLReader_Get("Season"))))
                                     lstTVShowIDs.Add(CLng(SQLReader_Get("idShow")))
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .ContentType = tTaskItem.ContentType,
@@ -983,7 +983,7 @@ Public Class TaskManager
                                 While SQLReader_Get.Read
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                  .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                                 .Message = SQLReader_Get("SeasonText").ToString})
+                                                                 .Message = SQLReader_Get("Title").ToString})
                                     par_ID.Value = tID
                                     par_Mark.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
@@ -1118,7 +1118,7 @@ Public Class TaskManager
                     End If
 
                     If bHasChanged Then
-                        lstTVSeasonIDs.Add(Master.DB.GetTVSeasonIDFromEpisode(tmpDBElement))
+                        lstTVSeasonIDs.Add(Master.DB.Get_TVSeasonIdByEpisode(tmpDBElement))
                         lstTVShowIDs.Add(tmpDBElement.ShowID)
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,

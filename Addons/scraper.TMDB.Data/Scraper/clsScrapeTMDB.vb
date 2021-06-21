@@ -1178,8 +1178,8 @@ Public Class Scraper
         Return Nothing
     End Function
 
-    Public Function GetSearchMovieSetInfo(ByVal strMovieSetName As String, ByRef oDBMovieSet As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movieset
-        Dim r As SearchResults_MovieSet = SearchMovieSet(strMovieSetName)
+    Public Function GetSearchMovieSetInfo(ByVal title As String, ByRef oDBMovieSet As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movieset
+        Dim r As SearchResults_MovieSet = SearchMovieSet(title)
 
         Select Case eType
             Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
@@ -1187,7 +1187,7 @@ Public Class Scraper
                     Return GetInfo_Movieset(r.Matches.Item(0).UniqueIDs.TMDbId, FilteredOptions, False)
                 Else
                     Using dlgSearch As New dlgTMDBSearchResults_MovieSet(_addonSettings, Me)
-                        If dlgSearch.ShowDialog(r, strMovieSetName) = DialogResult.OK Then
+                        If dlgSearch.ShowDialog(r, title) = DialogResult.OK Then
                             If dlgSearch.Result.UniqueIDs.TMDbIdSpecified Then
                                 Return GetInfo_Movieset(dlgSearch.Result.UniqueIDs.TMDbId, FilteredOptions, False)
                             End If

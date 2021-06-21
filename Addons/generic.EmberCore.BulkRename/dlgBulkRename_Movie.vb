@@ -139,7 +139,7 @@ Public Class dlgBulkRenamer_Movie
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             Dim MovieFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Movie(_currMovie)
                                             FFRenamer.Add_Movie(MovieFile)
-                                            bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)
+                                            bwLoadInfo.ReportProgress(iProg, _currMovie.Movie.Title)
                                         End If
                                     End If
                                 End If

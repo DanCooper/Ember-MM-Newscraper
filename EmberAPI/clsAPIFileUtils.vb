@@ -631,12 +631,37 @@ Namespace FileUtils
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
                                                      dbMovie.Filename), String.Empty,
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                                                                        MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
                 End If
             End While
             dbMovie.IsOnline = True
+            Return True
+        End Function
+
+        Public Shared Function CheckOnlineStatus_Movieset(ByRef dbMovieset As Database.DBElement, ByVal showMessage As Boolean) As Boolean
+            For Each movie In dbMovieset.MoviesInSet
+                While Not File.Exists(movie.DBMovie.Filename)
+                    If showMessage Then
+                        Select Case MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                         Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                         Environment.NewLine, Environment.NewLine,
+                                                         movie.DBMovie.Filename), String.Empty,
+                                                                                  MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)
+                            Case DialogResult.Abort
+                                Return False
+                            Case DialogResult.Ignore
+                                Return True
+                            Case DialogResult.Retry
+                                'try again
+                        End Select
+                    Else
+                        Return False
+                    End If
+                End While
+            Next
+            dbMovieset.IsOnline = True
             Return True
         End Function
 
@@ -647,7 +672,7 @@ Namespace FileUtils
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
                                                      dbTV.Filename), String.Empty,
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                                                                     MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
                 End If
@@ -663,7 +688,7 @@ Namespace FileUtils
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
                                                      dbTV.ShowPath), String.Empty,
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                                                                     MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
                 End If
@@ -2118,7 +2143,7 @@ Namespace FileUtils
             Try
                 If Master.eSettings.TVUseYAMJ AndAlso Not bInside Then
                     Dim dtEpisodes As New DataTable
-                    Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = episode.idFile) WHERE idShow = ", DBElement.ShowID, " AND Season = ", DBElement.TVSeason.Season, " ORDER BY Episode;"))
+                    Master.DB.FillDataTable_TVEpisode(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = episode.idFile) WHERE idShow = ", DBElement.ShowID, " AND Season = ", DBElement.TVSeason.Season, " ORDER BY Episode;"))
                     If dtEpisodes.Rows.Count > 0 Then
                         fEpisodePath = dtEpisodes.Rows(0).Item("strFilename").ToString
                         If Not String.IsNullOrEmpty(fEpisodePath) Then

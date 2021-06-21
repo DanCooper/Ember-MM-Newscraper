@@ -65,7 +65,7 @@ Public Class dlgEdit_Movieset
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        If tmpDBElement.IsOnline Then
+        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movieset(tmpDBElement, True) Then
             pbBanner.AllowDrop = True
             pbClearArt.AllowDrop = True
             pbClearLogo.AllowDrop = True
@@ -381,7 +381,7 @@ Public Class dlgEdit_Movieset
         bsMovies.DataSource = Nothing
         dgvDatabaseList.DataSource = Nothing
 
-        Master.DB.FillDataTable(dtMovies, "SELECT *, GROUP_CONCAT(DISTINCT sets.SetName) AS 'Moviesets' FROM movielist LEFT OUTER JOIN setlinkmovie ON (movielist.idMovie = setlinkmovie.idMovie) LEFT OUTER JOIN sets ON (setlinkmovie.idSet = sets.idSet) GROUP BY movielist.idMovie ORDER BY movieList.ListTitle COLLATE NOCASE;")
+        Master.DB.FillDataTable_Movie(dtMovies, "SELECT *, GROUP_CONCAT(DISTINCT sets.Title) AS 'Moviesets' FROM movielist LEFT OUTER JOIN setlinkmovie ON (movielist.idMovie = setlinkmovie.idMovie) LEFT OUTER JOIN sets ON (setlinkmovie.idSet = sets.idSet) GROUP BY movielist.idMovie;")
 
         If dtMovies.Rows.Count > 0 Then
             bsMovies.DataSource = dtMovies

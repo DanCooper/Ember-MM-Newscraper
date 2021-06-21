@@ -62,7 +62,7 @@ Public Class dlgDeleteConfirm
         NewNode.ImageKey = "FOLDER"
         NewNode.SelectedImageKey = "FOLDER"
 
-        If Master.DB.GetSources_Movie.FirstOrDefault(Function(f) f.Path = tDirectoryInfo.FullName) Is Nothing Then
+        If Master.DB.LoadAll_Sources_Movie.FirstOrDefault(Function(f) f.Path = tDirectoryInfo.FullName) Is Nothing Then
             'populate all the sub-folders in the folder
             For Each nDirectoryInfo As DirectoryInfo In tDirectoryInfo.GetDirectories
                 AddFolderNode(NewNode, nDirectoryInfo)
@@ -194,7 +194,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nMovie As Database.DBElement = Master.DB.Load_Movie(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nMovie.ID.ToString, nMovie.ListTitle)
+                        ItemParentNode = .Nodes.Add(nMovie.ID.ToString, nMovie.Movie.Title)
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovie.ID
@@ -230,9 +230,9 @@ Public Class dlgDeleteConfirm
                     For Each lngMovieID As Long In lstIDs
                         bHadError = False
 
-                        Dim nMovieSet As Database.DBElement = Master.DB.Load_MovieSet(lngMovieID)
+                        Dim nMovieSet As Database.DBElement = Master.DB.Load_Movieset(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, nMovieSet.ListTitle)
+                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, nMovieSet.MovieSet.Title)
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovieSet.ID
@@ -311,7 +311,7 @@ Public Class dlgDeleteConfirm
 
                         ItemParentNode = .Nodes.Add(nTVSeason.ID.ToString, String.Format("{0} - {1}",
                                                                                          nTVSeason.TVShow.Title,
-                                                                                         StringUtils.FormatSeasonText(nTVSeason.TVSeason.Season)))
+                                                                                         StringUtils.FormatSeasonTitle(nTVSeason.TVSeason.Season)))
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVSeason.ID
@@ -398,7 +398,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nTVShow As Database.DBElement = Master.DB.Load_TVShow(lngTVShowID, False, False)
 
-                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, nTVShow.ListTitle)
+                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, nTVShow.TVShow.Title)
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVShow.ID

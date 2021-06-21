@@ -1,0 +1,806 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v47_to_v48">
+    <command type="DB">
+      <description>removing ListTitle from table movie / renamed ReleaseDate to premiered</description>
+      <execute>
+        CREATE TABLE movie01(
+        idMovie,
+        idSource,
+        MoviePath,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Runtime,
+        ReleaseDate,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating,
+        userNote,
+        edition
+        );
+
+        INSERT INTO movie01
+        SELECT
+        idMovie,
+        idSource,
+        MoviePath,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Runtime,
+        ReleaseDate,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating,
+        userNote,
+        edition
+        FROM movie;
+
+        DROP TABLE movie;
+
+        CREATE TABLE movie (
+        idMovie         integer PRIMARY KEY AUTOINCREMENT,
+        idSource        integer NOT NULL,
+        MoviePath       text,
+        Type            bool,
+        HasSub          bool NOT NULL DEFAULT 0,
+        "New"           bool NOT NULL DEFAULT 0,
+        Mark            bool NOT NULL DEFAULT 0,
+        Imdb            text,
+        Lock            bool,
+        Title           text,
+        OriginalTitle   text,
+        Year            text,
+        Rating          text,
+        Votes           text,
+        MPAA            text,
+        Top250          integer,
+        Outline         text,
+        Plot            text,
+        Tagline         text,
+        Certification   text,
+        Runtime         text,
+        premiered       text,
+        Playcount       integer,
+        Trailer         text,
+        EThumbsPath     text,
+        NfoPath         text,
+        TrailerPath     text,
+        SubPath         text,
+        FanartURL       text,
+        OutOfTolerance  bool,
+        VideoSource     text,
+        SortTitle       text,
+        DateAdded       integer,
+        EFanartsPath    text,
+        ThemePath       text,
+        TMDB            text,
+        TMDBColID       text,
+        DateModified    integer,
+        MarkCustom1     bool NOT NULL DEFAULT 0,
+        MarkCustom2     bool NOT NULL DEFAULT 0,
+        MarkCustom3     bool NOT NULL DEFAULT 0,
+        MarkCustom4     bool NOT NULL DEFAULT 0,
+        HasSet          bool NOT NULL DEFAULT 0,
+        iLastPlayed     integer,
+        Language        text,
+        iUserRating     integer NOT NULL DEFAULT 0,
+        userNote        text,
+        edition         text
+        );
+
+        CREATE TRIGGER delete_movie
+        AFTER DELETE
+        ON movie
+        BEGIN
+        DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM rating WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM setlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM uniqueid WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
+        END;
+
+        INSERT INTO movie
+        (idMovie,
+        idSource,
+        MoviePath,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Runtime,
+        premiered,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating,
+        userNote,
+        edition)
+        SELECT
+        idMovie,
+        idSource,
+        MoviePath,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Year,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Runtime,
+        ReleaseDate,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating,
+        userNote,
+        edition
+        FROM movie01;
+
+        DROP TABLE movie01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>removing ListTitle from table sets / renamed SetName to Title</description>
+      <execute>
+        CREATE TABLE sets01(
+        idSet,
+        NfoPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock,
+        SortMethod,
+        Language
+        );
+
+        INSERT INTO sets01
+        SELECT
+        idSet,
+        NfoPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock,
+        SortMethod,
+        Language
+        FROM sets;
+
+        DROP TABLE sets;
+
+        CREATE TABLE sets (
+        idSet       integer PRIMARY KEY AUTOINCREMENT,
+        NfoPath     text,
+        TMDBColID   text,
+        Plot        text,
+        Title       text,
+        "New"       bool NOT NULL DEFAULT 0,
+        Mark        bool NOT NULL DEFAULT 0,
+        Lock        bool NOT NULL DEFAULT 0,
+        SortMethod  integer NOT NULL DEFAULT 0,
+        Language    text
+        );
+
+        CREATE TRIGGER delete_set
+        AFTER DELETE
+        ON sets
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSet AND media_type='set';
+        DELETE FROM uniqueid WHERE media_id=old.idSet AND media_type='set';
+        END;
+
+        INSERT INTO sets
+        (idSet,
+        NfoPath,
+        TMDBColID,
+        Plot,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        SortMethod,
+        Language)
+        SELECT
+        idSet,
+        NfoPath,
+        TMDBColID,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock,
+        SortMethod,
+        Language
+        FROM sets01;
+
+        DROP TABLE sets01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>renamed SeasonText to Title in table seasons</description>
+      <execute>
+        CREATE TABLE seasons01(
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New",
+        strTVDB,
+        strTMDB,
+        strAired,
+        strPlot
+        );
+
+        INSERT INTO seasons01
+        SELECT
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New",
+        strTVDB,
+        strTMDB,
+        strAired,
+        strPlot
+        FROM seasons;
+
+        DROP TABLE seasons;
+
+        CREATE TABLE seasons (
+        idSeason  integer PRIMARY KEY,
+        idShow    integer,
+        Season    integer,
+        Title     text,
+        Lock      bool NOT NULL DEFAULT 0,
+        Mark      bool NOT NULL DEFAULT 0,
+        "New"     bool NOT NULL DEFAULT 0,
+        strTVDB   text,
+        strTMDB   text,
+        strAired  text,
+        strPlot   text
+        );
+
+        CREATE UNIQUE INDEX ix_seasons
+        ON seasons
+        (idShow, Season);
+
+        CREATE TRIGGER delete_season
+        AFTER DELETE
+        ON seasons
+        BEGIN
+        DELETE FROM art WHERE media_id=old.idSeason AND media_type='season';
+        DELETE FROM episode WHERE Season=old.Season AND idShow=old.idShow;
+        DELETE FROM uniqueid WHERE media_id=old.idSeason AND media_type='season';
+        END;
+
+        INSERT INTO seasons
+        (idSeason,
+        idShow,
+        Season,
+        Title,
+        Lock,
+        Mark,
+        "New",
+        strTVDB,
+        strTMDB,
+        strAired,
+        strPlot)
+        SELECT
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New",
+        strTVDB,
+        strTMDB,
+        strAired,
+        strPlot
+        FROM seasons01;
+
+        DROP TABLE seasons01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>removing ListTitle from table tvshow</description>
+      <execute>
+        CREATE TABLE tvshow01(
+        idShow,
+        idSource,
+        "New",
+        Mark,
+        TVShowPath,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB,
+        strOriginalTitle,
+        iUserRating,
+        Certification,
+        userNote,
+        Tagline
+        );
+
+        INSERT INTO tvshow01
+        SELECT
+        idShow,
+        idSource,
+        "New",
+        Mark,
+        TVShowPath,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB,
+        strOriginalTitle,
+        iUserRating,
+        Certification,
+        userNote,
+        Tagline
+        FROM tvshow;
+
+        DROP TABLE tvshow;
+
+        CREATE TABLE tvshow (
+        idShow            integer PRIMARY KEY AUTOINCREMENT,
+        idSource          integer NOT NULL,
+        "New"             bool DEFAULT 0,
+        Mark              bool NOT NULL DEFAULT 0,
+        TVShowPath        text NOT NULL,
+        TVDB              text,
+        Lock              bool NOT NULL DEFAULT 0,
+        EpisodeGuide      text,
+        Plot              text,
+        Premiered         text,
+        MPAA              text,
+        Rating            text,
+        NfoPath           text,
+        Language          text,
+        Ordering          integer NOT NULL DEFAULT 0,
+        Status            text,
+        ThemePath         text,
+        EFanartsPath      text,
+        Runtime           text,
+        Title             text,
+        Votes             text,
+        EpisodeSorting    integer NOT NULL DEFAULT 0,
+        SortTitle         text,
+        strIMDB           text,
+        strTMDB           text,
+        strOriginalTitle  text,
+        iUserRating       integer NOT NULL DEFAULT 0,
+        Certification     text,
+        userNote          text,
+        Tagline           text
+        );
+
+        CREATE UNIQUE INDEX UniqueTVShowPath
+        ON tvshow
+        (TVShowPath);
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM creatorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM countrylinktvshow WHERE idShow=old.idShow;
+        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM episode WHERE idShow=old.idShow;
+        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
+        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM rating WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
+        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM uniqueid WHERE media_id=old.idShow AND media_type='tvshow';
+        END;
+
+        INSERT INTO tvshow
+        (idShow,
+        idSource,
+        "New",
+        Mark,
+        TVShowPath,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB,
+        strOriginalTitle,
+        iUserRating,
+        Certification,
+        userNote,
+        Tagline)
+        SELECT
+        idShow,
+        idSource,
+        "New",
+        Mark,
+        TVShowPath,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB,
+        strOriginalTitle,
+        iUserRating,
+        Certification,
+        userNote,
+        Tagline
+        FROM tvshow01;
+
+        DROP TABLE tvshow01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>removing ListTitle from view movielist</description>
+      <execute>
+        DROP VIEW movielist;
+
+        CREATE VIEW movielist
+        AS
+        SELECT
+        movie.*,
+        CASE WHEN movie.SortTitle IS NOT '' THEN movie.SortTitle ELSE movie.Title END AS SortedTitle,
+        source.strName AS Source,
+        banner.url AS BannerPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        discart.url AS DiscArtPath,
+        fanart.url AS FanartPath,
+        keyart.url AS KeyartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag'
+        FROM
+        movie
+        LEFT OUTER JOIN moviesource AS source ON (source.idSource = movie.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = movie.idMovie)
+        AND (banner.media_type = 'movie')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = movie.idMovie)
+        AND (clearart.media_type = 'movie')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = movie.idMovie)
+        AND (clearlogo.media_type = 'movie')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS discart ON (discart.media_id = movie.idMovie)
+        AND (discart.media_type = 'movie')
+        AND (discart.type = 'discart')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = movie.idMovie)
+        AND (fanart.media_type = 'movie')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = movie.idMovie)
+        AND (keyart.media_type = 'movie')
+        AND (keyart.type = 'keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = movie.idMovie)
+        AND (landscape.media_type = 'movie')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = movie.idMovie)
+        AND (poster.media_type = 'movie')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN countrylinkmovie AS countrylink ON (countrylink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
+        LEFT OUTER JOIN writerlinkmovie AS writerlink ON (writerlink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
+        LEFT OUTER JOIN directorlinkmovie AS directorlink ON (directorlink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        LEFT OUTER JOIN genrelinkmovie AS genrelink ON (genrelink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
+        LEFT OUTER JOIN studiolinkmovie AS studiolink ON (studiolink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
+        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = movie.idMovie)
+        AND (taglink.media_type = 'movie')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
+        GROUP BY movie.idMovie;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>removing ListTitle from view tvshowlist</description>
+      <execute>
+        DROP VIEW tvshowlist;
+
+        CREATE VIEW tvshowlist
+        AS
+        SELECT
+        tvshow.*,
+        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.Title END AS SortedTitle,
+        source.strName AS Source,
+        banner.url AS BannerPath,
+        characterart.url AS CharacterArtPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        fanart.url AS FanartPath,
+        keyart.url AS KeyartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT creators.strActor) AS Creator,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag,
+        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS Playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS HasWatched,
+        COUNT(DISTINCT CASE WHEN episodelist.New IS 1 THEN episodelist.idEpisode ELSE NULL END) AS NewEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Mark IS 1 THEN episodelist.idEpisode ELSE NULL END) AS MarkedEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Lock IS 1 THEN episodelist.idEpisode ELSE NULL END) AS LockedEpisodes
+        FROM
+        tvshow
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = tvshow.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
+        AND (banner.media_type = 'tvshow')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
+        AND (characterart.media_type = 'tvshow')
+        AND (characterart.type = 'characterart')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
+        AND (clearart.media_type = 'tvshow')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
+        AND (clearlogo.media_type = 'tvshow')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
+        AND (fanart.media_type = 'tvshow')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.media_id = tvshow.idShow)
+        AND (keyart.media_type = 'tvshow')
+        AND (keyart.type = 'keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
+        AND (landscape.media_type = 'tvshow')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
+        AND (poster.media_type = 'tvshow')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN countrylinktvshow AS countrylink ON (countrylink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
+        LEFT OUTER JOIN creatorlinktvshow AS creatorlink ON (creatorlink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN actors AS creators ON (creators.idActor = creatorlink.idActor)
+        LEFT OUTER JOIN directorlinktvshow AS directorlink ON (directorlink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        LEFT OUTER JOIN genrelinktvshow AS genrelink ON (genrelink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
+        LEFT OUTER JOIN studiolinktvshow AS studiolink ON (studiolink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
+        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = tvshow.idShow)
+        AND (taglink.media_type = 'tvshow')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
+        LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        tvshow.idShow;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+  <!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

@@ -1836,10 +1836,10 @@ Namespace MediaContainers
         ''' converts both versions of moviesets declaration in movie.nfo to a proper Sets object
         ''' </summary>
         ''' <remarks>      
-        ''' <set>setname</set>        
+        ''' <set>title</set>        
         ''' 
         ''' <set>
-        '''     <name>setname</name>
+        '''     <name>title</name>
         '''     <overview>plot</overview>
         ''' </set>       
         ''' </remarks>
@@ -1997,15 +1997,15 @@ Namespace MediaContainers
             Return retVal
         End Function
 
-        Public Sub RemoveSet(ByVal SetName As String)
-            Dim tSet = From bSet As SetDetails In Sets Where bSet.Title = SetName
+        Public Sub RemoveSet(ByVal title As String)
+            Dim tSet = From bSet As SetDetails In Sets Where bSet.Title = title
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
         End Sub
 
-        Public Sub RemoveSet(ByVal SetID As Long)
-            Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = SetID
+        Public Sub RemoveSet(ByVal id As Long)
+            Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = id
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
@@ -2034,7 +2034,7 @@ Namespace MediaContainers
 
         Public ReadOnly Property ListTitle() As String
             Get
-                Return DBMovie.ListTitle
+                Return DBMovie.Movie.Title
             End Get
         End Property
 

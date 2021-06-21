@@ -117,7 +117,7 @@ Public Class dlgExportMovies
                         While SQLreader.Read()
                             Dim _tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
                             lstMovieList.Add(_tmpMovie)
-                            bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
+                            bwLoadInfo.ReportProgress(iProg, _tmpMovie.Movie.Title) '  show File
                             iProg += 1
                             If bwLoadInfo.CancellationPending Then
                                 e.Cancel = True
@@ -155,7 +155,7 @@ Public Class dlgExportMovies
                         While SQLreader.Read()
                             Dim _tmpTVShow As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt32(SQLreader("idShow")), True, True, bExportMissingEpisodes)
                             lstTVShowList.Add(_tmpTVShow)
-                            bwLoadInfo.ReportProgress(iProg, _tmpTVShow.ListTitle) '  show File
+                            bwLoadInfo.ReportProgress(iProg, _tmpTVShow.TVShow.Title) '  show File
                             iProg += 1
                             If bwLoadInfo.CancellationPending Then
                                 e.Cancel = True
@@ -341,7 +341,7 @@ Public Class dlgExportMovies
 
         dicListViews_Movies.Clear()
         dicListViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
-        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
+        For Each cList As String In Master.DB.View_GetList(Enums.ContentType.Movie)
             dicListViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
         Next
         cbList_Movies.DataSource = dicListViews_Movies.ToList
@@ -351,7 +351,7 @@ Public Class dlgExportMovies
 
         dicListViews_TVShows.Clear()
         dicListViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
-        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
+        For Each cList As String In Master.DB.View_GetList(Enums.ContentType.TVShow)
             dicListViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
         Next
         cbList_TVShows.DataSource = dicListViews_TVShows.ToList

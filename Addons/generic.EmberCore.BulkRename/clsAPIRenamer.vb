@@ -568,14 +568,14 @@ Public Class FileFolderRenamer
         MovieFile.IsSingle = _DBElement.IsSingle
 
         'ListTitle
-        If _DBElement.ListTitleSpecified Then
-            MovieFile.ListTitle = _DBElement.ListTitle
+        If _DBElement.Movie.TitleSpecified Then
+            MovieFile.ListTitle = StringUtils.SortTokens(_DBElement.Movie.Title)
         End If
 
         'MovieSets
         If _DBElement.Movie.SetsSpecified Then
             MovieFile.Collection = _DBElement.Movie.Sets.Item(0).Title
-            MovieFile.CollectionListTitle = StringUtils.SortTokens_MovieSet(_DBElement.Movie.Sets.Item(0).Title)
+            MovieFile.CollectionListTitle = StringUtils.SortTokens(_DBElement.Movie.Sets.Item(0).Title)
         End If
 
         'MPAA
@@ -596,15 +596,11 @@ Public Class FileFolderRenamer
         'SortTitle
         If _DBElement.Movie.SortTitleSpecified Then
             MovieFile.SortTitle = _DBElement.Movie.SortTitle
-        Else
-            MovieFile.SortTitle = _DBElement.ListTitle
         End If
 
         'Title
         If _DBElement.Movie.TitleSpecified Then
             MovieFile.Title = _DBElement.Movie.Title
-        Else
-            MovieFile.Title = _DBElement.ListTitle
         End If
 
         'VideoSource
@@ -818,7 +814,7 @@ Public Class FileFolderRenamer
 
         'Show ListTitle
         If _DBElement.TVShow.TitleSpecified Then
-            EpisodeFile.ListTitle = StringUtils.SortTokens_TV(_DBElement.TVShow.Title)
+            EpisodeFile.ListTitle = StringUtils.SortTokens(_DBElement.TVShow.Title)
         End If
 
         'Show OriginalTitle
@@ -958,6 +954,11 @@ Public Class FileFolderRenamer
             ShowFile.Genre = String.Join(" / ", _DBElement.TVShow.Genres.ToArray)
         End If
 
+        'IMDB
+        If _DBElement.TVShow.UniqueIDs.IMDbIdSpecified Then
+            ShowFile.IMDB = _DBElement.TVShow.UniqueIDs.IMDbId
+        End If
+
         'IsLock
         ShowFile.IsLock = _DBElement.IsLock
 
@@ -965,8 +966,8 @@ Public Class FileFolderRenamer
         ShowFile.IsSingle = _DBElement.Source.IsSingle
 
         'ListTitle
-        If _DBElement.ListTitleSpecified Then
-            ShowFile.ListTitle = _DBElement.ListTitle
+        If _DBElement.TVShow.TitleSpecified Then
+            ShowFile.ListTitle = StringUtils.SortTokens(_DBElement.TVShow.Title)
         End If
 
         'MPAA
@@ -993,9 +994,6 @@ Public Class FileFolderRenamer
         If _DBElement.TVShow.TitleSpecified Then
             ShowFile.Title = _DBElement.TVShow.Title
             ShowFile.ShowTitle = _DBElement.TVShow.Title
-        Else
-            ShowFile.Title = _DBElement.ListTitle
-            ShowFile.ShowTitle = _DBElement.ListTitle
         End If
 
         'TVDB

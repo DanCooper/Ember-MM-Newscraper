@@ -398,6 +398,15 @@ Public Class StringUtils
         Next
         Return Result
     End Function
+
+    Public Shared Function FilterSeasonTitle(ByVal SeasonTitle As String) As String
+        For Each nToken In Master.eSettings.TVScraperSeasonTitleBlacklist
+            If Regex.Match(SeasonTitle, nToken.Replace("%{season_number}", "\d*")).Success Then
+                Return String.Empty
+            End If
+        Next
+        Return SeasonTitle
+    End Function
     ''' <summary>
     ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.
     ''' </summary>
@@ -580,18 +589,18 @@ Public Class StringUtils
     ''' <summary>
     ''' For a given <c>Integer</c> season number, determine the appropriate season text
     ''' </summary>
-    ''' <param name="iSeason"><c>Integer</c> season value. Valid values are -1 or higher.</param>
+    ''' <param name="seasonNumber"><c>Integer</c> season value. Valid values are -1 or higher.</param>
     ''' <returns><c>String</c> title appropriate for the season</returns>
-    ''' <remarks>For <paramref name="iSeason"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
+    ''' <remarks>For <paramref name="seasonNumber"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
     ''' For 0, returns equivalent of "Season Specials".
     ''' For -1, returns equivalent of "* All Seasons".
     ''' For less than -1, returns equivalent of "Unknown"</remarks>
-    Public Shared Function FormatSeasonText(ByVal iSeason As Integer) As String
-        If iSeason > 0 Then
-            Return String.Concat(Master.eLang.GetString(650, "Season"), " ", iSeason.ToString.PadLeft(2, Convert.ToChar("0")))
-        ElseIf iSeason = 0 Then
+    Public Shared Function FormatSeasonTitle(ByVal seasonNumber As Integer) As String
+        If seasonNumber > 0 Then
+            Return String.Format("{0} {1}", Master.eLang.GetString(650, "Season"), seasonNumber.ToString.PadLeft(2, Convert.ToChar("0")))
+        ElseIf seasonNumber = 0 Then
             Return Master.eLang.GetString(655, "Season Specials")
-        ElseIf iSeason = -1 Then
+        ElseIf seasonNumber = -1 Then
             Return Master.eLang.GetString(1256, "* All Seasons")
         Else
             Return Master.eLang.GetString(138, "Unknown")
@@ -735,14 +744,6 @@ Public Class StringUtils
             End If
         End If
         Return False
-    End Function
-
-    Public Shared Function ListTitle_Movie(ByVal MovieTitle As String, ByVal MovieYear As String) As String
-        Return SortTokens_Movie(MovieTitle)
-    End Function
-
-    Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal MovieYear As String) As String
-        Return SortTokens_TV(TVShowTitle)
     End Function
     ''' <summary>
     ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.
@@ -895,72 +896,22 @@ Public Class StringUtils
         Return String.Concat(nOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
     End Function
 
-    Private Shared Function SortTokens(ByVal strTitle As String, ByVal lstTokenList As List(Of String)) As String
-        For Each strToken As String In lstTokenList
+    Public Shared Function SortTokens(ByVal title As String) As String
+        Return SortTokens(title, Master.eSettings.GeneralSortTokens)
+    End Function
+
+    Private Shared Function SortTokens(ByVal title As String, ByVal tokenList As List(Of String)) As String
+        For Each strToken As String In tokenList
             Try
-                Dim mToken As Match = Regex.Match(strTitle, String.Concat("(^", strToken, ")(.*)"), RegexOptions.IgnoreCase)
+                Dim mToken As Match = Regex.Match(title, String.Concat("(^", strToken, ")(.*)"), RegexOptions.IgnoreCase)
                 If mToken.Success AndAlso mToken.Groups.Count = 3 Then
                     Return String.Format("{0}, {1}", mToken.Groups(2).Value.Trim, mToken.Groups(1).Value.Trim)
                 End If
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & strTitle & " generated an error message")
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
-        Return strTitle
-    End Function
-    ''' <summary>
-    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.MovieSortTokens"</c>) then remove it from the front
-    ''' of the string and move it to the end after a comma.
-    ''' </summary>
-    ''' <param name="strTitle"><c>String</c> to clean up</param>
-    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
-    ''' <remarks>This function will take a string such as "The Movie" and return "Movie, The".
-    ''' The default tokens are:
-    '''  <list>
-    '''    <item>a</item>
-    '''    <item>an</item>
-    '''    <item>the</item>
-    ''' </list>
-    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_Movie(ByVal strTitle As String) As String
-        Return SortTokens(strTitle.Trim, Master.eSettings.MovieSortTokens)
-    End Function
-    ''' <summary>
-    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.MovieSetSortTokens"</c>) then remove it from the front
-    ''' of the string and move it to the end after a comma.
-    ''' </summary>
-    ''' <param name="strTitle"><c>String</c> to clean up</param>
-    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
-    ''' <remarks>This function will take a string such as "The MovieSet" and return "MovieSet, The".
-    ''' The default tokens are:
-    '''  <list>
-    '''    <item>a</item>
-    '''    <item>an</item>
-    '''    <item>the</item>
-    ''' </list>
-    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_MovieSet(ByVal strTitle As String) As String
-        Return SortTokens(strTitle.Trim, Master.eSettings.MovieSetSortTokens).Trim
-    End Function
-    ''' <summary>
-    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
-    ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
-    ''' of the string and move it to the end after a comma.
-    ''' </summary>
-    ''' <param name="strTitle"><c>String</c> to clean up</param>
-    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
-    ''' <remarks>This function will take a string such as "The Show" and return "Show, The".
-    ''' The default tokens are:
-    '''  <list>
-    '''    <item>a</item>
-    '''    <item>an</item>
-    '''    <item>the</item>
-    ''' </list>
-    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function SortTokens_TV(ByVal strTitle As String) As String
-        Return SortTokens(strTitle, Master.eSettings.TVSortTokens).Trim
+        Return title
     End Function
     ''' <summary>
     ''' Converts a string indicating a size into an actual <c>Size</c> object

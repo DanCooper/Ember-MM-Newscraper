@@ -123,6 +123,12 @@ Public Class Settings
     Public Property GeneralShowImgNames() As Boolean = True
     Public Property GeneralShowLangFlags() As Boolean = True
     Public Property GeneralSourceFromFolder() As Boolean = False
+    Public Property GeneralSortTokens() As ExtendedListOfString = New ExtendedListOfString
+    Public ReadOnly Property GeneralSortTokensSpecified() As Boolean
+        Get
+            Return GeneralSortTokens.Count > 0
+        End Get
+    End Property
     Public Property GeneralSplitterDistanceMain() As Integer = 550
     Public Property GeneralSplitterDistanceTVSeason() As Integer = 200
     Public Property GeneralSplitterDistanceTVShow() As Integer = 200
@@ -376,13 +382,9 @@ Public Class Settings
     Public Property MovieSetScraperIdWriteNodeDefaultId() As Boolean = False
     Public Property MovieSetScraperPlot() As Boolean = True
     Public Property MovieSetScraperTitle() As Boolean = True
-    Public Property MovieSetSortTokens() As List(Of String) = New List(Of String)
-    Public Property MovieSetSortTokensIsEmpty() As Boolean = False
     Public Property MovieSkipLessThan() As Integer = 0
     Public Property MovieSkipStackedSizeCheck() As Boolean = False
     Public Property MovieSortBeforeScan() As Boolean = False
-    Public Property MovieSortTokens() As List(Of String) = New List(Of String)
-    Public Property MovieSortTokensIsEmpty() As Boolean = False
     Public Property MovieThemeDefaultSearch() As String = "theme soundtrack"
     Public Property MovieThemeKeepExisting() As Boolean = False
     Public Property MovieTrailerDefaultSearch() As String = "trailer"
@@ -532,6 +534,7 @@ Public Class Settings
     Public Property TVScraperSeasonAired() As Boolean = True
     Public Property TVScraperSeasonPlot() As Boolean = True
     Public Property TVScraperSeasonTitle() As Boolean = True
+    Public Property TVScraperSeasonTitleBlacklist() As ExtendedListOfString = New ExtendedListOfString
     Public Property TVScraperShowActors() As Boolean = True
     Public Property TVScraperShowActorsLimit() As Integer = 0
     Public Property TVScraperShowCert() As Boolean = False
@@ -641,8 +644,6 @@ Public Class Settings
     Public Property TVShowThemeDefaultSearch() As String = "theme soundtrack"
     Public Property TVShowThemeKeepExisting() As Boolean = False
     Public Property TVSkipLessThan() As Integer = 0
-    Public Property TVSortTokens() As List(Of String) = New List(Of String)
-    Public Property TVSortTokensIsEmpty() As Boolean = False
     Public Property Username() As String = String.Empty
     Public Property Version() As String = String.Empty
 
@@ -1057,7 +1058,7 @@ Public Class Settings
             Master.eSettings.GeneralMainTabSorting.Add(New MainTabSorting With {.ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist", .Order = 2, .Title = Master.eLang.GetString(653, "TV Shows")})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleFilters_Movie) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
             Master.eSettings.MovieFilterCustom.Clear()
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]tt\d*")            'IMDB ID
@@ -1089,7 +1090,7 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("_[->] ")                    'convert underscore to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleFilters_TVShow) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
             Master.eSettings.TVShowFilterCustom.Clear()
             Master.eSettings.TVShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             'would there ever be season or episode info in the show folder name??
@@ -1123,7 +1124,7 @@ Public Class Settings
             Master.eSettings.TVShowFilterCustom.Add("_[->] ")                   'convert underscore to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleFilters_TVEpisode) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
             Master.eSettings.TVEpisodeFilterCustom.Clear()
             Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
@@ -1157,37 +1158,15 @@ Public Class Settings
             Master.eSettings.TVEpisodeFilterCustom.Add(" - [->] ")                'convert space-minus-space to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty)) Then
-            Master.eSettings.MovieSortTokens.Clear()
-            Master.eSettings.MovieSortTokens.Add("a\s")
-            Master.eSettings.MovieSortTokens.Add("an\s")
-            Master.eSettings.MovieSortTokens.Add("das\s")
-            Master.eSettings.MovieSortTokens.Add("der\s")
-            Master.eSettings.MovieSortTokens.Add("die\s")
-            Master.eSettings.MovieSortTokens.Add("the\s")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.SortTokens) AndAlso (Force OrElse Not Master.eSettings.GeneralSortTokensSpecified) Then
+            Master.eSettings.GeneralSortTokens = Master.eSettings.GeneralSortTokens.GetDefaults(Enums.DefaultType.SortTokens)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
-            Master.eSettings.MovieSetSortTokens.Clear()
-            Master.eSettings.MovieSetSortTokens.Add("a\s")
-            Master.eSettings.MovieSetSortTokens.Add("an\s")
-            Master.eSettings.MovieSetSortTokens.Add("das\s")
-            Master.eSettings.MovieSetSortTokens.Add("der\s")
-            Master.eSettings.MovieSetSortTokens.Add("die\s")
-            Master.eSettings.MovieSetSortTokens.Add("the\s")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TitleBlacklist_TVSeason) AndAlso (Force OrElse Master.eSettings.TVScraperSeasonTitleBlacklist.Count <= 0) Then
+            Master.eSettings.TVScraperSeasonTitleBlacklist = Master.eSettings.TVScraperSeasonTitleBlacklist.GetDefaults(Enums.DefaultType.TitleBlacklist_TVSeason)
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSortTokens) AndAlso (Force OrElse (Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty)) Then
-            Master.eSettings.TVSortTokens.Clear()
-            Master.eSettings.TVSortTokens.Add("a\s")
-            Master.eSettings.TVSortTokens.Add("an\s")
-            Master.eSettings.TVSortTokens.Add("das\s")
-            Master.eSettings.TVSortTokens.Add("der\s")
-            Master.eSettings.TVSortTokens.Add("die\s")
-            Master.eSettings.TVSortTokens.Add("the\s")
-        End If
-
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidVideoExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
             Master.eSettings.FileSystemValidExts.Clear()
             Master.eSettings.FileSystemValidExts.AddRange(".avi,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc,.3gpp".Split(","c))
         End If
@@ -1225,7 +1204,7 @@ Public Class Settings
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "Genre", .LabelID = 20, .LabelText = "Genre"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "Language", .LabelID = 610, .LabelText = "Language"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "MPAA", .LabelID = 401, .LabelText = "MPAA"})
-            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "ReleaseDate", .LabelID = 236, .LabelText = "Release Date"})
+            Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "premiered", .LabelID = 724, .LabelText = "Premiered"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "Runtime", .LabelID = 238, .LabelText = "Runtime"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "Studio", .LabelID = 395, .LabelText = "Studio"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.Hide = True, .Column = "VideoSource", .LabelID = 824, .LabelText = "Video Source"})
@@ -1306,7 +1285,7 @@ Public Class Settings
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralSeasonListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralSeasonListSorting.Clear()
-            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.Hide = False, .Column = "SeasonText", .LabelID = 650, .LabelText = "Season"})
+            Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.Hide = False, .Column = "Title", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.Hide = False, .Column = "strAired", .LabelID = 728, .LabelText = "Aired"})
             Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.Hide = True, .Column = "strTMDB", .LabelID = 933, .LabelText = "TMDB ID"})
             Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.Hide = True, .Column = "strTVDB", .LabelID = 941, .LabelText = "TVDB ID"})
@@ -1633,6 +1612,169 @@ Public Class Settings
 #End Region 'Methods
 
 #Region "Nested Types"
+
+
+    <Serializable()>
+    Public Class ExtendedListOfString
+        Inherits List(Of String)
+
+#Region "Methods"
+
+        Public Function GetDefaults(ByVal type As Enums.DefaultType) As ExtendedListOfString
+            Select Case type
+                Case Enums.DefaultType.SortTokens
+                    Return New ExtendedListOfString From {
+                    "a\s", "an\s", "das\s", "der\s", "die\s", "the\s"
+                }
+                Case Enums.DefaultType.TitleBlacklist_TVSeason
+                    Return New ExtendedListOfString From {
+                    "%{season_number}. sezóna",
+                    "%{season_number}. évad",
+                    "%{season_number}.ª Temporada",
+                    "%{season_number}ª Temporada",
+                    "%{season_number}ος κύκλος",
+                    "Kausi %{season_number}",
+                    "Musim ke %{season_number}",
+                    "Saison %{season_number}",
+                    "Season %{season_number}",
+                    "Seizoen %{season_number}",
+                    "Series %{season_number}",
+                    "Sezon %{season_number}",
+                    "Sezonas %{season_number}",
+                    "Sezonul %{season_number}",
+                    "Staffel %{season_number}",
+                    "Stagione %{season_number}",
+                    "Säsong %{season_number}",
+                    "Séria %{season_number}",
+                    "Tempada %{season_number}",
+                    "Temporada %{season_number}",
+                    "Сезон %{season_number}",
+                    "Сезона %{season_number}",
+                    "עונה %{season_number}",
+                    "الموسم %{season_number}",
+                    "فصل %{season_number}",
+                    "シーズン%{season_number}",
+                    "第 %{season_number} 季"
+                }
+                Case Enums.DefaultType.TitleFilters_Movie
+                    Return New ExtendedListOfString From {
+                    "(?i)[\W_]\(?\d{4}\)?.*",               'year in brakets
+                    "(?i)[\W_]tt\d*",                       'IMDB ID
+                    "(?i)[\W_]blu[\W_]?ray.*",
+                    "(?i)[\W_]bd[\W_]?rip.*",
+                    "(?i)[\W_]3d.*",
+                    "(?i)[\W_]dvd.*",
+                    "(?i)[\W_]720.*",
+                    "(?i)[\W_]1080.*",
+                    "(?i)[\W_]1440.*",
+                    "(?i)[\W_]2160.*",
+                    "(?i)[\W_]4k.*",
+                    "(?i)[\W_]ac3.*",
+                    "(?i)[\W_]dts.*",
+                    "(?i)[\W_]divx.*",
+                    "(?i)[\W_]xvid.*",
+                    "(?i)[\W_]dc[\W_]?.*",
+                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
+                    "(?i)[\W_]extended.*",
+                    "(?i)[\W_]hd(tv)?.*",
+                    "(?i)[\W_]unrated.*",
+                    "(?i)[\W_]uncut.*",
+                    "(?i)[\W_]german.*",
+                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
+                    "(?i)[\W_]\[offline\].*",
+                    "(?i)[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",                     'convert dots to space
+                    "\.[->] ", "_[->] "                     'convert underscore to space
+                }
+                Case Enums.DefaultType.TitleFilters_TVEpisode
+                    Return New ExtendedListOfString From {
+                    "[\W_]\(?\d{4}\)?.*",
+                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
+                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
+                    "(?i)[\W_]blu[\W_]?ray.*",
+                    "(?i)[\W_]bd[\W_]?rip.*",
+                    "(?i)[\W_]dvd.*",
+                    "(?i)[\W_]720.*",
+                    "(?i)[\W_]1080.*",
+                    "(?i)[\W_]1440.*",
+                    "(?i)[\W_]2160.*",
+                    "(?i)[\W_]4k.*",
+                    "(?i)[\W_]ac3.*",
+                    "(?i)[\W_]dts.*",
+                    "(?i)[\W_]divx.*",
+                    "(?i)[\W_]xvid.*",
+                    "(?i)[\W_]dc[\W_]?.*",
+                    "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
+                    "(?i)[\W_]extended.*",
+                    "(?i)[\W_]hd(tv)?.*",
+                    "(?i)[\W_]unrated.*",
+                    "(?i)[\W_]uncut.*",
+                    "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
+                    "(?i)[\W_]\[offline\].*",
+                    "(?i)[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",
+                    "\.[->] ",                              'convert dots to space
+                    "_[->] ",                               'convert underscore to space
+                    " - [->] "                              'convert space-minus-space to space
+                }
+                Case Enums.DefaultType.TitleFilters_TVShow
+                    Return New ExtendedListOfString From {
+                    "[\W_]\(?\d{4}\,?.*",
+                    "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
+                    "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
+                    "(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*",
+                    "(?i,[\W_]blu[\W_]?ray.*",
+                    "(?i,[\W_]bd[\W_]?rip.*",
+                    "(?i,[\W_]dvd.*",
+                    "(?i,[\W_]720.*",
+                    "(?i,[\W_]1080.*",
+                    "(?i,[\W_]1440.*",
+                    "(?i,[\W_]2160.*",
+                    "(?i,[\W_]4k.*",
+                    "(?i,[\W_]ac3.*",
+                    "(?i,[\W_]dts.*",
+                    "(?i,[\W_]divx.*",
+                    "(?i,[\W_]xvid.*",
+                    "(?i,[\W_]dc[\W_]?.*",
+                    "(?i,[\W_]dir(ector'?s?,?\s?cut.*",
+                    "(?i,[\W_]extended.*",
+                    "(?i,[\W_]hd(tv,?.*",
+                    "(?i,[\W_]unrated.*",
+                    "(?i,[\W_]uncut.*",
+                    "(?i,[\W_]([a-z]{3}|multi,[sd]ub.*",
+                    "(?i,[\W_]\[offline\].*",
+                    "(?i,[\W_]ntsc.*",
+                    "[\W_]PAL[\W_]?.*",
+                    "\.[->] ",                              'convert dots to space
+                    "_[->] ",                               'convert underscore to space
+                    " - [->] "                              'convert space-minus-space to space
+                }
+                Case Enums.DefaultType.ValidSubtitleExts
+                    Return New ExtendedListOfString From {
+                    ".aqt", ".ass", ".idx", ".jss", ".mpl", ".rt", ".sami", ".smi", ".srt", ".ssa", ".sst", ".sub"
+                }
+                Case Enums.DefaultType.ValidThemeExts
+                    Return New ExtendedListOfString From {
+                    ".flac", ".m4a", ".mp3", ".wav", ".wma"
+                }
+                Case Enums.DefaultType.ValidVideoExts
+                    Return New ExtendedListOfString From {
+                    ".3gpp", ".asf", ".asx", ".avi", ".avs", ".bdmv", ".bin", ".cue", ".dat", ".disc",
+                    ".divx", ".dvb", ".dvr-ms", ".evo", ".flv", ".ifo", ".img", ".iso", ".m2t", ".m2ts",
+                    ".m4v", ".mkv", ".mov", ".mp4", ".mpeg", ".mpg", ".mts", ".nsv", ".nut", ".ogg",
+                    ".ogm", ".ogv", ".ram", ".rar", ".rmvb", ".swf", ".ts", ".viv", ".vob", ".webm",
+                    ".wma", ".wmv"
+                }
+            End Select
+            Return New ExtendedListOfString
+        End Function
+
+#End Region 'Methods
+
+    End Class
 
     Public Class MainTabSorting
 

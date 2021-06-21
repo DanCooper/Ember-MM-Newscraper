@@ -601,7 +601,7 @@ Public Class Scanner
     ''' <returns>True if directory is valid, false if not.</returns>
     Public Function IsValidDir(ByVal dInfo As DirectoryInfo, ByVal bIsTV As Boolean) As Boolean
         Try
-            For Each s As String In Master.DB.GetExcludedDirs
+            For Each s As String In Master.DB.GetAll_ExcludedDirectories
                 If dInfo.FullName.ToLower = s.ToLower Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [ExcludeDirs] Path ""{0}"" has been skipped (path is in ""exclude directory"" list)", dInfo.FullName, s))
                     Return False
@@ -664,9 +664,6 @@ Public Class Scanner
             DBMovie.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
-        'ListTitle 
-        DBMovie.ListTitle = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
-
         If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainWatchedFile)
                 If DBMovie.Movie.PlayCountSpecified Then
@@ -683,7 +680,7 @@ Public Class Scanner
             Next
         End If
 
-        If DBMovie.ListTitleSpecified Then
+        If DBMovie.Movie.TitleSpecified Then
             'search local actor thumb for each actor in NFO
             If DBMovie.Movie.ActorsSpecified AndAlso DBMovie.ActorThumbsSpecified Then
                 For Each actor In DBMovie.Movie.Actors
@@ -756,14 +753,6 @@ Public Class Scanner
             DBMovieSet.MovieSet = NFO.LoadFromNFO_MovieSet(DBMovieSet.NfoPath)
         End If
 
-        'ListTitle
-        Dim tTitle As String = StringUtils.SortTokens_MovieSet(DBMovieSet.MovieSet.Title)
-        If Not String.IsNullOrEmpty(tTitle) Then
-            DBMovieSet.ListTitle = tTitle
-        Else
-            DBMovieSet.ListTitle = OldTitle
-        End If
-
         'Language
         If DBMovieSet.MovieSet.LanguageSpecified Then
             DBMovieSet.Language = DBMovieSet.MovieSet.Language
@@ -783,7 +772,7 @@ Public Class Scanner
 
         'first we have to create a list of all already existing episode information for this file path
         If Not isNew Then
-            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.Load_AllTVEpisodes_ByFileID(DBTVEpisode.FilenameID, False)
+            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.LoadAll_TVEpisodes_ByFileId(DBTVEpisode.FilenameID, False)
             For Each eEpisode As Database.DBElement In EpisodesByFilenameList
                 EpisodesToRemoveList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
             Next
@@ -977,10 +966,7 @@ Public Class Scanner
                     DBTVShow.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBTVShow.ShowPath)
                 End If
 
-                'ListTitle
-                DBTVShow.ListTitle = StringUtils.SortTokens_TV(DBTVShow.TVShow.Title)
-
-                If DBTVShow.ListTitleSpecified Then
+                If DBTVShow.TVShow.TitleSpecified Then
                     'search local actor thumb for each actor in NFO
                     If DBTVShow.TVShow.ActorsSpecified AndAlso DBTVShow.ActorThumbsSpecified Then
                         For Each actor In DBTVShow.TVShow.Actors
@@ -1657,15 +1643,15 @@ Public Class Scanner
 
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Master.DB.ClearNew()
+        Master.DB.Clear_New()
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
-            For Each eSource In Master.DB.GetSources_Movie
+            For Each eSource In Master.DB.LoadAll_Sources_Movie
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    MoviePaths = Master.DB.GetAllMoviePaths
+                    MoviePaths = Master.DB.GetAll_Paths_Movie
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             ScanSourceDirectory_Movie(eSource, True, Args.Folder)
@@ -1677,13 +1663,13 @@ Public Class Scanner
                 End If
             Next
 
-            For Each eSource In Master.DB.GetSources_TVShow
+            For Each eSource In Master.DB.LoadAll_Sources_TVShow
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
-                    TVShowPaths = Master.DB.GetAllTVShowPaths
+                    TVEpisodePaths = Master.DB.GetAll_Paths_TVEpisode
+                    TVShowPaths = Master.DB.GetAll_Paths_TVShow
 
                     If Args.Folder.ToLower = eSource.Path.ToLower Then
                         'Args.Folder is a tv show source folder -> scan the whole source
@@ -1736,7 +1722,7 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
-            MoviePaths = Master.DB.GetAllMoviePaths
+            MoviePaths = Master.DB.GetAll_Paths_Movie
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1786,8 +1772,8 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
-            TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
-            TVShowPaths = Master.DB.GetAllTVShowPaths
+            TVEpisodePaths = Master.DB.GetAll_Paths_TVEpisode
+            TVShowPaths = Master.DB.GetAll_Paths_TVShow
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()

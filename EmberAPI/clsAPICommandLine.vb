@@ -294,13 +294,13 @@ Public Class CommandLine
                 Case "-updatemovies"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
-                        Dim sSource As Database.DBSource = Master.DB.GetSources_Movie.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
+                        Dim sSource As Database.DBSource = Master.DB.LoadAll_Sources_Movie.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
-                            sSource = Master.DB.GetSources_Movie.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
+                            sSource = Master.DB.LoadAll_Sources_Movie.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                         New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, sSource.ID, String.Empty}))
@@ -317,13 +317,13 @@ Public Class CommandLine
                 Case "-updatetvshows"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
-                        Dim sSource As Database.DBSource = Master.DB.GetSources_TVShow.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
+                        Dim sSource As Database.DBSource = Master.DB.LoadAll_Sources_TVShow.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
-                            sSource = Master.DB.GetSources_TVShow.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
+                            sSource = Master.DB.LoadAll_Sources_TVShow.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                         New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, sSource.ID, String.Empty}))

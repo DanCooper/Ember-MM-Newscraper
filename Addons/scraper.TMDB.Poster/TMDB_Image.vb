@@ -408,19 +408,19 @@ Public Class TMDB_Image
                         ImagesContainer.MainFanarts = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.UniqueIDs.TMDbId, FilteredModifiers).MainFanarts
                     End If
                 Else
-                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TMDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TMDB ID exist to search: ", DBTV.TVEpisode.Title))
                 End If
             Case Enums.ContentType.TVSeason
                 If DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
                     ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.UniqueIDs.TMDbId, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.TVSeason.Title))
                 End If
             Case Enums.ContentType.TVShow
                 If DBTV.TVShow.UniqueIDs.TMDbIdSpecified Then
                     ImagesContainer = _TMDBAPI_TV.GetImages_TVShow(DBTV.TVShow.UniqueIDs.TMDbId, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.TVShow.Title))
                 End If
             Case Else
                 logger.Error(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] Unhandled ContentType"))

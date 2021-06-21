@@ -297,12 +297,6 @@
     <Compile Include="dlgImageViewer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgManualEdit.Designer.vb">
-      <DependentUpon>dlgManualEdit.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgManualEdit.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgProfileSelect.Designer.vb">
       <DependentUpon>dlgProfileSelect.vb</DependentUpon>
     </Compile>
@@ -387,6 +381,12 @@
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.Designer.vb">
+      <DependentUpon>frmTV_Data_SeasonTitleBlacklist.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -402,11 +402,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="XMLViewer\CharacterEncoder.vb" />
-    <Compile Include="XMLViewer\XMLViewer.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="XMLViewer\XMLViewerSettings.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dlgEdit_TVEpisode.resx">
@@ -456,9 +451,6 @@
     <EmbeddedResource Include="dlgImageViewer.resx">
       <DependentUpon>dlgImageViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgManualEdit.resx">
-      <DependentUpon>dlgManualEdit.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgProfileSelect.resx">
       <DependentUpon>dlgProfileSelect.vb</DependentUpon>
     </EmbeddedResource>
@@ -504,6 +496,9 @@
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.resx">
+      <DependentUpon>frmTV_Data_SeasonTitleBlacklist.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -5324,7 +5319,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bin\" />
-    <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -1155,7 +1155,7 @@ Public Class dlgEdit_TVEpisode
             cbVideosource.Items.Add(tmpDBElement.TVEpisode.VideoSource)
             cbVideosource.SelectedItem = tmpDBElement.TVEpisode.VideoSource
         End If
-        cbVideosource.Items.AddRange(Master.DB.GetAllVideoSources_TVEpisode.Where(Function(f) Not cbVideosource.Items.Contains(f)).ToArray)
+        cbVideosource.Items.AddRange(Master.DB.GetAll_VideoSources_TVEpisode.Where(Function(f) Not cbVideosource.Items.Contains(f)).ToArray)
     End Sub
 
     Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged

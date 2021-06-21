@@ -379,11 +379,9 @@ Public Class NFO
         'sort UniqueIds by Default and Type (name)
         DBMovie.Movie.UniqueIDs.Items.Sort()
 
-        'set ListTitle at the end of merging
-        If DBMovie.Movie.TitleSpecified Then
-            DBMovie.ListTitle = StringUtils.SortTokens_Movie(DBMovie.Movie.Title)
-        Else
-            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
+        'fallback for title if title is empty
+        If Not DBMovie.Movie.TitleSpecified Then
+            DBMovie.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         Return DBMovie
@@ -429,22 +427,9 @@ Public Class NFO
         'sort UniqueIds by Default and Type (name)
         DBMovieSet.MovieSet.UniqueIDs.Items.Sort()
 
-        'set ListTitle at the end of merging
-        If DBMovieSet.MovieSet.TitleSpecified Then
-            Dim tTitle As String = StringUtils.SortTokens_MovieSet(DBMovieSet.MovieSet.Title)
-            DBMovieSet.ListTitle = tTitle
-        Else
-            'If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-            '    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            'ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-            '    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            'Else
-            '    If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
-            '        DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
-            '    Else
-            '        DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-            '    End If
-            'End If
+        'fallback for title if title is empty
+        If Not DBMovieSet.MovieSet.TitleSpecified Then
+            DBMovieSet.MovieSet.Title = "No Title (ERROR)"
         End If
 
         Return DBMovieSet
@@ -751,9 +736,9 @@ Public Class NFO
         'sort UniqueIds by Default and Type (name)
         DBTV.TVShow.UniqueIDs.Items.Sort()
 
-        'set ListTitle at the end of merging
-        If DBTV.TVShow.TitleSpecified Then
-            DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
+        'fallback for title if title is empty
+        If Not DBTV.TVShow.TitleSpecified Then
+            DBTV.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBTV.ShowPath)
         End If
 
 
@@ -922,7 +907,7 @@ Public Class NFO
 
             'Title
             If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockSeasonTitle) AndAlso ScrapeOptions.bSeasonTitle AndAlso
-                scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperSeasonTitle AndAlso Not new_Title Then
+                scrapedseason.TitleSpecified AndAlso Not String.IsNullOrEmpty(StringUtils.FilterSeasonTitle(scrapedseason.Title)) AndAlso Master.eSettings.TVScraperSeasonTitle AndAlso Not new_Title Then
                 DBTVSeason.TVSeason.Title = scrapedseason.Title
                 new_Title = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperSeasonTitle AndAlso Not Master.eSettings.TVLockSeasonTitle Then

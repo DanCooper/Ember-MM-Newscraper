@@ -211,19 +211,19 @@ Public Class TVDB_Image
                         ImagesContainer.MainFanarts = _scraper.GetAllImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers, DBTV.Language_Main).MainFanarts
                     End If
                 Else
-                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.TVEpisode.Title))
                 End If
             Case Enums.ContentType.TVSeason
                 If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                     ImagesContainer = _scraper.GetAllImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers, DBTV.Language_Main)
                 Else
-                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.TVSeason.Title))
                 End If
             Case Enums.ContentType.TVShow
                 If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                     ImagesContainer = _scraper.GetAllImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers, DBTV.Language_Main)
                 Else
-                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.TVShow.Title))
                 End If
             Case Else
         End Select

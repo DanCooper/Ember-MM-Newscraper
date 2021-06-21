@@ -78,7 +78,7 @@ Public Class frmSettingsHolder
         colCustomTabList.Items.Add("movielist")
         colCustomTabList.Items.Add("setslist")
         colCustomTabList.Items.Add("tvshowlist")
-        For Each ViewName In Master.DB.GetViewList(Enums.ContentType.None)
+        For Each ViewName In Master.DB.View_GetList(Enums.ContentType.None)
             cbCustomMediaList.Items.Add(ViewName)
             colCustomTabList.Items.Add(ViewName)
         Next
@@ -93,7 +93,7 @@ Public Class frmSettingsHolder
             btnCustomMediaListRemove.Enabled = True
             txtCustomMediaListName.Text = String.Empty
             txtCustomMediaListQuery.Text = String.Empty
-            Dim SQL As Database.SQLViewProperty = Master.DB.GetViewDetails(cbCustomMediaList.SelectedItem.ToString)
+            Dim SQL As Database.SQLViewProperty = Master.DB.View_GetProperty(cbCustomMediaList.SelectedItem.ToString)
             If Not String.IsNullOrEmpty(SQL.Name) AndAlso Not String.IsNullOrEmpty(SQL.Statement) Then
                 txtCustomMediaListName.Enabled = True
                 txtCustomMediaListQuery.Enabled = True
@@ -111,8 +111,8 @@ Public Class frmSettingsHolder
 
     Private Sub btnCustomMediaListAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCustomMediaListAdd.Click
         If Not String.IsNullOrEmpty(txtCustomMediaListName.Text) OrElse String.IsNullOrEmpty(txtCustomMediaListQuery.Text) Then
-            Master.DB.DeleteView(String.Concat(txtCustomMediaListPrefix.Text, txtCustomMediaListName.Text))
-            If Master.DB.AddView(String.Concat("CREATE VIEW '", txtCustomMediaListPrefix.Text, txtCustomMediaListName.Text, "' AS ", txtCustomMediaListQuery.Text)) Then
+            Master.DB.View_Delete(String.Concat(txtCustomMediaListPrefix.Text, txtCustomMediaListName.Text))
+            If Master.DB.View_Add(String.Concat("CREATE VIEW '", txtCustomMediaListPrefix.Text, txtCustomMediaListName.Text, "' AS ", txtCustomMediaListQuery.Text)) Then
                 MessageBox.Show("Added View sucessfully", "", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 GetViews()
             Else
@@ -124,7 +124,7 @@ Public Class frmSettingsHolder
     Private Sub btnCustomMediaListRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCustomMediaListRemove.Click
         If Not String.IsNullOrEmpty(txtCustomMediaListName.Text) Then
             Dim ViewName As String = String.Concat(txtCustomMediaListPrefix.Text, txtCustomMediaListName.Text)
-            Master.DB.DeleteView(ViewName)
+            Master.DB.View_Delete(ViewName)
             For Each dRow As DataGridViewRow In dgvCustomTab.Rows
                 If dRow.Cells(1).Value.ToString = ViewName Then
                     dgvCustomTab.Rows.RemoveAt(dRow.Index)

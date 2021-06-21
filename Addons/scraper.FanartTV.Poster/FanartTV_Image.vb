@@ -550,7 +550,7 @@ Public Class FanartTV_Image
         ElseIf DBMovie.Movie.UniqueIDs.IMDbIdSpecified Then
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.UniqueIDs.IMDbId, FilteredModifiers)
         Else
-            logger.Trace(String.Concat("[FanartTV_Image] [Scraper_Movie] [Abort] No TMDB and IMDB ID exist to search: ", DBMovie.ListTitle))
+            logger.Trace(String.Concat("[FanartTV_Image] [Scraper_Movie] [Abort] No TMDB and IMDB ID exist to search: ", DBMovie.Movie.Title))
         End If
 
         logger.Trace("[FanartTV_Image] [Scraper_Movie] [Done]")
@@ -592,19 +592,19 @@ Public Class FanartTV_Image
                         ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers).MainFanarts
                     End If
                 Else
-                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.TVEpisode.Title))
                 End If
             Case Enums.ContentType.TVSeason
                 If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                     ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.TVSeason.Title))
                 End If
             Case Enums.ContentType.TVShow
                 If DBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                     ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.UniqueIDs.TVDbId, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.TVShow.Title))
                 End If
             Case Else
                 logger.Error(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] Unhandled ContentType"))

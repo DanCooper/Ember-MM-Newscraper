@@ -26,26 +26,26 @@ Namespace FormUtils
 
     Public Class Forms
 
-        Public Shared Sub ResizeAndMoveDialog(ByRef Dialog As Control, ByRef Form As Form)
+        Public Shared Sub ResizeAndMoveDialog(ByRef dialog As Control, ByRef form As Form)
             'shrink dialog if bigger than the Windows working area
-            Dim iWidth As Integer = Dialog.Width
-            Dim iHeight As Integer = Dialog.Height
+            Dim iWidth As Integer = dialog.Width
+            Dim iHeight As Integer = dialog.Height
             If My.Computer.Screen.WorkingArea.Width < iWidth Then
                 iWidth = My.Computer.Screen.WorkingArea.Width
             End If
             If My.Computer.Screen.WorkingArea.Height < iHeight Then
                 iHeight = My.Computer.Screen.WorkingArea.Height
             End If
-            Dialog.Size = New Size(iWidth, iHeight)
+            dialog.Size = New Size(iWidth, iHeight)
             'move the dialog to the center of Embers main dialog
             Dim pLeft As Integer
             Dim pTop As Integer
-            pLeft = Master.AppPos.Left + (Master.AppPos.Width - Dialog.Width) \ 2
-            pTop = Master.AppPos.Top + (Master.AppPos.Height - Dialog.Height) \ 2
+            pLeft = Master.AppPos.Left + (Master.AppPos.Width - dialog.Width) \ 2
+            pTop = Master.AppPos.Top + (Master.AppPos.Height - dialog.Height) \ 2
             If pLeft < 0 Then pLeft = 0
             If pTop < 0 Then pTop = 0
-            Dialog.Location = New Point(pLeft, pTop)
-            Form.StartPosition = FormStartPosition.Manual
+            dialog.Location = New Point(pLeft, pTop)
+            form.StartPosition = FormStartPosition.Manual
         End Sub
 
     End Class

@@ -81,7 +81,6 @@ Public Class dlgNewSet
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         tmpDBElement.MovieSet.Title = txtTitle.Text.Trim
         tmpDBElement.Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
-        tmpDBElement.ListTitle = StringUtils.SortTokens_MovieSet(txtTitle.Text.Trim)
 
         DialogResult = DialogResult.OK
     End Sub
@@ -98,7 +97,7 @@ Public Class dlgNewSet
         If Not String.IsNullOrEmpty(txtTitle.Text) AndAlso Not String.IsNullOrEmpty(cbLanguage.Text) Then
             'check if the MovieSet Name is already existing
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idSet FROM sets WHERE SetName LIKE """, txtTitle.Text.Trim, """;")
+                SQLcommand.CommandText = String.Concat("SELECT idSet FROM sets WHERE Title LIKE """, txtTitle.Text.Trim, """;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         btnOK.Enabled = False

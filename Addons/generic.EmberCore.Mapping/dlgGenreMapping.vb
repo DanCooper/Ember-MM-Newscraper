@@ -43,7 +43,7 @@ Public Class dlgGenreMapping
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
         Setup()
-        Master.DB.LoadAllGenres()
+        Master.DB.LoadAll_Genres()
         tmpGenreXML = CType(APIXML.GenreMapping.CloneDeep, clsXMLGenreMapping)
         PopulateGenres()
     End Sub

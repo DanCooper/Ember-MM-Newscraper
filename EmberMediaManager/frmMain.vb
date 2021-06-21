@@ -1272,13 +1272,13 @@ Public Class frmMain
             If currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 MainBackground = currTV.ImagesContainer.Fanart.ImageOriginal
             Else
-                Dim SeasonID As Long = Master.DB.GetTVSeasonIDFromEpisode(currTV)
-                Dim TVSeasonFanart As String = Master.DB.GetArtForItem(SeasonID, "season", "fanart")
+                Dim SeasonID As Long = Master.DB.Get_TVSeasonIdByEpisode(currTV)
+                Dim TVSeasonFanart As String = Master.DB.Get_ArtForItem(SeasonID, "season", "fanart")
                 If Not String.IsNullOrEmpty(TVSeasonFanart) Then
                     MainBackground.LoadFromFile(TVSeasonFanart, True)
                     NeedsGS = True
                 Else
-                    Dim TVShowFanart As String = Master.DB.GetArtForItem(currTV.ShowID, "tvshow", "fanart")
+                    Dim TVShowFanart As String = Master.DB.Get_ArtForItem(currTV.ShowID, "tvshow", "fanart")
                     If Not String.IsNullOrEmpty(TVShowFanart) Then
                         MainBackground.LoadFromFile(TVShowFanart, True)
                         NeedsGS = True
@@ -1347,7 +1347,7 @@ Public Class frmMain
             If currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 MainBackground = currTV.ImagesContainer.Fanart.ImageOriginal
             Else
-                Dim TVShowFanart As String = Master.DB.GetArtForItem(currTV.ShowID, "tvshow", "fanart")
+                Dim TVShowFanart As String = Master.DB.Get_ArtForItem(currTV.ShowID, "tvshow", "fanart")
                 If Not String.IsNullOrEmpty(TVShowFanart) Then
                     MainBackground.LoadFromFile(TVShowFanart, True)
                     NeedsGS = True
@@ -1460,24 +1460,24 @@ Public Class frmMain
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim Theme As New MediaContainers.MediaFile
             Dim tURL As String = String.Empty
-            Dim OldListTitle As String = String.Empty
-            Dim NewListTitle As String = String.Empty
+            Dim OldTitle As String = String.Empty
+            Dim NewTitle As String = String.Empty
 
             Cancelled = False
 
             If bwMovieScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
-            bwMovieScraper.ReportProgress(1, OldListTitle)
+            OldTitle = tScrapeItem.DataRow.Item("Title").ToString
+            bwMovieScraper.ReportProgress(1, OldTitle)
 
             Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
+            logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldTitle))
 
             DBScrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(tScrapeItem.DataRow.Item("idMovie")))
 
             If tScrapeItem.ScrapeModifiers.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
+                    logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldTitle))
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         bwMovieScraper.CancelAsync()
@@ -1502,7 +1502,7 @@ Public Class frmMain
                     Dim tModifiers As New Structures.ScrapeModifiers With {.MainNFO = True}
                     Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifiers, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
-                        logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
+                        logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldTitle))
                         Cancelled = True
                         If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             bwMovieScraper.CancelAsync()
@@ -1520,10 +1520,10 @@ Public Class frmMain
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
-                NewListTitle = DBScrapeMovie.ListTitle
+                NewTitle = DBScrapeMovie.Movie.Title
 
-                If Not NewListTitle = OldListTitle Then
-                    bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+                If Not NewTitle = OldTitle Then
+                    bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                 End If
 
                 'get all images 
@@ -1609,11 +1609,11 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.Save_Movie(DBScrapeMovie, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, True, False)
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
-                    bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+                    bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                 End If
-                logger.Trace(String.Format("[Movie Scraper] [Done] Scraping {0}", OldListTitle))
+                logger.Trace(String.Format("[Movie Scraper] [Done] Scraping {0}", OldTitle))
             Else
-                logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
+                logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldTitle))
             End If
         Next
 
@@ -1674,9 +1674,7 @@ Public Class frmMain
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim aContainer As New MediaContainers.SearchResultsContainer
-            Dim NewListTitle As String = String.Empty
             Dim NewTitle As String = String.Empty
-            Dim OldListTitle As String = String.Empty
             Dim OldTMDBColID As String = String.Empty
             Dim OldTitle As String = String.Empty
             Dim efList As New List(Of String)
@@ -1686,23 +1684,22 @@ Public Class frmMain
             Cancelled = False
 
             If bwMovieSetScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
-            OldTitle = tScrapeItem.DataRow.Item("SetName").ToString
+            OldTitle = tScrapeItem.DataRow.Item("Title").ToString
             OldTMDBColID = tScrapeItem.DataRow.Item("TMDBColID").ToString
-            bwMovieSetScraper.ReportProgress(1, OldListTitle)
+            bwMovieSetScraper.ReportProgress(1, OldTitle)
 
             Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
+            logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldTitle))
 
-            DBScrapeMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(tScrapeItem.DataRow.Item("idSet")))
+            DBScrapeMovieSet = Master.DB.Load_Movieset(Convert.ToInt64(tScrapeItem.DataRow.Item("idSet")))
 
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
             If tScrapeItem.ScrapeModifiers.MainNFO Then
                 bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
-                    logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
+                    logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldTitle))
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         bwMovieSetScraper.CancelAsync()
@@ -1721,7 +1718,7 @@ Public Class frmMain
                     tScrapeItem.ScrapeModifiers.MainPoster) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifiers, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
-                        logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
+                        logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldTitle))
                         Exit For
                     End If
                 End If
@@ -1731,11 +1728,10 @@ Public Class frmMain
 
             If Not Cancelled Then
 
-                NewListTitle = DBScrapeMovieSet.ListTitle
                 NewTitle = DBScrapeMovieSet.MovieSet.Title
 
-                If Not NewListTitle = OldListTitle Then
-                    bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+                If Not NewTitle = OldTitle Then
+                    bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                 End If
 
                 'get all images
@@ -1771,11 +1767,11 @@ Public Class frmMain
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True, True)
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
-                    bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+                    bwMovieSetScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                 End If
-                logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping {0}", OldListTitle))
+                logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping {0}", OldTitle))
             Else
-                logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
+                logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldTitle))
             End If
         Next
 
@@ -1837,18 +1833,18 @@ Public Class frmMain
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim Theme As New MediaContainers.MediaFile
             Dim tURL As String = String.Empty
-            Dim OldListTitle As String = String.Empty
-            Dim NewListTitle As String = String.Empty
+            Dim OldTitle As String = String.Empty
+            Dim NewTitle As String = String.Empty
 
             Cancelled = False
 
             If bwTVScraper.CancellationPending Then Exit For
-            OldListTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
-            bwTVScraper.ReportProgress(1, OldListTitle)
+            OldTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
+            bwTVScraper.ReportProgress(1, OldTitle)
 
             Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
-            logger.Trace(String.Format("[TVScraper] [Start] Scraping {0}", OldListTitle))
+            logger.Trace(String.Format("[TVScraper] [Start] Scraping {0}", OldTitle))
 
             DBScrapeShow = Master.DB.Load_TVShow_Full(Convert.ToInt64(tScrapeItem.DataRow.Item("idShow")))
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
@@ -1858,7 +1854,7 @@ Public Class frmMain
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                        logger.Trace(String.Concat("Canceled scraping: ", OldTitle))
                         bwTVScraper.CancelAsync()
                     End If
                 End If
@@ -1886,10 +1882,10 @@ Public Class frmMain
             If bwTVScraper.CancellationPending Then Exit For
 
             If Not Cancelled Then
-                NewListTitle = DBScrapeShow.ListTitle
+                NewTitle = DBScrapeShow.TVShow.Title
 
-                If Not NewListTitle = OldListTitle Then
-                    bwTVScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
+                If Not NewTitle = OldTitle Then
+                    bwTVScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                 End If
 
                 'get all images
@@ -1947,11 +1943,11 @@ Public Class frmMain
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     Master.DB.Save_TVShow(DBScrapeShow, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, tScrapeItem.ScrapeModifiers.withEpisodes)
                     bwTVScraper.ReportProgress(-2, DBScrapeShow.ID)
-                    bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
+                    bwTVScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                 End If
             End If
 
-            logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
+            logger.Trace(String.Concat("Ended scraping: ", OldTitle))
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeShow, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVScraper.CancellationPending}
@@ -4598,7 +4594,7 @@ Public Class frmMain
 
         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-        Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
 
@@ -5479,7 +5475,7 @@ Public Class frmMain
             colName = "MPAA" OrElse
             colName = "OriginalTitle" OrElse
             colName = "Rating" OrElse
-            colName = "ReleaseDate" OrElse
+            colName = "premiered" OrElse
             colName = "Runtime" OrElse
             colName = "Studio" OrElse
             colName = "TMDB" OrElse
@@ -5862,10 +5858,10 @@ Public Class frmMain
             btnFilterSortRating_Movies.Image = Nothing
         End If
 
-        If dgvMovies.SortedColumn.HeaderCell.Value.ToString = "ReleaseDate" AndAlso dgvMovies.SortOrder = 1 Then
+        If dgvMovies.SortedColumn.HeaderCell.Value.ToString = "premiered" AndAlso dgvMovies.SortOrder = 1 Then
             btnFilterSortPremiered_Movies.Tag = "ASC"
             btnFilterSortPremiered_Movies.Image = My.Resources.asc
-        ElseIf dgvMovies.SortedColumn.HeaderCell.Value.ToString = "ReleaseDate" AndAlso dgvMovies.SortOrder = 2 Then
+        ElseIf dgvMovies.SortedColumn.HeaderCell.Value.ToString = "premiered" AndAlso dgvMovies.SortOrder = 2 Then
             btnFilterSortPremiered_Movies.Tag = "DESC"
             btnFilterSortPremiered_Movies.Image = My.Resources.desc
         Else
@@ -5958,7 +5954,7 @@ Public Class frmMain
 
         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-        Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
 
@@ -6004,7 +6000,7 @@ Public Class frmMain
 
             If Master.eSettings.MovieSetClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim movieSetName As String = dgvMovieSets.Rows(e.RowIndex).Cells("SetName").Value.ToString
+                Dim moviesetTitle As String = dgvMovieSets.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Dim scrapeFor As String = String.Empty
                 Dim scrapeType As String = String.Empty
                 Select Case colName
@@ -6032,7 +6028,7 @@ Public Class frmMain
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
                 End If
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieSetName, scrapeFor, scrapeType))
+                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", moviesetTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -6179,9 +6175,9 @@ Public Class frmMain
 
             Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
             Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-            currMovieset = Master.DB.Load_MovieSet(ID)
-            SetStatus(currMovieset.ListTitle)
-            Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
+            currMovieset = Master.DB.Load_Movieset(ID)
+            SetStatus(currMovieset.MovieSet.Title)
+            Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(ID)
             Edit_MovieSet(tmpDBMovieSet)
         End If
     End Sub
@@ -6287,7 +6283,7 @@ Public Class frmMain
                     cmnuMovieSetSep3.Visible = True
                     cmnuMovieSetTitle.Visible = True
 
-                    cmnuMovieSetTitle.Text = String.Concat(">> ", dgvMovieSets.Item("SetName", dgvHTI.RowIndex).Value, " <<")
+                    cmnuMovieSetTitle.Text = String.Concat(">> ", dgvMovieSets.Item("Title", dgvHTI.RowIndex).Value, " <<")
 
                     If Not dgvMovieSets.Rows(dgvHTI.RowIndex).Selected Then
                         prevRow_MovieSet = -1
@@ -6370,7 +6366,7 @@ Public Class frmMain
             If dgvMovieSets.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovieSets.SelectedRows.Count))
             ElseIf dgvMovieSets.SelectedRows.Count = 1 Then
-                SetStatus(dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
+                SetStatus(dgvMovieSets.SelectedRows(0).Cells("Title").Value.ToString)
             End If
             currRow_MovieSet = dgvMovieSets.SelectedRows(0).Index
         Else
@@ -6989,7 +6985,7 @@ Public Class frmMain
 
             If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("SeasonText").Value.ToString
+                Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Dim scrapeFor As String = String.Empty
                 Dim scrapeType As String = String.Empty
                 Select Case colName
@@ -7069,7 +7065,7 @@ Public Class frmMain
         If (
             colName = "Episodes" OrElse
             colName = "Season" OrElse
-            colName = "SeasonText" OrElse
+            colName = "Title" OrElse
             colName = "strAired" OrElse
             colName = "strTMDB" OrElse
             colName = "strTVDB"
@@ -7152,9 +7148,9 @@ Public Class frmMain
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
             For Each drvRow As DataGridViewRow In dgvTVSeasons.Rows
-                If drvRow.Cells("SeasonText").Value.ToString.StartsWith(KeyBuffer) Then
+                If drvRow.Cells("Title").Value.ToString.StartsWith(KeyBuffer) Then
                     drvRow.Selected = True
-                    dgvTVSeasons.CurrentCell = drvRow.Cells("SeasonText")
+                    dgvTVSeasons.CurrentCell = drvRow.Cells("Title")
                     Exit For
                 End If
             Next
@@ -7238,7 +7234,7 @@ Public Class frmMain
                     cmnuSeasonEditSeparator.Visible = True
                     cmnuSeasonScrape.Visible = True
 
-                    cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
+                    cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("Title", dgvHTI.RowIndex).Value, " <<")
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
 
                     If Not dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 1 Then
@@ -7247,7 +7243,7 @@ Public Class frmMain
                         dgvTVSeasons.CurrentCell = Nothing
                         dgvTVSeasons.ClearSelection()
                         dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected = True
-                        dgvTVSeasons.CurrentCell = dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex)
+                        dgvTVSeasons.CurrentCell = dgvTVSeasons.Item("Title", dgvHTI.RowIndex)
                     Else
                         cmnuSeason.Enabled = True
                     End If
@@ -7287,7 +7283,7 @@ Public Class frmMain
             If dgvTVSeasons.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVSeasons.SelectedRows.Count))
             ElseIf dgvTVSeasons.SelectedRows.Count = 1 Then
-                SetStatus(dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
+                SetStatus(dgvTVSeasons.SelectedRows(0).Cells("Title").Value.ToString)
             End If
             currRow_TVSeason = dgvTVSeasons.SelectedRows(0).Index
             If Not currList = 1 Then
@@ -7306,7 +7302,7 @@ Public Class frmMain
             dgvTVSeasons.CurrentCell = Nothing
             dgvTVSeasons.ClearSelection()
             'dgvTVSeasons.Rows(0).Selected = True
-            'dgvTVSeasons.CurrentCell = dgvTVSeasons.Rows(0).Cells("SeasonText")
+            'dgvTVSeasons.CurrentCell = dgvTVSeasons.Rows(0).Cells("Title")
         End If
 
         SortingSave_TVSeasons()
@@ -8310,24 +8306,23 @@ Public Class frmMain
             dgvMovies.DataSource = Nothing
 
             If Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actors ",
-                                                                   "LEFT OUTER JOIN actorlinkmovie ON (actors.idActor = actorlinkmovie.idActor) ",
-                                                                   "INNER JOIN '", currList_Movies, "' ON (actorlinkmovie.idMovie = '", currList_Movies, "'.idMovie) ",
-                                                                   "WHERE actors.strActor LIKE '%", filSearch_Movies, "%' ",
-                                                                   "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable_Movie(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actors ",
+                                                                      "LEFT OUTER JOIN actorlinkmovie ON (actors.idActor = actorlinkmovie.idActor) ",
+                                                                      "INNER JOIN '", currList_Movies, "' ON (actorlinkmovie.idMovie = '", currList_Movies, "'.idMovie) ",
+                                                                      "WHERE actors.strActor LIKE '%", filSearch_Movies, "%' ",
+                                                                      "COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actorlinkmovie ",
-                                                                   "INNER JOIN '", currList_Movies, "' ON (actorlinkmovie.idMovie = '", currList_Movies, "'.idMovie) ",
-                                                                   "WHERE actorlinkmovie.strRole LIKE '%", filSearch_Movies, "%' ",
-                                                                   "ORDER BY '", currList_Movies, "'.ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable_Movie(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actorlinkmovie ",
+                                                                      "INNER JOIN '", currList_Movies, "' ON (actorlinkmovie.idMovie = '", currList_Movies, "'.idMovie) ",
+                                                                      "WHERE actorlinkmovie.strRole LIKE '%", filSearch_Movies, "%' ",
+                                                                      "COLLATE NOCASE;"))
             Else
                 If chkFilterDuplicates_Movies.Checked Then
-                    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
-                                                                       "WHERE imdb IN (SELECT imdb FROM '", currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
-                                                                       "ORDER BY ListTitle COLLATE NOCASE;"))
+                    Master.DB.FillDataTable_Movie(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
+                                                                          "WHERE imdb IN (SELECT imdb FROM '", currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
+                                                                          "COLLATE NOCASE;"))
                 Else
-                    Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
-                                                                       "ORDER BY ListTitle COLLATE NOCASE;"))
+                    Master.DB.FillDataTable_Movie(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "';"))
                 End If
             End If
         End If
@@ -8335,8 +8330,7 @@ Public Class frmMain
         If doMovieSets Then
             bsMovieSets.DataSource = Nothing
             dgvMovieSets.DataSource = Nothing
-            Master.DB.FillDataTable(dtMovieSets, String.Concat("SELECT * FROM '", currList_Moviesets, "' ",
-                                                                  "ORDER BY ListTitle COLLATE NOCASE;"))
+            Master.DB.FillDataTable_Movieset(dtMovieSets, String.Concat("SELECT * FROM '", currList_Moviesets, "';"))
         End If
 
         If doTVShows Then
@@ -8346,8 +8340,7 @@ Public Class frmMain
             dgvTVSeasons.DataSource = Nothing
             bsTVEpisodes.DataSource = Nothing
             dgvTVEpisodes.DataSource = Nothing
-            Master.DB.FillDataTable(dtTVShows, String.Concat("SELECT * FROM '", currList_TVShows, "' ",
-                                                              "ORDER BY ListTitle COLLATE NOCASE;"))
+            Master.DB.FillDataTable_TVShow(dtTVShows, String.Concat("SELECT * FROM '", currList_TVShows, "';"))
         End If
 
 
@@ -8554,13 +8547,13 @@ Public Class frmMain
                 dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
                 dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-                dgvMovies.Columns("ReleaseDate").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-                dgvMovies.Columns("ReleaseDate").MinimumWidth = 30
-                dgvMovies.Columns("ReleaseDate").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("ReleaseDate").ReadOnly = True
-                dgvMovies.Columns("ReleaseDate").SortMode = DataGridViewColumnSortMode.Automatic
-                dgvMovies.Columns("ReleaseDate").Visible = Not CheckColumnHide_Movies("ReleaseDate")
-                dgvMovies.Columns("ReleaseDate").ToolTipText = Master.eLang.GetString(57, "Release Date")
+                dgvMovies.Columns("premiered").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+                dgvMovies.Columns("premiered").MinimumWidth = 30
+                dgvMovies.Columns("premiered").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("premiered").ReadOnly = True
+                dgvMovies.Columns("premiered").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("premiered").Visible = Not CheckColumnHide_Movies("premiered")
+                dgvMovies.Columns("premiered").ToolTipText = Master.eLang.GetString(724, "remiered")
                 dgvMovies.Columns("Runtime").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                 dgvMovies.Columns("Runtime").MinimumWidth = 45
                 dgvMovies.Columns("Runtime").Resizable = DataGridViewTriState.False
@@ -9026,7 +9019,7 @@ Public Class frmMain
 
     Private Sub FillList_TVEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
         RemoveHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
-        Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
+        Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.Get_EpisodeSorting_TVShow(ShowID)
         Dim bIsAllSeasons As Boolean = Season = -1
 
         bsTVEpisodes.DataSource = Nothing
@@ -9035,9 +9028,9 @@ Public Class frmMain
         dgvTVEpisodes.Enabled = False
 
         If bIsAllSeasons Then
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
+            Master.DB.FillDataTable_TVEpisode(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
         Else
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
+            Master.DB.FillDataTable_TVEpisode(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
         End If
 
         bsTVEpisodes.DataSource = dtTVEpisodes
@@ -9200,13 +9193,13 @@ Public Class frmMain
         dgvTVEpisodes.DataSource = Nothing
 
         If Master.eSettings.TVDisplayMissingEpisodes Then
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
+            Master.DB.FillDataTable_TVSeason(dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
         Else
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
-                                                                "FROM seasonslist ",
-                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ",
-                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = -1) ",
-                                                                "ORDER BY seasonslist.Season;"))
+            Master.DB.FillDataTable_TVSeason(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
+                                                                        "FROM seasonslist ",
+                                                                        "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ",
+                                                                        "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = -1) ",
+                                                                        "ORDER BY seasonslist.Season;"))
         End If
 
         bsTVSeasons.DataSource = dtTVSeasons
@@ -9284,13 +9277,13 @@ Public Class frmMain
         dgvTVSeasons.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
         dgvTVSeasons.Columns("Season").HeaderText = "#"
         dgvTVSeasons.Columns("Season").DefaultCellStyle.Format = "00"
-        dgvTVSeasons.Columns("SeasonText").Resizable = DataGridViewTriState.False
-        dgvTVSeasons.Columns("SeasonText").ReadOnly = True
-        dgvTVSeasons.Columns("SeasonText").MinimumWidth = 83
-        dgvTVSeasons.Columns("SeasonText").SortMode = DataGridViewColumnSortMode.Automatic
-        dgvTVSeasons.Columns("SeasonText").Visible = True
-        dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(865, "Season Title")
-        dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns("Title").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("Title").ReadOnly = True
+        dgvTVSeasons.Columns("Title").MinimumWidth = 83
+        dgvTVSeasons.Columns("Title").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("Title").Visible = True
+        dgvTVSeasons.Columns("Title").ToolTipText = Master.eLang.GetString(865, "Season Title")
+        dgvTVSeasons.Columns("Title").HeaderText = Master.eLang.GetString(865, "Season Title")
         dgvTVSeasons.Columns("strAired").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         dgvTVSeasons.Columns("strAired").Resizable = DataGridViewTriState.False
         dgvTVSeasons.Columns("strAired").ReadOnly = True
@@ -9317,8 +9310,8 @@ Public Class frmMain
         dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
         dgvTVSeasons.Columns("Season").ValueType = GetType(Integer)
 
-        If Master.isWindows Then dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        ResizeTVLists(dgvTVSeasons.Columns("SeasonText").Index)
+        If Master.isWindows Then dgvTVSeasons.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        ResizeTVLists(dgvTVSeasons.Columns("Title").Index)
 
         If Not Master.isCL Then SortingRestore_TVSeasons()
 
@@ -10256,7 +10249,7 @@ Public Class frmMain
             End While
 
             If doSave Then
-                Master.DB.ClearNew()
+                Master.DB.Clear_New()
             End If
 
             If Not Master.isCL Then
@@ -10330,10 +10323,10 @@ Public Class frmMain
 
         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
         Master.DB.Connect_MyVideos()
-        Master.DB.LoadAllCertifications()
-        Master.DB.LoadAllCountries()
-        Master.DB.LoadAllGenres()
-        Master.DB.LoadAllStudios()
+        Master.DB.LoadAll_Certifications()
+        Master.DB.LoadAll_Countries()
+        Master.DB.LoadAll_Genres()
+        Master.DB.LoadAll_Studios()
 
         'set before modules has been loaded to prepare all RuntimeObjects that are used in modules 
         ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
@@ -11027,7 +11020,7 @@ Public Class frmMain
         For Each mTabPage As TabPage In tcMain.TabPages
             If TryCast(mTabPage.Tag, Settings.MainTabSorting) IsNot Nothing Then
                 Dim nTabTag = DirectCast(mTabPage.Tag, Settings.MainTabSorting)
-                Dim mCount As Integer = Master.DB.GetViewMediaCount(nTabTag.DefaultList)
+                Dim mCount As Integer = Master.DB.View_GetMediaCount(nTabTag.DefaultList)
                 Select Case nTabTag.ContentType
                     Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
                         If mCount = -1 Then
@@ -11042,7 +11035,7 @@ Public Class frmMain
                             mTabPage.Text = String.Format("{0} ({1})", nTabTag.Title, "SQL Error")
                             mTabPage.Enabled = False
                         Else
-                            Dim epCount As Integer = Master.DB.GetViewMediaCount(nTabTag.DefaultList, True)
+                            Dim epCount As Integer = Master.DB.View_GetMediaCount(nTabTag.DefaultList, True)
                             mTabPage.Text = String.Format("{0} ({1}/{2})", nTabTag.Title, mCount, epCount)
                             mTabPage.Enabled = True
                         End If
@@ -11405,7 +11398,7 @@ Public Class frmMain
 
     Private Sub mnuTagsTag_DropDown(ByVal sender As Object, ByVal e As EventArgs) Handles mnuTagsTag.DropDown
         mnuTagsTag.Items.Clear()
-        Dim mTag() As Object = Master.DB.GetAllTags
+        Dim mTag() As Object = Master.DB.GetAll_Tags
         mnuTagsTag.Items.AddRange(mTag)
 
         mnuTagsNew.Text = String.Empty
@@ -11614,7 +11607,7 @@ Public Class frmMain
         ShowNoInfo(False)
         ClearInfo()
 
-        currMovieset = Master.DB.Load_MovieSet(ID)
+        currMovieset = Master.DB.Load_Movieset(ID)
         FillScreenInfoWith_Movieset()
 
         If bwLoadImages_Movieset.IsBusy AndAlso Not bwLoadImages_Movieset.CancellationPending Then
@@ -12716,7 +12709,7 @@ Public Class frmMain
     End Sub
 
     Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBMovieSet.ListTitle) Then
+        If DBMovieSet.MovieSet.TitleSpecified Then
             tslLoading.Text = Master.eLang.GetString(1205, "Verifying MovieSet Details:")
             Application.DoEvents()
 
@@ -13939,7 +13932,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14130,7 +14123,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14235,7 +14228,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14340,7 +14333,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14431,7 +14424,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14586,7 +14579,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14691,7 +14684,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14823,7 +14816,7 @@ Public Class frmMain
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
                         Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
-                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -15528,7 +15521,7 @@ Public Class frmMain
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", lngID))
+        Master.DB.FillDataTable_Movie(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", lngID))
         If newTable.Rows.Count = 1 Then
             newRow = newTable.Rows.Item(0)
         End If
@@ -15559,7 +15552,7 @@ Public Class frmMain
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", lngID))
+        Master.DB.FillDataTable_Movieset(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", lngID))
         If newTable.Rows.Count = 1 Then
             newRow = newTable.Rows.Item(0)
         End If
@@ -15592,7 +15585,7 @@ Public Class frmMain
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", lngID))
+        Master.DB.FillDataTable_TVShow(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", lngID))
         If newTable.Rows.Count = 1 Then
             newRow = newTable.Rows.Item(0)
         End If
@@ -15621,7 +15614,7 @@ Public Class frmMain
         Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", MovieID))
+        Master.DB.FillDataTable_Movie(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", MovieID))
         If newTable.Rows.Count > 0 Then
             newDRow = newTable.Rows.Item(0)
         End If
@@ -15652,7 +15645,7 @@ Public Class frmMain
         Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", MovieSetID))
+        Master.DB.FillDataTable_Movieset(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", MovieSetID))
         If newTable.Rows.Count > 0 Then
             newDRow = newTable.Rows.Item(0)
         End If
@@ -15684,7 +15677,7 @@ Public Class frmMain
             Dim newDRow As DataRow = Nothing
             Dim newTable As New DataTable
 
-            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
+            Master.DB.FillDataTable_TVEpisode(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
             If newTable.Rows.Count > 0 Then
                 newDRow = newTable.Rows.Item(0)
             End If
@@ -15721,7 +15714,7 @@ Public Class frmMain
             Dim newDRow As DataRow = Nothing
             Dim newTable As New DataTable
 
-            Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
+            Master.DB.FillDataTable_TVSeason(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
             If newTable.Rows.Count > 0 Then
                 newDRow = newTable.Rows.Item(0)
             End If
@@ -15769,7 +15762,7 @@ Public Class frmMain
         Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ShowID))
+        Master.DB.FillDataTable_TVShow(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ShowID))
         If newTable.Rows.Count > 0 Then
             newDRow = newTable.Rows.Item(0)
         End If
@@ -15829,7 +15822,7 @@ Public Class frmMain
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
-        Dim DBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim DBMovieSet As Database.DBElement = Master.DB.Load_Movieset(ID)
 
         fScanner.Load_MovieSet(DBMovieSet, BatchMode)
         If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
@@ -16036,7 +16029,7 @@ Public Class frmMain
     ''' <returns>reload list from database?</returns>
     ''' <remarks></remarks>
     Private Function RewriteMovieSet(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal bRewriteAll As Boolean) As Boolean
-        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
 
         If tmpDBElement.IsOnline Then
             Master.DB.Save_MovieSet(tmpDBElement, BatchMode, True, bRewriteAll, True)
@@ -16544,7 +16537,7 @@ Public Class frmMain
         If dgvMovieSets.Rows.Count > iRow Then
             If Not DataGridView_ColumnAnyInfoValue(dgvMovieSets, iRow) Then
                 ShowNoInfo(True, Enums.ContentType.MovieSet)
-                currMovieset = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
+                currMovieset = Master.DB.Load_Movieset(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
                 FillScreenInfoWith_Movieset()
             Else
                 LoadInfo_Movieset(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
@@ -16810,7 +16803,7 @@ Public Class frmMain
     Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieSetEditSortMethodSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
+                Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
                 Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
@@ -16836,11 +16829,11 @@ Public Class frmMain
             'Load source list for movies
             mnuUpdateMovies.DropDownItems.Clear()
             cmnuTrayUpdateMovies.DropDownItems.Clear()
-            If Master.DB.GetSources_Movie.Count > 1 Then
+            If Master.DB.LoadAll_Sources_Movie.Count > 1 Then
                 mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
                 mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
             End If
-            For Each nSource In Master.DB.GetSources_Movie
+            For Each nSource In Master.DB.LoadAll_Sources_Movie
                 mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
                 mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
@@ -16852,11 +16845,11 @@ Public Class frmMain
             'Load source list for tv shows
             mnuUpdateShows.DropDownItems.Clear()
             cmnuTrayUpdateShows.DropDownItems.Clear()
-            If Master.DB.GetSources_TVShow.Count > 1 Then
+            If Master.DB.LoadAll_Sources_TVShow.Count > 1 Then
                 mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
                 mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
             End If
-            For Each nSource In Master.DB.GetSources_TVShow
+            For Each nSource In Master.DB.LoadAll_Sources_TVShow
                 mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
                 mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
@@ -16867,7 +16860,7 @@ Public Class frmMain
 
             'Load filter list DataFields for movies
             clbFilterDataFields_Movies.Items.Clear()
-            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "VideoSource", "Votes", "Year"})
+            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "premiered", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "VideoSource", "Votes", "Year"})
 
             'Load sort methods list for moviesets
             Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet) From {
@@ -16882,7 +16875,7 @@ Public Class frmMain
             'Load view list for movies
             listViews_Movies.Clear()
             listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
+            For Each cList As String In Master.DB.View_GetList(Enums.ContentType.Movie)
                 listViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
             Next
             cbFilterLists_Movies.DataSource = listViews_Movies.ToList
@@ -16893,7 +16886,7 @@ Public Class frmMain
             'Load view list for moviesets
             listViews_Moviesets.Clear()
             listViews_Moviesets.Add(Master.eLang.GetString(786, "Default List"), "setslist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.MovieSet)
+            For Each cList As String In Master.DB.View_GetList(Enums.ContentType.MovieSet)
                 listViews_Moviesets.Add(Regex.Replace(cList, "sets-", String.Empty).Trim, cList)
             Next
             cbFilterLists_MovieSets.DataSource = listViews_Moviesets.ToList
@@ -16904,7 +16897,7 @@ Public Class frmMain
             'Load view list for tv shows
             listViews_TVShows.Clear()
             listViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
+            For Each cList As String In Master.DB.View_GetList(Enums.ContentType.TVShow)
                 listViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
             Next
             cbFilterLists_Shows.DataSource = listViews_TVShows.ToList
@@ -16930,11 +16923,11 @@ Public Class frmMain
 
                 'Load filter list sources for movies
                 clbFilterSources_Movies.Items.Clear()
-                clbFilterSources_Movies.Items.AddRange(Master.DB.GetAllSources_Movie)
+                clbFilterSources_Movies.Items.AddRange(Master.DB.GetAll_SourceNames_Movie)
 
                 'Load filter list sources for tv shows
                 clbFilterSource_Shows.Items.Clear()
-                clbFilterSource_Shows.Items.AddRange(Master.DB.GetAllSources_TVShow)
+                clbFilterSource_Shows.Items.AddRange(Master.DB.GetAll_SourceNames_TVShow)
 
                 'Load filter list "years from" for movies
                 RemoveHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
@@ -18181,7 +18174,7 @@ Public Class frmMain
 
             Select Case cbSearchMovieSets.Text
                 Case Master.eLang.GetString(21, "Title")
-                    filSearch_MovieSets = String.Concat("SetName LIKE '%", strTextSearch, "%'")
+                    filSearch_MovieSets = String.Concat("Title LIKE '%", strTextSearch, "%'")
                     FilterArray_MovieSets.Add(filSearch_MovieSets)
                 Case String.Format("{0} ({1})", Master.eLang.GetString(21, "Title"), Master.eLang.GetString(1379, "Movie"))
                     filSearch_MovieSets = String.Concat("MovieTitles LIKE '%", strTextSearch, "%'")
@@ -18311,7 +18304,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterCountry_Movies()
         clbFilterCountries_Movies.Items.Clear()
-        Dim mCountry() As Object = Master.DB.GetAllCountries
+        Dim mCountry() As Object = Master.DB.GetAll_Countries
         clbFilterCountries_Movies.Items.Add(Master.eLang.None)
         clbFilterCountries_Movies.Items.AddRange(mCountry)
 
@@ -18383,7 +18376,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterTag_Movies()
         clbFilterTags_Movies.Items.Clear()
-        Dim mTag() As Object = Master.DB.GetAllTags
+        Dim mTag() As Object = Master.DB.GetAll_Tags
         clbFilterTags_Movies.Items.Add(Master.eLang.None)
         clbFilterTags_Movies.Items.AddRange(mTag)
 
@@ -18407,7 +18400,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterTag_Shows()
         clbFilterTags_Shows.Items.Clear()
-        Dim mTag() As Object = Master.DB.GetAllTags
+        Dim mTag() As Object = Master.DB.GetAll_Tags
         clbFilterTags_Shows.Items.Add(Master.eLang.None)
         clbFilterTags_Shows.Items.AddRange(mTag)
 
@@ -18431,7 +18424,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterVideoSource_Movies()
         clbFilterVideoSources_Movies.Items.Clear()
-        Dim mVideoSource() As Object = Master.DB.GetAllVideoSources_Movie
+        Dim mVideoSource() As Object = Master.DB.GetAll_VideoSources_Movie
         clbFilterVideoSources_Movies.Items.Add(Master.eLang.None)
         clbFilterVideoSources_Movies.Items.AddRange(mVideoSource)
 
@@ -18838,7 +18831,6 @@ Public Class frmMain
         Dim ScrapeType As Enums.ScrapeType
         Dim Season As Integer
         Dim setEnabled As Boolean
-        Dim SetName As String
         Dim TaskType As Enums.TaskManagerType
         Dim Trigger As Boolean
         Dim withEpisodes As Boolean

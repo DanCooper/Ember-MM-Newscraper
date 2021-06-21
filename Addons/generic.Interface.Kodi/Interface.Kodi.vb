@@ -2022,7 +2022,7 @@ Public Class KodiInterface
         If mHost IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idSet").Value)
-                Dim DBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movieset(ID)
                 If DBElement.MovieSet.TitleSpecified Then
                     'add job to tasklist and get everything done
                     AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = mHost, .mType = Enums.ModuleEventType.Sync_MovieSet})

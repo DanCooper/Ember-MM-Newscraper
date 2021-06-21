@@ -29,6 +29,7 @@ Imports System.Net
 Public Class dlgSettings
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private currPanel As New Panel
@@ -46,7 +47,9 @@ Public Class dlgSettings
     Private TVShowMatching As New List(Of Settings.regexp)
     Private sResult As New Structures.SettingsResult
     'Private tLangList As New List(Of Containers.TVLanguage)
+    Private TempTVScraperSeasonTitleBlacklist As New Settings.ExtendedListOfString
     Private TVMeta As New List(Of Settings.MetadataPerType)
+
     Public Event LoadEnd()
 
 #End Region 'Fields
@@ -711,39 +714,21 @@ Public Class dlgSettings
         LoadTVShowMatching()
     End Sub
 
-    Private Sub btnMovieSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
-            If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
-                lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
-                sResult.NeedsReload_Movie = True
+    Private Sub btnGeneralSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralSortTokenAdd.Click
+        If Not String.IsNullOrEmpty(txtGeneralSortToken.Text) Then
+            If Not lstGeneralSortTokens.Items.Contains(txtGeneralSortToken.Text) Then
+                lstGeneralSortTokens.Items.Add(txtGeneralSortToken.Text)
                 SetApplyButton(True)
-                txtMovieSortToken.Text = String.Empty
-                txtMovieSortToken.Focus()
+                txtGeneralSortToken.Text = String.Empty
+                txtGeneralSortToken.Focus()
             End If
         End If
     End Sub
 
-    Private Sub btnMovieSetSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
-            If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
-                lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
-                sResult.NeedsReload_MovieSet = True
-                SetApplyButton(True)
-                txtMovieSetSortToken.Text = String.Empty
-                txtMovieSetSortToken.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnTVSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
-            If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
-                lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                sResult.NeedsReload_TVShow = True
-                SetApplyButton(True)
-                txtTVSortToken.Text = String.Empty
-                txtTVSortToken.Focus()
-            End If
+    Private Sub btnTVScraperSeasonTitleBlacklist_Click(sender As Object, e As EventArgs) Handles btnTVScraperSeasonTitleBlacklist.Click
+        If frmTV_Data_SeasonTitleBlacklist.ShowDialog(TempTVScraperSeasonTitleBlacklist) = DialogResult.OK Then
+            TempTVScraperSeasonTitleBlacklist = frmTV_Data_SeasonTitleBlacklist.Result
+            SetApplyButton(True)
         End If
     End Sub
 
@@ -1487,7 +1472,7 @@ Public Class dlgSettings
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleFilters_TVShow, True)
             RefreshTVShowFilters()
             SetApplyButton(True)
         End If
@@ -1495,7 +1480,7 @@ Public Class dlgSettings
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleFilters_TVEpisode, True)
             RefreshTVEpisodeFilters()
             SetApplyButton(True)
         End If
@@ -1503,7 +1488,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleFilters_Movie, True)
             RefreshMovieFilters()
             SetApplyButton(True)
         End If
@@ -1511,7 +1496,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidVideoExts, True)
             RefreshFileSystemValidExts()
             SetApplyButton(True)
         End If
@@ -1568,7 +1553,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
         MovieSetGeneralMediaListSorting.Clear()
         MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
         LoadMovieSetGeneralMediaListSorting()
@@ -1635,36 +1620,13 @@ Public Class dlgSettings
         RemoveTVShowMatching()
     End Sub
 
-    Private Sub btnMovieSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenRemove.Click
-        RemoveMovieSortToken()
+    Private Sub btnGeneralSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralSortTokenRemove.Click
+        RemoveGeneralSortToken()
     End Sub
 
-    Private Sub btnMovieSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
-        RefreshMovieSortTokens()
-        sResult.NeedsReload_Movie = True
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub btnMovieSetSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenRemove.Click
-        RemoveMovieSetSortToken()
-    End Sub
-
-    Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MoviesetSortTokens, True)
-        RefreshMovieSetSortTokens()
-        sResult.NeedsReload_MovieSet = True
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub btnTVSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenRemove.Click
-        RemoveTVSortToken()
-    End Sub
-
-    Private Sub btnTVSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
-        RefreshTVSortTokens()
-        sResult.NeedsReload_TVShow = True
+    Private Sub btnGeneralSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralSortTokenReset.Click
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.SortTokens, True)
+        RefreshGeneralSortTokens()
         SetApplyButton(True)
     End Sub
 
@@ -3410,6 +3372,8 @@ Public Class dlgSettings
 
             FillMovieSetScraperTitleRenamer()
 
+            TempTVScraperSeasonTitleBlacklist = .TVScraperSeasonTitleBlacklist
+
             If .MovieLevTolerance > 0 Then
                 chkMovieLevTolerance.Checked = True
                 txtMovieLevTolerance.Enabled = True
@@ -3623,11 +3587,9 @@ Public Class dlgSettings
             txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
             txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
 
-            RefreshMovieSetSortTokens()
-            RefreshMovieSortTokens()
+            RefreshGeneralSortTokens()
             RefreshMovieSources()
             RefreshTVSources()
-            RefreshTVSortTokens()
             RefreshTVShowFilters()
             RefreshTVEpisodeFilters()
             RefreshMovieFilters()
@@ -4535,16 +4497,8 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then RemoveTVShowFilter()
     End Sub
 
-    Private Sub lstMovieSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveMovieSortToken()
-    End Sub
-
-    Private Sub lstMovieSetSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSetSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveMovieSetSortToken()
-    End Sub
-
-    Private Sub lsttvSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveTVSortToken()
+    Private Sub lstGeneralSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstGeneralSortTokens.KeyDown
+        If e.KeyCode = Keys.Delete Then RemoveGeneralSortToken()
     End Sub
 
     Private Sub lstTVScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVScraperDefFIExt.KeyDown
@@ -4614,9 +4568,9 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then RemoveTVSource()
     End Sub
 
-    Private Sub RefreshTVEpisodeFilters()
-        lstTVEpisodeFilter.Items.Clear()
-        lstTVEpisodeFilter.Items.AddRange(Master.eSettings.TVEpisodeFilterCustom.ToArray)
+    Private Sub RefreshGeneralSortTokens()
+        lstGeneralSortTokens.Items.Clear()
+        lstGeneralSortTokens.Items.AddRange(Master.eSettings.GeneralSortTokens.ToArray)
     End Sub
 
     Private Sub RefreshMovieFilters()
@@ -4624,14 +4578,9 @@ Public Class dlgSettings
         lstMovieFilters.Items.AddRange(Master.eSettings.MovieFilterCustom.ToArray)
     End Sub
 
-    Private Sub RefreshMovieSortTokens()
-        lstMovieSortTokens.Items.Clear()
-        lstMovieSortTokens.Items.AddRange(Master.eSettings.MovieSortTokens.ToArray)
-    End Sub
-
-    Private Sub RefreshMovieSetSortTokens()
-        lstMovieSetSortTokens.Items.Clear()
-        lstMovieSetSortTokens.Items.AddRange(Master.eSettings.MovieSetSortTokens.ToArray)
+    Private Sub RefreshTVEpisodeFilters()
+        lstTVEpisodeFilter.Items.Clear()
+        lstTVEpisodeFilter.Items.AddRange(Master.eSettings.TVEpisodeFilterCustom.ToArray)
     End Sub
 
     Private Sub RefreshTVShowFilters()
@@ -4639,15 +4588,10 @@ Public Class dlgSettings
         lstTVShowFilter.Items.AddRange(Master.eSettings.TVShowFilterCustom.ToArray)
     End Sub
 
-    Private Sub RefreshTVSortTokens()
-        lstTVSortTokens.Items.Clear()
-        lstTVSortTokens.Items.AddRange(Master.eSettings.TVSortTokens.ToArray)
-    End Sub
-
     Private Sub RefreshMovieSources()
         Dim lvItem As ListViewItem
         lvMovieSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.GetSources_Movie
+        For Each s As Database.DBSource In Master.DB.LoadAll_Sources_Movie
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4664,7 +4608,7 @@ Public Class dlgSettings
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        For Each s As Database.DBSource In Master.DB.GetSources_TVShow
+        For Each s As Database.DBSource In Master.DB.LoadAll_Sources_TVShow
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
@@ -4679,7 +4623,7 @@ Public Class dlgSettings
 
     Private Sub RefreshFileSystemExcludeDirs()
         lstFileSystemExcludedDirs.Items.Clear()
-        lstFileSystemExcludedDirs.Items.AddRange(Master.DB.GetExcludedDirs.ToArray)
+        lstFileSystemExcludedDirs.Items.AddRange(Master.DB.GetAll_ExcludedDirectories.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidExts()
@@ -4830,32 +4774,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub RemoveMovieSortToken()
-        If lstMovieSortTokens.Items.Count > 0 AndAlso lstMovieSortTokens.SelectedItems.Count > 0 Then
-            While lstMovieSortTokens.SelectedItems.Count > 0
-                lstMovieSortTokens.Items.Remove(lstMovieSortTokens.SelectedItems(0))
+    Private Sub RemoveGeneralSortToken()
+        If lstGeneralSortTokens.Items.Count > 0 AndAlso lstGeneralSortTokens.SelectedItems.Count > 0 Then
+            While lstGeneralSortTokens.SelectedItems.Count > 0
+                lstGeneralSortTokens.Items.Remove(lstGeneralSortTokens.SelectedItems(0))
             End While
-            sResult.NeedsReload_Movie = True
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub RemoveMovieSetSortToken()
-        If lstMovieSetSortTokens.Items.Count > 0 AndAlso lstMovieSetSortTokens.SelectedItems.Count > 0 Then
-            While lstMovieSetSortTokens.SelectedItems.Count > 0
-                lstMovieSetSortTokens.Items.Remove(lstMovieSetSortTokens.SelectedItems(0))
-            End While
-            sResult.NeedsReload_MovieSet = True
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub RemoveTVSortToken()
-        If lstTVSortTokens.Items.Count > 0 AndAlso lstTVSortTokens.SelectedItems.Count > 0 Then
-            While lstTVSortTokens.SelectedItems.Count > 0
-                lstTVSortTokens.Items.Remove(lstTVSortTokens.SelectedItems(0))
-            End While
-            sResult.NeedsReload_TVShow = True
             SetApplyButton(True)
         End If
     End Sub
@@ -4997,6 +4920,8 @@ Public Class dlgSettings
             .GeneralShowLangFlags = chkGeneralDisplayLangFlags.Checked
             .GeneralShowImgDims = chkGeneralDisplayImgDims.Checked
             .GeneralShowImgNames = chkGeneralDisplayImgNames.Checked
+            .GeneralSortTokens.Clear()
+            .GeneralSortTokens.AddRange(lstGeneralSortTokens.Items.OfType(Of String).ToList)
             .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
             .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             '.MovieActorThumbsQual = Me.tbMovieActorThumbsQual.value
@@ -5239,12 +5164,6 @@ Public Class dlgSettings
             End If
             .MovieSkipStackedSizeCheck = chkMovieSkipStackedSizeCheck.Checked
             .MovieSortBeforeScan = chkMovieSortBeforeScan.Checked
-            .MovieSortTokens.Clear()
-            .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
-            If .MovieSortTokens.Count <= 0 Then .MovieSortTokensIsEmpty = True
-            .MovieSetSortTokens.Clear()
-            .MovieSetSortTokens.AddRange(lstMovieSetSortTokens.Items.OfType(Of String).ToList)
-            If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
             .MovieThemeDefaultSearch = txtMovieThemeDefaultSearch.Text
             .MovieThemeKeepExisting = chkMovieThemeKeepExisting.Checked
             .MovieTrailerDefaultSearch = txtMovieTrailerDefaultSearch.Text
@@ -5368,6 +5287,7 @@ Public Class dlgSettings
             .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
+            .TVScraperSeasonTitleBlacklist = TempTVScraperSeasonTitleBlacklist
             .TVScraperShowActors = chkTVScraperShowActors.Checked
             Integer.TryParse(txtTVScraperShowActorsLimit.Text, .TVScraperShowActorsLimit)
             .TVScraperShowCert = chkTVScraperShowCert.Checked
@@ -5476,9 +5396,6 @@ Public Class dlgSettings
             Else
                 .TVSkipLessThan = 0
             End If
-            .TVSortTokens.Clear()
-            .TVSortTokens.AddRange(lstTVSortTokens.Items.OfType(Of String).ToList)
-            If .TVSortTokens.Count <= 0 Then .TVSortTokensIsEmpty = True
 
             If tcFileSystemCleaner.SelectedTab.Name = "tpFileSystemCleanerExpert" Then
                 .FileSystemExpertCleaner = True
@@ -6448,6 +6365,7 @@ Public Class dlgSettings
         lblMovieScraperGlobalHeaderLimit.Text = strLimit
         lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
         lblTVScraperGlobalHeaderEpisodesLimit.Text = strLimit
+        lblTVScraperGlobalHeaderSeasonsLimit.Text = strLimit
         lblTVScraperGlobalHeaderShowsLimit.Text = strLimit
         lblTVShowExtrafanartsLimit.Text = String.Concat(strLimit, ":")
 
@@ -6805,9 +6723,7 @@ Public Class dlgSettings
 
         'Sort Tokens to Ignore
         Dim strSortTokens As String = Master.eLang.GetString(463, "Sort Tokens to Ignore")
-        gbMovieGeneralMediaListSortTokensOpts.Text = strSortTokens
-        gbMovieSetGeneralMediaListSortTokensOpts.Text = strSortTokens
-        gbTVGeneralMediaListSortTokensOpts.Text = strSortTokens
+        gbGeneralSortTokensOpts.Text = strSortTokens
 
         'Sorting
         Dim strSorting As String = Master.eLang.GetString(895, "Sorting")

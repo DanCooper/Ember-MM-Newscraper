@@ -557,24 +557,23 @@ Public Class Enums
     End Enum
 
     Public Enum DefaultType As Integer
-        All = 0
-        MovieFilters = 1
-        ShowFilters = 2
-        EpFilters = 3
-        ValidExts = 4
-        TVShowMatching = 5
-        TrailerCodec = 6
-        ValidThemeExts = 7
-        ValidSubtitleExts = 8
-        MovieListSorting = 9
-        MovieSetListSorting = 10
-        TVEpisodeListSorting = 11
-        TVSeasonListSorting = 12
-        TVShowListSorting = 13
-        MovieSortTokens = 14
-        MovieSetSortTokens = 15
-        TVSortTokens = 16
-        MainTabSorting = 17
+        All
+        MainTabSorting
+        MovieListSorting
+        MovieSetListSorting
+        SortTokens
+        TitleBlackList_TVSeason
+        TitleFilters_Movie
+        TitleFilters_TVEpisode
+        TitleFilters_TVShow
+        TVEpisodeListSorting
+        TVSeasonListSorting
+        TVShowListSorting
+        TVShowMatching
+        TrailerCodec
+        ValidSubtitleExts
+        ValidThemeExts
+        ValidVideoExts
     End Enum
     ''' <summary>
     ''' 0 results in using the current datetime when adding a video

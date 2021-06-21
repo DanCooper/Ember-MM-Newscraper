@@ -81,16 +81,16 @@ Public Class dlgSimpleMapping
         Dim nMapping As clsXMLSimpleMapping = Nothing
         Select Case _Type
             Case MappingType.CertificationMapping
-                Master.DB.LoadAllCertifications()
+                Master.DB.LoadAll_Certifications()
                 nMapping = CType(APIXML.CertificationMapping.CloneDeep, clsXMLSimpleMapping)
             Case MappingType.CountryMapping
-                Master.DB.LoadAllCountries()
+                Master.DB.LoadAll_Countries()
                 nMapping = CType(APIXML.CountryMapping.CloneDeep, clsXMLSimpleMapping)
             Case MappingType.StatusMapping
-                Master.DB.LoadAllStatus()
+                Master.DB.LoadAll_Status()
                 nMapping = CType(APIXML.StatusMapping.CloneDeep, clsXMLSimpleMapping)
             Case MappingType.StudioMapping
-                Master.DB.LoadAllStudios()
+                Master.DB.LoadAll_Studios()
                 nMapping = CType(APIXML.StudioMapping.CloneDeep, clsXMLSimpleMapping)
         End Select
         If nMapping IsNot Nothing Then

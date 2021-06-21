@@ -131,14 +131,13 @@ Public Class dlgTagManager
         pnlMain.Enabled = False
 
         'load existing tags from database into datatable
-        Master.DB.FillDataTable(dtMovieTags, String.Concat("SELECT * FROM tag ",
-                                                             "ORDER BY strTag COLLATE NOCASE;"))
+        Master.DB.FillDataTable(dtMovieTags, String.Concat("SELECT * FROM tag ORDER BY strTag COLLATE NOCASE;"))
 
         'fill movie datagridview
         If dgvMovies.Rows.Count = 0 Then
             dgvMovies.SuspendLayout()
-            Me.bsMovies.DataSource = Nothing
-            Me.dgvMovies.DataSource = Nothing
+            bsMovies.DataSource = Nothing
+            dgvMovies.DataSource = Nothing
             If lstFilteredMovies.Count > 0 Then
                 '  If Me.dtMovies.Rows.Count > 0 Then
                 With Me
@@ -155,7 +154,7 @@ Public Class dlgTagManager
                     .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
                     .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
 
-                    .dgvMovies.Columns("ID").ValueType = GetType(Int64)
+                    .dgvMovies.Columns("ID").ValueType = GetType(Long)
                 End With
             End If
             dgvMovies.ResumeLayout()
@@ -304,7 +303,7 @@ Public Class dlgTagManager
                 End If
             Next
             dgvMovies.ClearSelection()
-            Me.dgvMovies.CurrentCell = Nothing
+            dgvMovies.CurrentCell = Nothing
             LoadMoviesOfSelectedTag()
         End If
     End Sub
@@ -576,8 +575,7 @@ Public Class dlgTagManager
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
             Dim dtmovies As New DataTable
-            Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ",
-                                                                "ORDER BY ListTitle COLLATE NOCASE;"))
+            Master.DB.FillDataTable_Movie(dtmovies, String.Concat("SELECT * FROM movielist;"))
             For Each sRow As DataRow In dtmovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then

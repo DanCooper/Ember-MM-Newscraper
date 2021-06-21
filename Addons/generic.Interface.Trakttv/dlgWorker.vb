@@ -84,7 +84,7 @@ Public Class dlgWorker
                 If lstWatchedMovies IsNot Nothing Then
                     If lstWatchedMovies.Count > 0 Then
                         bwGetWatchedState.ReportProgress(2, lstWatchedMovies.Count)
-                        Dim lstMoviesInDB = Master.DB.GetMovies
+                        Dim lstMoviesInDB = Master.DB.LoadAll_Movies
                         If bwGetWatchedState.CancellationPending Then
                             e.Result = New Results With {.Cancelled = bwGetWatchedState.CancellationPending}
                             Return
@@ -133,7 +133,7 @@ Public Class dlgWorker
                 If lstWatchedShows IsNot Nothing Then
                     If lstWatchedShows.Count > 0 Then
                         bwGetWatchedState.ReportProgress(2, lstWatchedShows.Count)
-                        Dim lstTVShowsInDB = Master.DB.GetTVShows(False, True)
+                        Dim lstTVShowsInDB = Master.DB.LoadAll_TVShows(False, True)
                         If bwGetWatchedState.CancellationPending Then
                             e.Result = New Results With {.Cancelled = bwGetWatchedState.CancellationPending}
                             Return

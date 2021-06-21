@@ -311,7 +311,6 @@ CREATE TABLE movie (
         idSource        integer NOT NULL,
         MoviePath       text,
         Type            bool,
-        ListTitle       text,
         HasSub          bool NOT NULL DEFAULT 0,
         "New"           bool NOT NULL DEFAULT 0,
         Mark            bool NOT NULL DEFAULT 0,
@@ -329,7 +328,7 @@ CREATE TABLE movie (
         Tagline         text,
         Certification   text,
         Runtime         text,
-        ReleaseDate     text,
+        premiered       text,
         Playcount       integer,
         Trailer         text,
         EThumbsPath     text,
@@ -396,7 +395,7 @@ CREATE TABLE seasons (
         idSeason       integer PRIMARY KEY,
         idShow         integer,
         Season         integer,
-        SeasonText     text,
+        Title          text,
         Lock           bool NOT NULL DEFAULT 0,
         Mark           bool NOT NULL DEFAULT 0,
         "New"          bool NOT NULL DEFAULT 0,
@@ -421,11 +420,10 @@ CREATE TABLE seasons (
 
 CREATE TABLE sets (
         idSet          integer PRIMARY KEY AUTOINCREMENT,
-        ListTitle      text NOT NULL,
         NfoPath        text,
         TMDBColID      text,
         Plot           text,
-        SetName        text,
+        Title          text,
         "New"          bool NOT NULL DEFAULT 0,
         Mark           bool NOT NULL DEFAULT 0,
         Lock           bool NOT NULL DEFAULT 0,
@@ -475,7 +473,6 @@ CREATE TABLE studiolinktvshow (
 CREATE TABLE tvshow (
 		idShow				integer PRIMARY KEY AUTOINCREMENT,
 		idSource			integer NOT NULL,
-		ListTitle			text,
 		"New"				bool DEFAULT 0,
 		Mark				bool NOT NULL DEFAULT 0,
 		TVShowPath			text NOT NULL,
@@ -773,7 +770,7 @@ CREATE VIEW movielist
         AS
         SELECT
         movie.*,
-        CASE WHEN movie.SortTitle IS NOT '' THEN movie.SortTitle ELSE movie.ListTitle END AS SortedTitle,
+        CASE WHEN movie.SortTitle IS NOT '' THEN movie.SortTitle ELSE movie.Title END AS SortedTitle,
         source.strName AS Source,
         banner.url AS BannerPath,
         clearart.url AS ClearArtPath,
@@ -912,7 +909,7 @@ CREATE VIEW tvshowlist
         AS
         SELECT
         tvshow.*,
-        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.ListTitle END AS SortedTitle,
+        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.Title END AS SortedTitle,
         source.strName AS Source,
         banner.url AS BannerPath,
         characterart.url AS CharacterArtPath,

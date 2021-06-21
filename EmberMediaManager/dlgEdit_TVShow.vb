@@ -1352,7 +1352,7 @@ Public Class dlgEdit_TVShow
             lbTags.Items.AddRange(tmpDBElement.TVShow.Tags.ToArray)
         End If
         'add the rest of all tags to the ComboBox
-        cbTags.Items.AddRange(Master.DB.GetAllTags)
+        cbTags.Items.AddRange(Master.DB.GetAll_Tags)
     End Sub
 
     Private Sub Tags_Remove(sender As Object, e As EventArgs) Handles btnTags_Remove.Click

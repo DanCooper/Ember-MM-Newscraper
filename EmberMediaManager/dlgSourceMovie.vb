@@ -123,7 +123,7 @@ Public Class dlgSourceMovie
             bIsValid_SourcePath = False
             pbValidSourcePath.Image = My.Resources.invalid
         Else
-            For Each tSource In Master.DB.GetSources_Movie.Where(Function(f) Not f.ID = _id)
+            For Each tSource In Master.DB.LoadAll_Sources_Movie.Where(Function(f) Not f.ID = _id)
                 'check if the path contains another source or is inside another source
 
                 Dim strOtherSource As String = tSource.Path.ToLower
@@ -178,7 +178,7 @@ Public Class dlgSourceMovie
         SetUp()
 
         If Not _id = -1 Then
-            Dim s As Database.DBSource = Master.DB.GetSources_Movie.FirstOrDefault(Function(y) y.ID = _id)
+            Dim s As Database.DBSource = Master.DB.LoadAll_Sources_Movie.FirstOrDefault(Function(y) y.ID = _id)
             If s IsNot Nothing Then
                 bAutoName = False
                 If cbSourceLanguage.Items.Count > 0 Then

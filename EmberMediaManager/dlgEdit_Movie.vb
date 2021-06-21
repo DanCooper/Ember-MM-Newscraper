@@ -947,7 +947,7 @@ Public Class dlgEdit_Movie
             cbEdition.Items.Add(tmpDBElement.Movie.Edition)
             cbEdition.SelectedItem = tmpDBElement.Movie.Edition
         End If
-        cbEdition.Items.AddRange(Master.DB.GetAllEditions_Movie.Where(Function(f) Not cbEdition.Items.Contains(f)).ToArray)
+        cbEdition.Items.AddRange(Master.DB.GetAll_Editions_Movie.Where(Function(f) Not cbEdition.Items.Contains(f)).ToArray)
     End Sub
 
     Private Sub FrameExtraction_DelayTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrDelay.Tick
@@ -1677,7 +1677,7 @@ Public Class dlgEdit_Movie
         If tmpDBElement.Movie.SetsSpecified Then
             items.Add(tmpDBElement.Movie.Sets.First, tmpDBElement.Movie.Sets.First.Title)
         End If
-        For Each nSet In Master.DB.GetAllMovieSetDetails.Where(Function(f) Not items.Keys.Contains(f) AndAlso Not items.Values.Contains(f.Title))
+        For Each nSet In Master.DB.GetAll_MovieSetDetails.Where(Function(f) Not items.Keys.Contains(f) AndAlso Not items.Values.Contains(f.Title))
             items.Add(nSet, nSet.Title)
         Next
         cbMovieset.DataSource = items.ToList
@@ -1936,7 +1936,7 @@ Public Class dlgEdit_Movie
             lbTags.Items.AddRange(tmpDBElement.Movie.Tags.ToArray)
         End If
         'add the rest of all tags to the ComboBox
-        cbTags.Items.AddRange(Master.DB.GetAllTags)
+        cbTags.Items.AddRange(Master.DB.GetAll_Tags)
     End Sub
 
     Private Sub Tags_Remove(sender As Object, e As EventArgs) Handles btnTags_Remove.Click
@@ -2157,7 +2157,7 @@ Public Class dlgEdit_Movie
             clbTVShowLinks.SetItemChecked(0, True)
         End If
         'add the rest of all tv shows
-        clbTVShowLinks.Items.AddRange(Master.DB.GetAllTVShowTitles.Where(Function(f) Not clbTVShowLinks.Items.Contains(f)).ToArray)
+        clbTVShowLinks.Items.AddRange(Master.DB.GetAll_TVShowTitles.Where(Function(f) Not clbTVShowLinks.Items.Contains(f)).ToArray)
     End Sub
 
     Private Sub UniqueIds_Fill()
@@ -2198,7 +2198,7 @@ Public Class dlgEdit_Movie
             cbVideoSource.Items.Add(tmpDBElement.Movie.VideoSource)
             cbVideoSource.SelectedItem = tmpDBElement.Movie.VideoSource
         End If
-        cbVideoSource.Items.AddRange(Master.DB.GetAllVideoSources_Movie.Where(Function(f) Not cbVideoSource.Items.Contains(f)).ToArray)
+        cbVideoSource.Items.AddRange(Master.DB.GetAll_VideoSources_Movie.Where(Function(f) Not cbVideoSource.Items.Contains(f)).ToArray)
     End Sub
 
     Private Sub Watched_CheckedChanged(sender As Object, e As EventArgs) Handles chkWatched.CheckedChanged
