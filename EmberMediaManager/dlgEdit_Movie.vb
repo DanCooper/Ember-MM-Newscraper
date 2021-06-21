@@ -1502,7 +1502,7 @@ Public Class dlgEdit_Movie
         btnLocalPoster.Click
 
         With ofdLocalFiles
-            .InitialDirectory = tmpDBElement.Filename
+            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
