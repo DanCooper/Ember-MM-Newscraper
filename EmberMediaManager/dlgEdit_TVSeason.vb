@@ -87,23 +87,26 @@ Public Class dlgEdit_TVSeason
     End Sub
 
     Private Sub Setup()
-        Dim mTitle As String = tmpDBElement.TVSeason.Title
-        Text = String.Concat(Master.eLang.GetString(769, "Edit Season"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-        btnCancel.Text = Master.eLang.Cancel
-        btnOK.Text = Master.eLang.OK
-        btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
-        chkLocked.Text = Master.eLang.GetString(43, "Locked")
-        chkMarked.Text = Master.eLang.GetString(48, "Marked")
-        lblAired.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
-        lblBanner.Text = Master.eLang.GetString(838, "Banner")
-        lblFanart.Text = Master.eLang.GetString(149, "Fanart")
-        lblLandscape.Text = Master.eLang.GetString(1059, "Landscape")
-        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
-        lblPoster.Text = Master.eLang.GetString(148, "Poster")
-        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
-        lblTopDetails.Text = Master.eLang.GetString(830, "Edit the details for the selected season.")
-        lblTopTitle.Text = Master.eLang.GetString(769, "Edit Season")
-        tpDetails.Text = Master.eLang.GetString(26, "Details")
+        With Master.eLang
+            Dim mTitle As String = tmpDBElement.TVSeason.Title
+            Text = String.Concat(.GetString(769, "Edit Season"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+            btnCancel.Text = .Cancel
+            btnOK.Text = .OK
+            btnRescrape.Text = .GetString(716, "Re-Scrape")
+            chkLocked.Text = .GetString(43, "Locked")
+            chkMarked.Text = .GetString(48, "Marked")
+            lblAired.Text = String.Concat(.GetString(728, "Aired"), ":")
+            lblBanner.Text = .GetString(838, "Banner")
+            lblFanart.Text = .GetString(149, "Fanart")
+            lblLandscape.Text = .GetString(1059, "Landscape")
+            lblPlot.Text = String.Concat(.GetString(65, "Plot"), ":")
+            lblPoster.Text = .GetString(148, "Poster")
+            lblTitle.Text = String.Concat(.GetString(21, "Title"), ":")
+            lblTopDetails.Text = .GetString(830, "Edit the details for the selected season.")
+            lblTopTitle.Text = .GetString(769, "Edit Season")
+            tpDetails.Text = .GetString(26, "Details")
+            tpImages.Text = .GetString(497, "Images")
+        End With
     End Sub
 
     Public Overloads Function ShowDialog(ByVal DBTVShow As Database.DBElement) As DialogResult

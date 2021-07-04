@@ -597,9 +597,9 @@ Partial Class dlgEdit_Movieset
         Me.lblMoviesInMovieset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMoviesInMovieset.Location = New System.Drawing.Point(3, 7)
         Me.lblMoviesInMovieset.Name = "lblMoviesInMovieset"
-        Me.lblMoviesInMovieset.Size = New System.Drawing.Size(108, 13)
+        Me.lblMoviesInMovieset.Size = New System.Drawing.Size(75, 13)
         Me.lblMoviesInMovieset.TabIndex = 29
-        Me.lblMoviesInMovieset.Text = "Movies in Movieset:"
+        Me.lblMoviesInMovieset.Text = "Movies in Set"
         '
         'lblMoviesInDB
         '
@@ -745,7 +745,7 @@ Partial Class dlgEdit_Movieset
         Me.btnGetTMDbColID.Name = "btnGetTMDbColID"
         Me.btnGetTMDbColID.Size = New System.Drawing.Size(149, 23)
         Me.btnGetTMDbColID.TabIndex = 49
-        Me.btnGetTMDbColID.Text = "Get TMDB Collection ID"
+        Me.btnGetTMDbColID.Text = "Get TMDb Collection ID"
         Me.btnGetTMDbColID.UseVisualStyleBackColor = True
         '
         'tpImages

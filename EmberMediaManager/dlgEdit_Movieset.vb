@@ -108,31 +108,37 @@ Public Class dlgEdit_Movieset
     End Sub
 
     Private Sub Setup()
-        Dim mTitle As String = tmpDBElement.MovieSet.Title
-        Text = String.Concat(Master.eLang.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-        btnCancel.Text = Master.eLang.Cancel
-        btnOK.Text = Master.eLang.OK
-        btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
-        btnSearchMovie.Text = Master.eLang.GetString(528, "Search Movie")
-        chkLocked.Text = Master.eLang.GetString(43, "Locked")
-        chkMarked.Text = Master.eLang.GetString(48, "Marked")
-        gbMovieAssignment.Text = Master.eLang.GetString(241, "Movie Assignment")
-        lblBanner.Text = Master.eLang.GetString(838, "Banner")
-        lblClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
-        lblClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        lblCollectionID.Text = String.Concat(Master.eLang.GetString(1135, "Collection ID"), ":")
-        lblDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
-        lblFanart.Text = Master.eLang.GetString(149, "Fanart")
-        lblKeyart.Text = Master.eLang.GetString(1237, "Keyart")
-        lblLandscape.Text = Master.eLang.GetString(1059, "Landscape")
-        lblMovieSorting.Text = String.Concat(Master.eLang.GetString(665, "Movies sorted by"), ":")
-        lblMoviesInDB.Text = Master.eLang.GetString(242, "Database")
-        lblMoviesInMovieset.Text = Master.eLang.GetString(367, "Movies In SetS")
-        lblPlot.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
-        lblPoster.Text = Master.eLang.GetString(148, "Poster")
-        lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
-        lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")
-        lblTopTitle.Text = Master.eLang.GetString(207, "Edit MovieSet")
+        With Master.eLang
+            Dim mTitle As String = tmpDBElement.MovieSet.Title
+            Text = String.Concat(.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+            btnCancel.Text = .Cancel
+            btnGetTMDbColID.Text = .GetString(1155, "Get TMDb Collection ID")
+            btnOK.Text = .OK
+            btnRescrape.Text = .GetString(716, "Re-Scrape")
+            btnSearchMovie.Text = .GetString(528, "Search Movie")
+            chkLocked.Text = .GetString(43, "Locked")
+            chkMarked.Text = .GetString(48, "Marked")
+            gbMovieAssignment.Text = .GetString(241, "Movie Assignment")
+            lblBanner.Text = .GetString(838, "Banner")
+            lblClearArt.Text = .GetString(1096, "ClearArt")
+            lblClearLogo.Text = .GetString(1097, "ClearLogo")
+            lblCollectionID.Text = String.Concat(.GetString(1135, "Collection ID"), ":")
+            lblDiscArt.Text = .GetString(1098, "DiscArt")
+            lblFanart.Text = .GetString(149, "Fanart")
+            lblKeyart.Text = .GetString(1237, "Keyart")
+            lblLandscape.Text = .GetString(1059, "Landscape")
+            lblLanguage.Text = String.Concat(.GetString(610, "Language"), ":")
+            lblMovieSorting.Text = String.Concat(.GetString(665, "Movies sorted by"), ":")
+            lblMoviesInDB.Text = .GetString(242, "Database")
+            lblMoviesInMovieset.Text = .GetString(367, "Movies in Set")
+            lblPlot.Text = String.Concat(.GetString(65, "Plot"), ":")
+            lblPoster.Text = .GetString(148, "Poster")
+            lblTitle.Text = String.Concat(.GetString(21, "Title"), ":")
+            lblTopDetails.Text = .GetString(1132, "Edit the details for the selected movieset.")
+            lblTopTitle.Text = .GetString(207, "Edit MovieSet")
+            tpDetails.Text = .GetString(26, "Details")
+            tpImages.Text = .GetString(497, "Images")
+        End With
 
         cbMovieSorting.Items.Clear()
         cbMovieSorting.Items.AddRange(New String() {Master.eLang.GetString(278, "Year"), Master.eLang.GetString(21, "Title")})

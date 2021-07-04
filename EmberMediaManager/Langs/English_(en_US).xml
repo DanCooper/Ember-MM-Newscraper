@@ -365,7 +365,7 @@
   <string id="364">Show Episodes by</string>
   <string id="365">Sets Manager</string>
   <string id="366">Sets</string>
-  <string id="367">Movies In Set</string>
+  <string id="367">Movies in Set</string>
   <string id="368">None Selected</string>
   <string id="369">Loading Movies and Sets...</string>
   <string id="370">Canceling Load...</string>
@@ -389,7 +389,7 @@
   <string id="388">Modifiers</string>
   <string id="389">Begin</string>
   <string id="390">Options</string>
-  <string id="391">Other Crew</string>
+  <string id="391">Other</string>
   <string id="392">Music By</string>
   <string id="393">Producers</string>
   <string id="394">Credits (Writers)</string>
@@ -665,7 +665,7 @@
   <string id="664">Edit the details for the selected show.</string>
   <string id="665">Movies sorted by</string>
   <string id="666">Note</string>
-  <string id="667"></string>
+  <string id="667">Unique IDs</string>
   <string id="668">Clean database after updating library</string>
   <string id="669">Ignore last scan time when updating library</string>
   <string id="670">Show Folder/File Name Filters</string>
@@ -1244,7 +1244,7 @@
   <string id="1152">Main Window</string>
   <string id="1153">Scraped</string>
   <string id="1154">No information is available for this MovieSet</string>
-  <string id="1155"></string>
+  <string id="1155">Get TMDb Collection ID</string>
   <string id="1156">MultiView Count</string>
   <string id="1157">MultiView Layout</string>
   <string id="1158">Bitrate</string>
