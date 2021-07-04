@@ -97,7 +97,7 @@ Public Class dlgCustomScraper
 
 #End Region 'Fields
 
-#Region "Methods"
+#Region "Dialog"
 
     Public Sub New(ByVal tContentType As Enums.ContentType)
         ' This call is required by the designer.
@@ -109,18 +109,17 @@ Public Class dlgCustomScraper
         _ContentType = tContentType
     End Sub
 
-    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
-        If MyBase.ShowDialog() = DialogResult.OK Then
-            CustomUpdater.Canceled = False
-        Else
-            CustomUpdater.Canceled = True
-        End If
-        Return CustomUpdater
-    End Function
+    Private Sub DialogResult_Cancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        DialogResult = DialogResult.Cancel
+    End Sub
 
-    Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Private Sub DialogResult_OK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
+        DialogResult = DialogResult.OK
+    End Sub
+
+    Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         Try
-            SetUp()
+            Setup()
 
             Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -141,17 +140,251 @@ Public Class dlgCustomScraper
         End Try
     End Sub
 
-    Private Sub dlgUpdateMedia_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+    Private Sub Dialog_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
-        DialogResult = DialogResult.Cancel
+    Private Sub Setup()
+        Text = Master.eLang.GetString(384, "Custom Scraper")
+        lblTopTitle.Text = Text
+
+        'Actors
+        Dim strActors As String = Master.eLang.GetString(231, "Actors")
+        chkEpisodeOptionsActors.Text = strActors
+        chkMainOptionsActors.Text = strActors
+
+        'Actor Thumbs
+        Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")
+        chkEpisodeModifierActorThumbs.Text = strActorThumbs
+        chkMainModifierActorThumbs.Text = strActorThumbs
+
+        'Aired
+        Dim strAired As String = Master.eLang.GetString(728, "Aired")
+        chkEpisodeOptionsAired.Text = strAired
+        chkSeasonOptionsAired.Text = strAired
+
+        'All
+        Dim strAll As String = Master.eLang.GetString(68, "All")
+        rbScrapeType_All.Text = strAll
+
+        'All Items
+        Dim strAllItems As String = Master.eLang.GetString(70, "All Items")
+        chkEpisodeModifierAll.Text = strAllItems
+        chkEpisodeOptionsAll.Text = strAllItems
+        chkMainModifierAll.Text = strAllItems
+        chkMainOptionsAll.Text = strAllItems
+        chkSeasonModifierAll.Text = strAllItems
+        chkSeasonOptionsAll.Text = strAllItems
+        chkSpecialModifierAll.Text = strAllItems
+
+        'Banner
+        Dim strBanner As String = Master.eLang.GetString(838, "Banner")
+        chkMainModifierBanner.Text = strBanner
+        chkSeasonModifierBanner.Text = strBanner
+
+        'Cancel
+        Dim strCancel As String = Master.eLang.GetString(167, "Cancel")
+        btnCancel.Text = strCancel
+
+        'Certifications
+        Dim strCertifications As String = Master.eLang.GetString(56, "Certifications")
+        chkMainOptionsCertifications.Text = strCertifications
+
+        'CharacterArt
+        Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
+        chkMainModifierCharacterArt.Text = strCharacterArt
+
+        'ClearArt
+        Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
+        chkMainModifierClearArt.Text = strClearArt
+
+        'ClearLogo
+        Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
+        chkMainModifierClearLogo.Text = strClearLogo
+
+        'Collection ID
+        Dim strCollectionsId As String = Master.eLang.GetString(1135, "Collection ID")
+        chkMainOptionsCollectionId.Text = strCollectionsId
+
+        'Countries
+        Dim strCountries As String = Master.eLang.GetString(237, "Countries")
+        chkMainOptionsCountries.Text = strCountries
+
+        'Creators
+        Dim strCreators As String = Master.eLang.GetString(744, "Creators")
+        chkMainOptionsCreators.Text = strCreators
+
+        'Directors
+        Dim strDirectors As String = Master.eLang.GetString(940, "Directors")
+        chkEpisodeOptionsDirectors.Text = strDirectors
+        chkMainOptionsDirectors.Text = strDirectors
+
+        'DiscArt
+        Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
+        chkMainModifierDiscArt.Text = strDiscArt
+
+        'Episode Guide URL
+        Dim strEpsiodeGuideUrl As String = Master.eLang.GetString(723, "Episode Guide URL")
+        chkMainOptionsEpisodeGuideUrl.Text = strEpsiodeGuideUrl
+
+        'Extrafanarts
+        Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
+        chkMainModifierExtrafanarts.Text = strExtrafanarts
+
+        'Extrathumbs
+        Dim strExtrathumbs As String = Master.eLang.GetString(153, "Extrathumbs")
+        chkMainModifierExtrathumbs.Text = strExtrathumbs
+
+        'Fanart
+        Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
+        chkEpisodeModifierFanart.Text = strFanart
+        chkMainModifierFanart.Text = strFanart
+        chkSeasonModifierFanart.Text = strFanart
+
+        'Genres
+        Dim strGenres As String = Master.eLang.GetString(725, "Genres")
+        chkMainOptionsGenres.Text = strGenres
+
+        'Guest Stars
+        Dim strGuestStars As String = Master.eLang.GetString(508, "Guest Stars")
+        chkEpisodeOptionsGuestStars.Text = strGuestStars
+
+        'Keyart
+        Dim strKeyart As String = Master.eLang.GetString(1237, "Keyart")
+        chkMainModifierKeyart.Text = strKeyart
+
+        'Landscape
+        Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
+        chkMainModifierLandscape.Text = strLandscape
+        chkSeasonModifierLandscape.Text = strLandscape
+
+        'MetaData
+        Dim strMetaData As String = Master.eLang.GetString(59, "Meta Data")
+        chkEpisodeModifierMetaData.Text = strMetaData
+        chkMainModifierMetaData.Text = strMetaData
+
+        'MPAA
+        Dim strMPAA As String = Master.eLang.GetString(401, "MPAA")
+        chkMainOptionsMPAA.Text = strMPAA
+
+        'NFO
+        Dim strNFO As String = Master.eLang.GetString(150, "NFO")
+        chkEpisodeModifierNfo.Text = strNFO
+        chkMainModifierNfo.Text = strNFO
+
+        'Original Title
+        Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
+        chkEpisodeOptionsOriginalTitle.Text = strOriginalTitle
+        chkMainOptionsOriginalTitle.Text = strOriginalTitle
+
+        'Plot
+        Dim strPlot As String = Master.eLang.GetString(65, "Plot")
+        chkEpisodeOptionsPlot.Text = strPlot
+        chkMainOptionsPlot.Text = strPlot
+
+        'Plot Outline
+        Dim strPlotOutline As String = Master.eLang.GetString(64, "Plot Outline")
+        chkMainOptionsOutline.Text = strPlotOutline
+
+        'Poster
+        Dim strPoster As String = Master.eLang.GetString(148, "Poster")
+        chkEpisodeModifierPoster.Text = strPoster
+        chkMainModifierPoster.Text = strPoster
+        chkSeasonModifierPoster.Text = strPoster
+
+        'Rating
+        Dim strRating As String = Master.eLang.GetString(400, "Rating")
+        chkEpisodeOptionsRating.Text = strRating
+        chkMainOptionsRating.Text = strRating
+
+        'Runtime
+        Dim strRuntime As String = Master.eLang.GetString(238, "Runtime")
+        chkEpisodeOptionsRuntime.Text = strRuntime
+        chkMainOptionsRuntime.Text = strRuntime
+
+        'Select None
+        Dim strSelectNone As String = Master.eLang.GetString(1139, "Select None")
+        btnEpisodeScrapeModifierNone.Text = strSelectNone
+        btnEpisodeScrapeOptionsNone.Text = strSelectNone
+        btnMainScrapeModifierNone.Text = strSelectNone
+        btnMainScrapeOptionsNone.Text = strSelectNone
+        btnSeasonScrapeModifierNone.Text = strSelectNone
+        btnSeasonScrapeOptionsNone.Text = strSelectNone
+        btnSpecialScrapeModifierNone.Text = strSelectNone
+
+        'Studios
+        Dim strStudios As String = Master.eLang.GetString(226, "Studios")
+        chkMainOptionsStudios.Text = strStudios
+
+        'Tagline
+        Dim strTagline As String = Master.eLang.GetString(397, "Tagline")
+        chkMainOptionsTagline.Text = strTagline
+
+        'Theme
+        Dim strTheme As String = Master.eLang.GetString(1118, "Theme")
+        chkMainModifierTheme.Text = strTheme
+
+        'Title
+        Dim strTitle As String = Master.eLang.GetString(21, "Title")
+        chkEpisodeOptionsTitle.Text = strTitle
+        chkMainOptionsTitle.Text = strTitle
+
+        'Top 250
+        Dim strTop250 As String = Master.eLang.GetString(591, "Top 250")
+        chkMainOptionsTop250.Text = strTop250
+
+        'Trailer
+        Dim strTrailer As String = Master.eLang.GetString(151, "Trailer")
+        chkMainModifierTrailer.Text = strTrailer
+        chkMainOptionsTrailer.Text = strTrailer
+
+        'with Episodes
+        Dim strWithEpisodes As String = Master.eLang.GetString(960, "with Episodes")
+        chkSpecialModifierWithEpisodes.Text = strWithEpisodes
+
+        'with Seasons
+        Dim strWithSeasons As String = Master.eLang.GetString(959, "with Seasons")
+        chkSpecialModifierWithSeasons.Text = strWithSeasons
+
+        'Writers
+        Dim strWriters As String = Master.eLang.GetString(394, "Writers")
+        chkEpisodeOptionsWriters.Text = strWriters
+        chkMainOptionsWriters.Text = strWriters
+
+
+        btnOK.Text = Master.eLang.GetString(389, "Begin")
+        gbEpisodeScrapeModifiers.Text = Master.eLang.GetString(1247, "Episode Modifiers")
+        gbEpisodeScrapeOptions.Text = Master.eLang.GetString(1251, "Episode Options")
+        gbMainScrapeModifiers.Text = Master.eLang.GetString(388, "Modifiers")
+        gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
+        gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")
+        gbScrapeType_Mode.Text = Master.eLang.GetString(387, "Update Mode")
+        gbSeasonScrapeModifiers.Text = Master.eLang.GetString(1250, "Season Modifiers")
+        gbSeasonScrapeOptions.Text = Master.eLang.GetString(1252, "Season Options")
+        gbSpecialScrapeModifiers.Text = Master.eLang.GetString(1246, "Spezial Modifiers")
+        lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
+        rbScrapeType_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+        rbScrapeType_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+        rbScrapeType_Filter.Text = Master.eLang.GetString(624, "Current Filter")
+        rbScrapeType_Marked.Text = Master.eLang.GetString(48, "Marked")
+        rbScrapeType_Missing.Text = Master.eLang.GetString(40, "Missing Items")
+        rbScrapeType_New.Text = Master.eLang.GetString(47, "New")
+        rbScrapeType_Selected.Text = Master.eLang.GetString(1076, "Selected")
+        rbScrapeType_Skip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
     End Sub
 
-    Private Sub btnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
-        DialogResult = DialogResult.OK
-    End Sub
+    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
+        If MyBase.ShowDialog() = DialogResult.OK Then
+            CustomUpdater.Canceled = False
+        Else
+            CustomUpdater.Canceled = True
+        End If
+        Return CustomUpdater
+    End Function
+
+#End Region 'Dialog
+
+#Region "Methods"
 
     Private Sub btnEpisodeScrapeModifierNone_Click(sender As Object, e As EventArgs) Handles btnEpisodeScrapeModifierNone.Click
         chkEpisodeModifierAll.Checked = False
@@ -159,7 +392,7 @@ Public Class dlgCustomScraper
         chkEpisodeModifierActorThumbs.Checked = False
         chkEpisodeModifierFanart.Checked = False
         chkEpisodeModifierMetaData.Checked = False
-        chkEpisodeModifierNFO.Checked = False
+        chkEpisodeModifierNfo.Checked = False
         chkEpisodeModifierPoster.Checked = False
 
         CheckEnable()
@@ -197,7 +430,7 @@ Public Class dlgCustomScraper
         chkMainModifierKeyart.Checked = False
         chkMainModifierLandscape.Checked = False
         chkMainModifierMetaData.Checked = False
-        chkMainModifierNFO.Checked = False
+        chkMainModifierNfo.Checked = False
         chkMainModifierPoster.Checked = False
         chkMainModifierTheme.Checked = False
         chkMainModifierTrailer.Checked = False
@@ -210,11 +443,11 @@ Public Class dlgCustomScraper
 
         chkMainOptionsActors.Checked = False
         chkMainOptionsCertifications.Checked = False
-        chkMainOptionsCollectionID.Checked = False
+        chkMainOptionsCollectionId.Checked = False
         chkMainOptionsCountries.Checked = False
         chkMainOptionsCreators.Checked = False
         chkMainOptionsDirectors.Checked = False
-        chkMainOptionsEpisodeGuideURL.Checked = False
+        chkMainOptionsEpisodeGuideUrl.Checked = False
         chkMainOptionsGenres.Checked = False
         chkMainOptionsMPAA.Checked = False
         chkMainOptionsOriginalTitle.Checked = False
@@ -292,8 +525,8 @@ Public Class dlgCustomScraper
             chkMainModifierLandscape.Enabled = False
             chkMainModifierMetaData.Checked = mMainMetaDataAllowed
             chkMainModifierMetaData.Enabled = False
-            chkMainModifierNFO.Checked = mMainNFOAllowed
-            chkMainModifierNFO.Enabled = False
+            chkMainModifierNfo.Checked = mMainNFOAllowed
+            chkMainModifierNfo.Enabled = False
             chkMainModifierPoster.Checked = mMainPosterAllowed
             chkMainModifierPoster.Enabled = False
             chkMainModifierTheme.Checked = mMainThemeAllowed
@@ -313,30 +546,30 @@ Public Class dlgCustomScraper
             chkMainModifierKeyart.Enabled = mMainKeyartAllowed
             chkMainModifierLandscape.Enabled = mMainLandscapeAllowed
             chkMainModifierMetaData.Enabled = mMainMetaDataAllowed
-            chkMainModifierNFO.Enabled = mMainNFOAllowed
+            chkMainModifierNfo.Enabled = mMainNFOAllowed
             chkMainModifierPoster.Enabled = mMainPosterAllowed
             chkMainModifierTheme.Enabled = mMainThemeAllowed
             chkMainModifierTrailer.Enabled = mMainTrailerAllowed
         End If
 
         'Main Options
-        If chkMainModifierNFO.Checked Then
+        If chkMainModifierNfo.Checked Then
             gbMainScrapeOptions.Enabled = True
             If chkMainOptionsAll.Checked Then
                 chkMainOptionsActors.Checked = oMainActorsAllowed
                 chkMainOptionsActors.Enabled = False
                 chkMainOptionsCertifications.Checked = oMainCertificationsAllowed
                 chkMainOptionsCertifications.Enabled = False
-                chkMainOptionsCollectionID.Checked = oMainCollectionIDAllowed
-                chkMainOptionsCollectionID.Enabled = False
+                chkMainOptionsCollectionId.Checked = oMainCollectionIDAllowed
+                chkMainOptionsCollectionId.Enabled = False
                 chkMainOptionsCountries.Checked = oMainCountriesAllowed
                 chkMainOptionsCountries.Enabled = False
                 chkMainOptionsCreators.Checked = oMainCreatorsAllowed
                 chkMainOptionsCreators.Enabled = False
                 chkMainOptionsDirectors.Checked = oMainDirectorsAllowed
                 chkMainOptionsDirectors.Enabled = False
-                chkMainOptionsEpisodeGuideURL.Checked = oMainEpisodeGuideURLAllowed
-                chkMainOptionsEpisodeGuideURL.Enabled = False
+                chkMainOptionsEpisodeGuideUrl.Checked = oMainEpisodeGuideURLAllowed
+                chkMainOptionsEpisodeGuideUrl.Enabled = False
                 chkMainOptionsGenres.Checked = oMainGenresAllowed
                 chkMainOptionsGenres.Enabled = False
                 chkMainOptionsMPAA.Checked = oMainMPAAAllowed
@@ -370,11 +603,11 @@ Public Class dlgCustomScraper
             Else
                 chkMainOptionsActors.Enabled = oMainActorsAllowed
                 chkMainOptionsCertifications.Enabled = oMainCertificationsAllowed
-                chkMainOptionsCollectionID.Enabled = oMainCollectionIDAllowed
+                chkMainOptionsCollectionId.Enabled = oMainCollectionIDAllowed
                 chkMainOptionsCountries.Enabled = oMainCountriesAllowed
                 chkMainOptionsCreators.Enabled = oMainCreatorsAllowed
                 chkMainOptionsDirectors.Enabled = oMainDirectorsAllowed
-                chkMainOptionsEpisodeGuideURL.Enabled = oMainEpisodeGuideURLAllowed
+                chkMainOptionsEpisodeGuideUrl.Enabled = oMainEpisodeGuideURLAllowed
                 chkMainOptionsGenres.Enabled = oMainGenresAllowed
                 chkMainOptionsMPAA.Enabled = oMainMPAAAllowed
                 chkMainOptionsOriginalTitle.Enabled = oMainOriginalTitleAllowed
@@ -418,20 +651,20 @@ Public Class dlgCustomScraper
                 chkEpisodeModifierFanart.Enabled = False
                 chkEpisodeModifierMetaData.Checked = mEpisodeMetaDataAllowed
                 chkEpisodeModifierMetaData.Enabled = False
-                chkEpisodeModifierNFO.Checked = mEpisodeNFOAllowed
-                chkEpisodeModifierNFO.Enabled = False
+                chkEpisodeModifierNfo.Checked = mEpisodeNFOAllowed
+                chkEpisodeModifierNfo.Enabled = False
                 chkEpisodeModifierPoster.Checked = mEpisodePosterAllowed
                 chkEpisodeModifierPoster.Enabled = False
             Else
                 chkEpisodeModifierActorThumbs.Enabled = mEpisodeActorThumbsAllowed
                 chkEpisodeModifierFanart.Enabled = mEpisodeFanartAllowed
                 chkEpisodeModifierMetaData.Enabled = mEpisodeMetaDataAllowed
-                chkEpisodeModifierNFO.Enabled = mEpisodeNFOAllowed
+                chkEpisodeModifierNfo.Enabled = mEpisodeNFOAllowed
                 chkEpisodeModifierPoster.Enabled = mEpisodePosterAllowed
             End If
 
             'Episode Options
-            If chkEpisodeModifierNFO.Checked Then
+            If chkEpisodeModifierNfo.Checked Then
                 gbEpisodeScrapeOptions.Enabled = True
                 If chkEpisodeOptionsAll.Checked Then
                     chkEpisodeOptionsActors.Checked = oEpisodeActorsAllowed
@@ -496,7 +729,7 @@ Public Class dlgCustomScraper
             End If
 
             'Season Options
-            If chkMainModifierNFO.Checked Then 'TODO: check. Atm we save the season infos to tv show NFO
+            If chkMainModifierNfo.Checked Then 'TODO: check. Atm we save the season infos to tv show NFO
                 gbSeasonScrapeOptions.Enabled = True
                 If chkSeasonOptionsAll.Checked Then
                     chkSeasonOptionsAired.Checked = oSeasonAiredAllowed
@@ -522,7 +755,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeModifiers.EpisodeActorThumbs = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierActorThumbs.Checked
         CustomUpdater.ScrapeModifiers.EpisodeFanart = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierFanart.Checked
         CustomUpdater.ScrapeModifiers.EpisodeMeta = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierMetaData.Checked
-        CustomUpdater.ScrapeModifiers.EpisodeNFO = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked
+        CustomUpdater.ScrapeModifiers.EpisodeNFO = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked
         CustomUpdater.ScrapeModifiers.EpisodePoster = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierPoster.Checked
         CustomUpdater.ScrapeModifiers.MainActorthumbs = chkMainModifierActorThumbs.Checked
         CustomUpdater.ScrapeModifiers.MainBanner = chkMainModifierBanner.Checked
@@ -537,7 +770,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeModifiers.MainKeyart = chkMainModifierKeyart.Checked
         CustomUpdater.ScrapeModifiers.MainLandscape = chkMainModifierLandscape.Checked
         CustomUpdater.ScrapeModifiers.MainMeta = chkMainModifierMetaData.Checked
-        CustomUpdater.ScrapeModifiers.MainNFO = chkMainModifierNFO.Checked
+        CustomUpdater.ScrapeModifiers.MainNFO = chkMainModifierNfo.Checked
         CustomUpdater.ScrapeModifiers.MainPoster = chkMainModifierPoster.Checked
         CustomUpdater.ScrapeModifiers.MainTheme = chkMainModifierTheme.Checked
         CustomUpdater.ScrapeModifiers.MainTrailer = chkMainModifierTrailer.Checked
@@ -553,41 +786,41 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeModifiers.AllSeasonsPoster = CustomUpdater.ScrapeModifiers.SeasonPoster
 
         'Scrape Options
-        CustomUpdater.ScrapeOptions.bEpisodeActors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsActors.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeAired = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsAired.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeCredits = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeDirectors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsDirectors.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeGuestStars = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsGuestStars.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeOriginalTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsOriginalTitle.Checked
-        CustomUpdater.ScrapeOptions.bEpisodePlot = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsPlot.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRating.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeRuntime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRuntime.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsTitle.Checked
-        CustomUpdater.ScrapeOptions.bMainActors = chkMainModifierNFO.Checked AndAlso chkMainOptionsActors.Checked
-        CustomUpdater.ScrapeOptions.bMainCertifications = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
-        CustomUpdater.ScrapeOptions.bMainCollectionID = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollectionID.Checked
-        CustomUpdater.ScrapeOptions.bMainCountries = chkMainModifierNFO.Checked AndAlso chkMainOptionsCountries.Checked
-        CustomUpdater.ScrapeOptions.bMainCreators = chkMainModifierNFO.Checked AndAlso chkMainOptionsCreators.Checked
-        CustomUpdater.ScrapeOptions.bMainDirectors = chkMainModifierNFO.Checked AndAlso chkMainOptionsDirectors.Checked
-        CustomUpdater.ScrapeOptions.bMainEpisodeGuide = chkMainModifierNFO.Checked AndAlso chkMainOptionsEpisodeGuideURL.Checked
-        CustomUpdater.ScrapeOptions.bMainGenres = chkMainModifierNFO.Checked AndAlso chkMainOptionsGenres.Checked
-        CustomUpdater.ScrapeOptions.bMainMPAA = chkMainModifierNFO.Checked AndAlso chkMainOptionsMPAA.Checked
-        CustomUpdater.ScrapeOptions.bMainOriginalTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsOriginalTitle.Checked
-        CustomUpdater.ScrapeOptions.bMainOutline = chkMainModifierNFO.Checked AndAlso chkMainOptionsOutline.Checked
-        CustomUpdater.ScrapeOptions.bMainPlot = chkMainModifierNFO.Checked AndAlso chkMainOptionsPlot.Checked
-        CustomUpdater.ScrapeOptions.bMainPremiered = chkMainModifierNFO.Checked AndAlso chkMainOptionsPremiered.Checked
-        CustomUpdater.ScrapeOptions.bMainRating = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
-        CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
-        CustomUpdater.ScrapeOptions.bMainStatus = chkMainModifierNFO.Checked AndAlso chkMainOptionsStatus.Checked
-        CustomUpdater.ScrapeOptions.bMainStudios = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
-        CustomUpdater.ScrapeOptions.bMainTagline = chkMainModifierNFO.Checked AndAlso chkMainOptionsTagline.Checked
-        CustomUpdater.ScrapeOptions.bMainTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsTitle.Checked
-        CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
-        CustomUpdater.ScrapeOptions.bMainTrailer = chkMainModifierNFO.Checked AndAlso chkMainOptionsTrailer.Checked
-        CustomUpdater.ScrapeOptions.bMainWriters = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
-        CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
-        CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.bEpisodeActors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsActors.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeAired = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsAired.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeCredits = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsWriters.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeDirectors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsDirectors.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeGuestStars = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsGuestStars.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeOriginalTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsOriginalTitle.Checked
+        CustomUpdater.ScrapeOptions.bEpisodePlot = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsPlot.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsRating.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeRuntime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsRuntime.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNfo.Checked AndAlso chkEpisodeOptionsTitle.Checked
+        CustomUpdater.ScrapeOptions.bMainActors = chkMainModifierNfo.Checked AndAlso chkMainOptionsActors.Checked
+        CustomUpdater.ScrapeOptions.bMainCertifications = chkMainModifierNfo.Checked AndAlso chkMainOptionsCertifications.Checked
+        CustomUpdater.ScrapeOptions.bMainCollectionID = chkMainModifierNfo.Checked AndAlso chkMainOptionsCollectionId.Checked
+        CustomUpdater.ScrapeOptions.bMainCountries = chkMainModifierNfo.Checked AndAlso chkMainOptionsCountries.Checked
+        CustomUpdater.ScrapeOptions.bMainCreators = chkMainModifierNfo.Checked AndAlso chkMainOptionsCreators.Checked
+        CustomUpdater.ScrapeOptions.bMainDirectors = chkMainModifierNfo.Checked AndAlso chkMainOptionsDirectors.Checked
+        CustomUpdater.ScrapeOptions.bMainEpisodeGuide = chkMainModifierNfo.Checked AndAlso chkMainOptionsEpisodeGuideUrl.Checked
+        CustomUpdater.ScrapeOptions.bMainGenres = chkMainModifierNfo.Checked AndAlso chkMainOptionsGenres.Checked
+        CustomUpdater.ScrapeOptions.bMainMPAA = chkMainModifierNfo.Checked AndAlso chkMainOptionsMPAA.Checked
+        CustomUpdater.ScrapeOptions.bMainOriginalTitle = chkMainModifierNfo.Checked AndAlso chkMainOptionsOriginalTitle.Checked
+        CustomUpdater.ScrapeOptions.bMainOutline = chkMainModifierNfo.Checked AndAlso chkMainOptionsOutline.Checked
+        CustomUpdater.ScrapeOptions.bMainPlot = chkMainModifierNfo.Checked AndAlso chkMainOptionsPlot.Checked
+        CustomUpdater.ScrapeOptions.bMainPremiered = chkMainModifierNfo.Checked AndAlso chkMainOptionsPremiered.Checked
+        CustomUpdater.ScrapeOptions.bMainRating = chkMainModifierNfo.Checked AndAlso chkMainOptionsRating.Checked
+        CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNfo.Checked AndAlso chkMainOptionsRuntime.Checked
+        CustomUpdater.ScrapeOptions.bMainStatus = chkMainModifierNfo.Checked AndAlso chkMainOptionsStatus.Checked
+        CustomUpdater.ScrapeOptions.bMainStudios = chkMainModifierNfo.Checked AndAlso chkMainOptionsStudios.Checked
+        CustomUpdater.ScrapeOptions.bMainTagline = chkMainModifierNfo.Checked AndAlso chkMainOptionsTagline.Checked
+        CustomUpdater.ScrapeOptions.bMainTitle = chkMainModifierNfo.Checked AndAlso chkMainOptionsTitle.Checked
+        CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNfo.Checked AndAlso chkMainOptionsTop250.Checked
+        CustomUpdater.ScrapeOptions.bMainTrailer = chkMainModifierNfo.Checked AndAlso chkMainOptionsTrailer.Checked
+        CustomUpdater.ScrapeOptions.bMainWriters = chkMainModifierNfo.Checked AndAlso chkMainOptionsWriters.Checked
+        CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNfo.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNfo.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNfo.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
 
         If CustomUpdater.ScrapeModifiers.EpisodeActorThumbs OrElse
             CustomUpdater.ScrapeModifiers.EpisodeFanart OrElse
@@ -1048,7 +1281,7 @@ Public Class dlgCustomScraper
         chkEpisodeModifierAll.Click,
         chkEpisodeModifierFanart.Click,
         chkEpisodeModifierMetaData.Click,
-        chkEpisodeModifierNFO.Click,
+        chkEpisodeModifierNfo.Click,
         chkEpisodeModifierPoster.Click,
         chkEpisodeOptionsActors.Click,
         chkEpisodeOptionsAired.Click,
@@ -1074,18 +1307,18 @@ Public Class dlgCustomScraper
         chkMainModifierKeyart.Click,
         chkMainModifierLandscape.Click,
         chkMainModifierMetaData.Click,
-        chkMainModifierNFO.Click,
+        chkMainModifierNfo.Click,
         chkMainModifierPoster.Click,
         chkMainModifierTheme.Click,
         chkMainModifierTrailer.Click,
         chkMainOptionsActors.Click,
         chkMainOptionsAll.Click,
         chkMainOptionsCertifications.Click,
-        chkMainOptionsCollectionID.Click,
+        chkMainOptionsCollectionId.Click,
         chkMainOptionsCountries.Click,
         chkMainOptionsCreators.Click,
         chkMainOptionsDirectors.Click,
-        chkMainOptionsEpisodeGuideURL.Click,
+        chkMainOptionsEpisodeGuideUrl.Click,
         chkMainOptionsGenres.Click,
         chkMainOptionsMPAA.Click,
         chkMainOptionsOriginalTitle.Click,
@@ -1115,163 +1348,6 @@ Public Class dlgCustomScraper
         chkSpecialModifierWithSeasons.Click
 
         CheckEnable()
-    End Sub
-
-    Private Sub SetUp()
-
-        'Actor Thumbs
-        Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")
-        chkEpisodeModifierActorThumbs.Text = strActorThumbs
-        chkMainModifierActorThumbs.Text = strActorThumbs
-
-        'All
-        Dim strAll As String = Master.eLang.GetString(68, "All")
-        rbScrapeType_All.Text = strAll
-
-        'All Items
-        Dim strAllItems As String = Master.eLang.GetString(70, "All Items")
-        chkEpisodeModifierAll.Text = strAllItems
-        chkEpisodeOptionsAll.Text = strAllItems
-        chkMainModifierAll.Text = strAllItems
-        chkMainOptionsAll.Text = strAllItems
-        chkSeasonModifierAll.Text = strAllItems
-        chkSeasonOptionsAll.Text = strAllItems
-        chkSpecialModifierAll.Text = strAllItems
-
-        'Banner
-        Dim strBanner As String = Master.eLang.GetString(838, "Banner")
-        chkMainModifierBanner.Text = strBanner
-        chkSeasonModifierBanner.Text = strBanner
-
-        'Cancel
-        Dim strCancel As String = Master.eLang.GetString(167, "Cancel")
-        btnCancel.Text = strCancel
-
-        'CharacterArt
-        Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
-        chkMainModifierCharacterArt.Text = strCharacterArt
-
-        'ClearArt
-        Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
-        chkMainModifierClearArt.Text = strClearArt
-
-        'ClearLogo
-        Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
-        chkMainModifierClearLogo.Text = strClearLogo
-
-        'Creators
-        Dim strCreators As String = Master.eLang.GetString(744, "Creators")
-        chkMainOptionsCreators.Text = strCreators
-
-        'DiscArt
-        Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
-        chkMainModifierDiscArt.Text = strDiscArt
-
-        'Extrafanarts
-        Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
-        chkMainModifierExtrafanarts.Text = strExtrafanarts
-
-        'Extrathumbs
-        Dim strExtrathumbs As String = Master.eLang.GetString(153, "Extrathumbs")
-        chkMainModifierExtrathumbs.Text = strExtrathumbs
-
-        'Fanart
-        Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
-        chkEpisodeModifierFanart.Text = strFanart
-        chkMainModifierFanart.Text = strFanart
-        chkSeasonModifierFanart.Text = strFanart
-
-        'Keyart
-        Dim strKeyart As String = Master.eLang.GetString(1237, "Keyart")
-        chkMainModifierKeyart.Text = strKeyart
-
-        'Landscape
-        Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
-        chkMainModifierLandscape.Text = strLandscape
-        chkSeasonModifierLandscape.Text = strLandscape
-
-        'MetaData
-        Dim strMetaData As String = Master.eLang.GetString(59, "Meta Data")
-        chkEpisodeModifierMetaData.Text = strMetaData
-        chkMainModifierMetaData.Text = strMetaData
-
-        'NFO
-        Dim strNFO As String = Master.eLang.GetString(150, "NFO")
-        chkEpisodeModifierNFO.Text = strNFO
-        chkMainModifierNFO.Text = strNFO
-
-        'Original Title
-        Dim strOriginalTitle As String = Master.eLang.GetString(302, "Original Title")
-        chkEpisodeOptionsOriginalTitle.Text = strOriginalTitle
-        chkMainOptionsOriginalTitle.Text = strOriginalTitle
-
-        'Poster
-        Dim strPoster As String = Master.eLang.GetString(148, "Poster")
-        chkEpisodeModifierPoster.Text = strPoster
-        chkMainModifierPoster.Text = strPoster
-        chkSeasonModifierPoster.Text = strPoster
-
-        'Select None
-        Dim strSelectNone As String = Master.eLang.GetString(1139, "Select None")
-        btnEpisodeScrapeModifierNone.Text = strSelectNone
-        btnEpisodeScrapeOptionsNone.Text = strSelectNone
-        btnMainScrapeModifierNone.Text = strSelectNone
-        btnMainScrapeOptionsNone.Text = strSelectNone
-        btnSeasonScrapeModifierNone.Text = strSelectNone
-        btnSeasonScrapeOptionsNone.Text = strSelectNone
-        btnSpecialScrapeModifierNone.Text = strSelectNone
-
-        'Theme
-        Dim strTheme As String = Master.eLang.GetString(1118, "Theme")
-        chkMainModifierTheme.Text = strTheme
-
-        'Trailer
-        Dim strTrailer As String = Master.eLang.GetString(151, "Trailer")
-        chkMainModifierTrailer.Text = strTrailer
-
-        'with Episodes
-        Dim strWithEpisodes As String = Master.eLang.GetString(960, "with Episodes")
-        chkSpecialModifierWithEpisodes.Text = strWithEpisodes
-
-        'with Seasons
-        Dim strWithSeasons As String = Master.eLang.GetString(959, "with Seasons")
-        chkSpecialModifierWithSeasons.Text = strWithSeasons
-
-
-        Text = Master.eLang.GetString(384, "Custom Scraper")
-        btnOK.Text = Master.eLang.GetString(389, "Begin")
-        chkMainOptionsActors.Text = Master.eLang.GetString(231, "Actors")
-        chkMainOptionsCertifications.Text = Master.eLang.GetString(56, "Certifications")
-        chkMainOptionsCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
-        chkMainOptionsCountries.Text = Master.eLang.GetString(237, "Countries")
-        chkMainOptionsDirectors.Text = Master.eLang.GetString(940, "Directors")
-        chkMainOptionsEpisodeGuideURL.Text = Master.eLang.GetString(723, "Episode Guide URL")
-        chkMainOptionsGenres.Text = Master.eLang.GetString(725, "Genres")
-        chkMainOptionsMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
-        chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
-        chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
-        chkMainOptionsRuntime.Text = Master.eLang.GetString(238, "Runtime")
-        chkMainOptionsStudios.Text = Master.eLang.GetString(226, "Studios")
-        chkMainOptionsTagline.Text = Master.eLang.GetString(397, "Tagline")
-        chkMainOptionsTitle.Text = Master.eLang.GetString(21, "Title")
-        chkMainOptionsTop250.Text = Master.eLang.GetString(591, "Top 250")
-        chkMainOptionsTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
-        gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
-        gbMainScrapeModifiers.Text = Master.eLang.GetString(388, "Modifiers")
-        gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")
-        gbScrapeType_Mode.Text = Master.eLang.GetString(387, "Update Mode")
-        lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
-        lblTopTitle.Text = Text
-        rbScrapeType_Filter.Text = Master.eLang.GetString(624, "Current Filter")
-        rbScrapeType_Marked.Text = Master.eLang.GetString(48, "Marked")
-        rbScrapeType_Missing.Text = Master.eLang.GetString(40, "Missing Items")
-        rbScrapeType_New.Text = Master.eLang.GetString(47, "New")
-        rbScrapeType_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-        rbScrapeType_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-        rbScrapeType_Selected.Text = Master.eLang.GetString(1076, "Selected")
-        rbScrapeType_Skip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
     End Sub
 
 #End Region 'Methods
