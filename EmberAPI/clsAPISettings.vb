@@ -1427,29 +1427,34 @@ Public Class Settings
 
     Public Function MovieSetBannerAnyEnabled() As Boolean
         Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetBannerMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))
     End Function
 
     Public Function MovieSetClearArtAnyEnabled() As Boolean
         Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetClearArtMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))
     End Function
 
     Public Function MovieSetClearLogoAnyEnabled() As Boolean
         Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetClearLogoMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))
     End Function
 
     Public Function MovieSetDiscArtAnyEnabled() As Boolean
         Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetDiscArtMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))
     End Function
 
     Public Function MovieSetFanartAnyEnabled() As Boolean
         Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetFanartMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))
     End Function
@@ -1462,6 +1467,7 @@ Public Class Settings
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
         Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetLandscapeMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))
     End Function
@@ -1477,6 +1483,7 @@ Public Class Settings
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
         Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetPosterMatrix AndAlso Not String.IsNullOrEmpty(MovieSetPathMatrix)) OrElse
             (MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))
     End Function
