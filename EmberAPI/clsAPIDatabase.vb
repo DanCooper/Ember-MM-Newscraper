@@ -5005,7 +5005,7 @@ Public Class Database
                     'first check if a movieset with the same TMDBColID is already existing
                     If entry.UniqueIDs.TMDbIdSpecified Then
                         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            sqlCommand.CommandText = String.Format("SELECT sets.idSet, sets.Title, sets.Plot FROM uniqueid INNER JOIN sets ON (uniqueid.media_id = sets.idSet) WHERE uniqueid.media_type = 'movieset' AND uniqueid.type = 'tmdb' AND uniqueid.value = '{0}'", entry.UniqueIDs.TMDbId)
+                            sqlCommand.CommandText = String.Format("SELECT sets.idSet, sets.Title, sets.Plot FROM uniqueid INNER JOIN sets ON (uniqueid.media_id = sets.idSet) WHERE uniqueid.media_type = 'set' AND uniqueid.type = 'tmdb' AND uniqueid.value = '{0}'", entry.UniqueIDs.TMDbId)
                             Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If sqlReader.HasRows Then
                                     sqlReader.Read()
