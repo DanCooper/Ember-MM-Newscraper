@@ -2001,7 +2001,7 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainFanart
                     With Master.eSettings
-                        If .MovieSetUseMatrix AndAlso .MovieSetFanartMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitleMatrix, "fanart1.jpg"))
+                        If .MovieSetUseMatrix AndAlso .MovieSetFanartMatrix AndAlso Not String.IsNullOrEmpty(.MovieSetPathMatrix) Then FilenameList.Add(Path.Combine(.MovieSetPathMatrix, fSetTitleMatrix, "fanart.jpg"))
                         If .MovieSetUseExtended AndAlso .MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(.MovieSetPathExtended) Then FilenameList.Add(Path.Combine(.MovieSetPathExtended, String.Concat(fSetTitle, "-fanart.jpg")))
                         If .MovieSetUseMSAA AndAlso .MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(.MovieSetPathMSAA) Then FilenameList.Add(Path.Combine(.MovieSetPathMSAA, String.Concat(fSetTitle, "-fanart.jpg")))
                         If .MovieSetUseExpert AndAlso Not String.IsNullOrEmpty(.MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(.MovieSetFanartExpertSingle) Then
