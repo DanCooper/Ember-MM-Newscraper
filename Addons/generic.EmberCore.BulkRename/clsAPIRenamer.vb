@@ -97,12 +97,13 @@ Public Class FileFolderRenamer
     End Sub
 
     Private Shared Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
+        v = v.Replace("\", "-")
+        v = v.Replace("/", "-")
         pattern = pattern.Replace(String.Concat("$", flag), v)
         If Not String.IsNullOrEmpty(v) Then
             pattern = pattern.Replace(String.Concat("$-", flag), v)
             pattern = pattern.Replace(String.Concat("$+", flag), v)
             pattern = pattern.Replace(String.Concat("$^", flag), v)
-
         Else
             Dim pos = -1
             Dim size = 3
@@ -538,12 +539,12 @@ Public Class FileFolderRenamer
 
         'Countries
         If _DBElement.Movie.CountriesSpecified Then
-            MovieFile.Country = String.Join(" / ", _DBElement.Movie.Countries.ToArray)
+            MovieFile.Countries = _DBElement.Movie.Countries
         End If
 
         'Director
         If _DBElement.Movie.DirectorsSpecified Then
-            MovieFile.Director = String.Join(" / ", _DBElement.Movie.Directors.ToArray)
+            MovieFile.Directors = _DBElement.Movie.Directors
         End If
 
         'Edition
@@ -553,7 +554,7 @@ Public Class FileFolderRenamer
 
         'Genres
         If _DBElement.Movie.GenresSpecified Then
-            MovieFile.Genre = String.Join(" / ", _DBElement.Movie.Genres.ToArray)
+            MovieFile.Genres = _DBElement.Movie.Genres
         End If
 
         'IMDB
@@ -951,7 +952,7 @@ Public Class FileFolderRenamer
 
         'Genres
         If _DBElement.TVShow.GenresSpecified Then
-            ShowFile.Genre = String.Join(" / ", _DBElement.TVShow.Genres.ToArray)
+            ShowFile.Genres = _DBElement.TVShow.Genres
         End If
 
         'IMDB
@@ -1182,9 +1183,6 @@ Public Class FileFolderRenamer
         Try
             If Not String.IsNullOrEmpty(opattern) Then
                 Dim pattern As String = opattern
-                'Dim strSource As String = f.FileSource  ' APIXML.GetFileSource(Path.Combine(f.Path.ToLower, f.FileName.ToLower))
-
-                'pattern = "$T{($S.$S)}"
                 Dim joinIndex As Integer
                 Dim nextC = pattern.IndexOf("$")
                 Dim nextIB = pattern.IndexOf("{")
@@ -1206,7 +1204,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "6", f.Edition)
                         strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not needed here, Only to HaveBase
-                        strCond = ApplyPattern(strCond, "C", f.Director)
+                        strCond = ApplyPattern(strCond, "C", String.Join(",", f.Directors))
                         strCond = ApplyPattern(strCond, "D", f.Parent)
                         strCond = ApplyPattern(strCond, "E", f.SortTitle)
                         strCond = ApplyPattern(strCond, "F", f.OldFileName.Replace("\", String.Empty))
@@ -1238,12 +1236,12 @@ Public Class FileFolderRenamer
                             If strCond.Length > joinIndex + 2 Then
                                 strJoin = strCond.Substring(joinIndex + 2, 1)
                                 If Not ". -,".IndexOf(strJoin) = -1 Then
-                                    strCond = ApplyPattern(strCond, String.Concat("G", strJoin), f.Genre.Replace(" / ", strJoin))
+                                    strCond = ApplyPattern(strCond, String.Concat("G", strJoin), String.Join(strJoin, f.Genres))
                                 Else
-                                    strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
+                                    strCond = ApplyPattern(strCond, "G", String.Join(" ", f.Genres))
                                 End If
                             Else
-                                strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
+                                strCond = ApplyPattern(strCond, "G", String.Join(" ", f.Genres))
                             End If
                         End If
 
@@ -1268,12 +1266,12 @@ Public Class FileFolderRenamer
                             If strCond.Length > joinIndex + 2 Then
                                 strJoin = strCond.Substring(joinIndex + 2, 1)
                                 If Not ". -,".IndexOf(strJoin) = -1 Then
-                                    strCond = ApplyPattern(strCond, String.Concat("U", strJoin), f.Country.Replace(" / ", strJoin))
+                                    strCond = ApplyPattern(strCond, String.Concat("U", strJoin), String.Join(strJoin, f.Countries))
                                 Else
-                                    strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
+                                    strCond = ApplyPattern(strCond, "U", String.Join(" ", f.Countries))
                                 End If
                             Else
-                                strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
+                                strCond = ApplyPattern(strCond, "U", String.Join(" ", f.Countries))
                             End If
                         End If
 
@@ -1300,7 +1298,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "6", f.Edition)
                 pattern = ApplyPattern(pattern, "A", f.AudioChannels)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
-                pattern = ApplyPattern(pattern, "C", f.Director)
+                pattern = ApplyPattern(pattern, "C", String.Join(",", f.Directors))
                 pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
                 pattern = ApplyPattern(pattern, "E", f.SortTitle)
                 pattern = ApplyPattern(pattern, "F", f.OldFileName.Replace("\", String.Empty))
@@ -1528,12 +1526,12 @@ Public Class FileFolderRenamer
                     If pattern.Length > nextC + 2 Then
                         strCond = pattern.Substring(nextC + 2, 1)
                         If Not ". -,".IndexOf(strCond) = -1 Then
-                            pattern = ApplyPattern(pattern, String.Concat("G", strCond), f.Genre.Replace(" / ", strCond))
+                            pattern = ApplyPattern(pattern, String.Concat("G", strCond), String.Join(strCond, f.Genres))
                         Else
-                            pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                            pattern = ApplyPattern(pattern, "G", String.Join(" ", f.Genres))
                         End If
                     Else
-                        pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
+                        pattern = ApplyPattern(pattern, "G", String.Join(" ", f.Genres))
                     End If
                 End If
 
@@ -1543,12 +1541,12 @@ Public Class FileFolderRenamer
                     If pattern.Length > nextC + 2 Then
                         strCond = pattern.Substring(nextC + 2, 1)
                         If Not ". -,".IndexOf(strCond) = -1 Then
-                            pattern = ApplyPattern(pattern, String.Concat("U", strCond), f.Country.Replace(" / ", strCond))
+                            pattern = ApplyPattern(pattern, String.Concat("U", strCond), String.Join(strCond, f.Countries))
                         Else
-                            pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
+                            pattern = ApplyPattern(pattern, "U", String.Join(" ", f.Countries))
                         End If
                     Else
-                        pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
+                        pattern = ApplyPattern(pattern, "U", String.Join(" ", f.Countries))
                     End If
                 End If
 
@@ -1806,6 +1804,8 @@ Public Class FileFolderRenamer
 
         Public Property CollectionListTitle() As String = String.Empty
 
+        Public Property Directors() As List(Of String) = New List(Of String)
+
         Public Property DirExist() As Boolean = False
 
         Public Property DoRename() As Boolean = False
@@ -1815,6 +1815,8 @@ Public Class FileFolderRenamer
         Public Property Extension() As String = String.Empty
 
         Public Property FileExist() As Boolean = False
+
+        Public Property Genres() As List(Of String) = New List(Of String)
 
         Public Property ID() As Long = -1
 
@@ -1858,7 +1860,7 @@ Public Class FileFolderRenamer
 
         Public Property Resolution() As String = String.Empty
 
-        Public Property Country() As String = String.Empty
+        Public Property Countries() As List(Of String) = New List(Of String)
 
         Public Property Title() As String = String.Empty
 
@@ -1885,10 +1887,6 @@ Public Class FileFolderRenamer
         Public Property Year() As String = String.Empty
 
         Public Property IMDB() As String = String.Empty
-
-        Public Property Genre() As String = String.Empty
-
-        Public Property Director() As String = String.Empty
 
         Public Property VideoSource() As String = String.Empty
 
