@@ -74,6 +74,7 @@ Public Class frmSettingsHolder
             RaiseEvent ModuleSettingsChanged()
         End If
     End Sub
+
     Private Sub dgvSources_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvSources.CurrentCellDirtyStateChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -128,6 +129,7 @@ Public Class frmSettingsHolder
             If sources IsNot Nothing Then
                 settings.SetComplexSetting("VideoSourceMapping", sources, "*EmberAPP")
             End If
+
             settings.SetBooleanSetting("VideoSourceByExtension", chkMapByFile.Checked, "*EmberAPP")
             For Each r As DataGridViewRow In dgvByFile.Rows
                 If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
