@@ -66,7 +66,7 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.tblTop.Name = "tblTop"
         Me.tblTop.RowCount = 1
         Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26.0!))
+        Me.tblTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36.0!))
         Me.tblTop.Size = New System.Drawing.Size(484, 36)
         Me.tblTop.TabIndex = 0
         '
@@ -86,9 +86,9 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.pnlMain.AutoSize = True
         Me.pnlMain.Controls.Add(Me.tblMain)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMain.Location = New System.Drawing.Point(0, 36)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(484, 460)
+        Me.pnlMain.Size = New System.Drawing.Size(484, 424)
         Me.pnlMain.TabIndex = 5
         '
         'tblMain
@@ -102,7 +102,7 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.tblMain.Name = "tblMain"
         Me.tblMain.RowCount = 1
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(484, 460)
+        Me.tblMain.Size = New System.Drawing.Size(484, 424)
         Me.tblMain.TabIndex = 0
         '
         'dgvBlacklist
@@ -208,8 +208,8 @@ Partial Class frmTV_Data_SeasonTitleBlacklist
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(484, 511)
-        Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.pnlBottom)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
