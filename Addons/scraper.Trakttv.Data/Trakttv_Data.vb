@@ -325,7 +325,10 @@ Public Class Addon
 
         Dim nTVShow As New MediaContainers.TVShow
 
-        If ScrapeModifiers.MainNFO Then
+        If Not ScrapeModifiers.DoSearch AndAlso
+            (ScrapeModifiers.MainNFO OrElse
+            (ScrapeModifiers.withEpisodes AndAlso ScrapeModifiers.EpisodeNFO) OrElse
+            (ScrapeModifiers.withSeasons AndAlso ScrapeModifiers.SeasonNFO)) Then
             Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
             Dim nResult = _TraktAPI_TV.GetInfo_TVShow(_TraktAPI_TV.GetID_Trakt(oDBElement), FilteredOptions, ScrapeModifiers, oDBElement.Episodes)
             While Not nResult.IsCompleted

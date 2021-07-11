@@ -763,11 +763,14 @@ Public Class TMDB_Data
 
         _TMDBAPI_TV.DefaultLanguage = oDBElement.Language
 
-        If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
+        If Not ScrapeModifiers.DoSearch AndAlso
+            (ScrapeModifiers.MainNFO OrElse
+            (ScrapeModifiers.withEpisodes AndAlso ScrapeModifiers.EpisodeNFO) OrElse
+            (ScrapeModifiers.withSeasons AndAlso ScrapeModifiers.SeasonNFO)) Then
             If oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.UniqueIDs.TMDbId, ScrapeModifiers, FilteredOptions, False)
-            ElseIf oDBElement.TVShow.UniqueIDs.TVDBidSpecified Then
+            ElseIf oDBElement.TVShow.UniqueIDs.TVDbIdSpecified Then
                 oDBElement.TVShow.UniqueIDs.TMDbId = _TMDBAPI_TV.GetTMDBbyTVDB(oDBElement.TVShow.UniqueIDs.TVDbId)
                 If Not oDBElement.TVShow.UniqueIDs.TMDbIdSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
                 nTVShow = _TMDBAPI_TV.GetInfo_TVShow(oDBElement.TVShow.UniqueIDs.TMDbId, ScrapeModifiers, FilteredOptions, False)

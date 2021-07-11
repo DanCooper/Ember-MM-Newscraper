@@ -854,6 +854,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bEpisodeCredits OrElse
             CustomUpdater.ScrapeOptions.bEpisodeDirectors OrElse
             CustomUpdater.ScrapeOptions.bEpisodeGuestStars OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeOriginalTitle OrElse
             CustomUpdater.ScrapeOptions.bEpisodePlot OrElse
             CustomUpdater.ScrapeOptions.bEpisodeRating OrElse
             CustomUpdater.ScrapeOptions.bEpisodeRuntime OrElse
