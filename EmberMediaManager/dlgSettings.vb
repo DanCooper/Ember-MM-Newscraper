@@ -47,7 +47,14 @@ Public Class dlgSettings
     Private TVShowMatching As New List(Of Settings.regexp)
     Private sResult As New Structures.SettingsResult
     'Private tLangList As New List(Of Containers.TVLanguage)
-    Private TempTVScraperSeasonTitleBlacklist As New Settings.ExtendedListOfString
+    Private Temp_FileSystemValidExts As Settings.ExtendedListOfString
+    Private Temp_FileSystemValidSubtitlesExts As Settings.ExtendedListOfString
+    Private Temp_FileSystemValidThemeExts As Settings.ExtendedListOfString
+    Private Temp_GeneralSortTokens As Settings.ExtendedListOfString
+    Private Temp_MovieFilterCustom As Settings.ExtendedListOfString
+    Private Temp_TVEpisodeFilterCustom As Settings.ExtendedListOfString
+    Private Temp_TVScraperSeasonTitleBlacklist As Settings.ExtendedListOfString
+    Private Temp_TVShowFilterCustom As Settings.ExtendedListOfString
     Private TVMeta As New List(Of Settings.MetadataPerType)
 
     Public Event LoadEnd()
@@ -726,8 +733,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVScraperSeasonTitleBlacklist_Click(sender As Object, e As EventArgs) Handles btnTVScraperSeasonTitleBlacklist.Click
-        If frmTV_Data_SeasonTitleBlacklist.ShowDialog(TempTVScraperSeasonTitleBlacklist) = DialogResult.OK Then
-            TempTVScraperSeasonTitleBlacklist = frmTV_Data_SeasonTitleBlacklist.Result
+        If frmTV_Data_SeasonTitleBlacklist.ShowDialog(Temp_TVScraperSeasonTitleBlacklist) = DialogResult.OK Then
+            Temp_TVScraperSeasonTitleBlacklist = frmTV_Data_SeasonTitleBlacklist.Result
             SetApplyButton(True)
         End If
     End Sub
@@ -1470,33 +1477,9 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleFilters_TVShow, True)
-            RefreshTVShowFilters()
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleFilters_TVEpisode, True)
-            RefreshTVEpisodeFilters()
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleFilters_Movie, True)
-            RefreshMovieFilters()
-            SetApplyButton(True)
-        End If
-    End Sub
-
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidVideoExts, True)
+            Temp_FileSystemValidExts = Temp_FileSystemValidExts.GetDefaults
             RefreshFileSystemValidExts()
             SetApplyButton(True)
         End If
@@ -1504,7 +1487,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
+            Temp_FileSystemValidSubtitlesExts = Temp_FileSystemValidSubtitlesExts.GetDefaults
             RefreshFileSystemValidSubtitlesExts()
             SetApplyButton(True)
         End If
@@ -1512,8 +1495,38 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
+            Temp_FileSystemValidThemeExts = Temp_FileSystemValidThemeExts.GetDefaults
             RefreshFileSystemValidThemeExts()
+            SetApplyButton(True)
+        End If
+    End Sub
+
+    Private Sub btnGeneralSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralSortTokenReset.Click
+        Temp_GeneralSortTokens = Temp_GeneralSortTokens.GetDefaults
+        RefreshGeneralSortTokens()
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
+        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Temp_MovieFilterCustom = Temp_MovieFilterCustom.GetDefaults
+            RefreshMovieFilters()
+            SetApplyButton(True)
+        End If
+    End Sub
+
+    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
+        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Temp_TVEpisodeFilterCustom = Temp_TVEpisodeFilterCustom.GetDefaults
+            RefreshTVEpisodeFilters()
+            SetApplyButton(True)
+        End If
+    End Sub
+
+    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+            Temp_TVShowFilterCustom = Temp_TVShowFilterCustom.GetDefaults
+            RefreshTVShowFilters()
             SetApplyButton(True)
         End If
     End Sub
@@ -1622,12 +1635,6 @@ Public Class dlgSettings
 
     Private Sub btnGeneralSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralSortTokenRemove.Click
         RemoveGeneralSortToken()
-    End Sub
-
-    Private Sub btnGeneralSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGeneralSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.SortTokens, True)
-        RefreshGeneralSortTokens()
-        SetApplyButton(True)
     End Sub
 
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
@@ -3372,7 +3379,25 @@ Public Class dlgSettings
 
             FillMovieSetScraperTitleRenamer()
 
-            TempTVScraperSeasonTitleBlacklist = .TVScraperSeasonTitleBlacklist
+            Temp_FileSystemValidExts = .FileSystemValidExts
+            Temp_FileSystemValidSubtitlesExts = .FileSystemValidSubtitlesExts
+            Temp_FileSystemValidThemeExts = .FileSystemValidThemeExts
+            Temp_GeneralSortTokens = .GeneralSortTokens
+            Temp_MovieFilterCustom = .MovieFilterCustom
+            Temp_TVEpisodeFilterCustom = .TVEpisodeFilterCustom
+            Temp_TVScraperSeasonTitleBlacklist = .TVScraperSeasonTitleBlacklist
+            Temp_TVShowFilterCustom = .TVShowFilterCustom
+
+            RefreshFileSystemExcludeDirs()
+            RefreshFileSystemValidExts()
+            RefreshFileSystemValidSubtitlesExts()
+            RefreshFileSystemValidThemeExts()
+            RefreshGeneralSortTokens()
+            RefreshMovieFilters()
+            RefreshMovieSources()
+            RefreshTVSources()
+            RefreshTVEpisodeFilters()
+            RefreshTVShowFilters()
 
             If .MovieLevTolerance > 0 Then
                 chkMovieLevTolerance.Checked = True
@@ -3586,17 +3611,6 @@ Public Class dlgSettings
             chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
             txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
             txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
-
-            RefreshGeneralSortTokens()
-            RefreshMovieSources()
-            RefreshTVSources()
-            RefreshTVShowFilters()
-            RefreshTVEpisodeFilters()
-            RefreshMovieFilters()
-            RefreshFileSystemExcludeDirs()
-            RefreshFileSystemValidExts()
-            RefreshFileSystemValidSubtitlesExts()
-            RefreshFileSystemValidThemeExts()
 
             '***************************************************
             '******************* Movie Part ********************
@@ -4570,22 +4584,22 @@ Public Class dlgSettings
 
     Private Sub RefreshGeneralSortTokens()
         lstGeneralSortTokens.Items.Clear()
-        lstGeneralSortTokens.Items.AddRange(Master.eSettings.GeneralSortTokens.ToArray)
+        lstGeneralSortTokens.Items.AddRange(Temp_GeneralSortTokens.ToArray)
     End Sub
 
     Private Sub RefreshMovieFilters()
         lstMovieFilters.Items.Clear()
-        lstMovieFilters.Items.AddRange(Master.eSettings.MovieFilterCustom.ToArray)
+        lstMovieFilters.Items.AddRange(Temp_MovieFilterCustom.ToArray)
     End Sub
 
     Private Sub RefreshTVEpisodeFilters()
         lstTVEpisodeFilter.Items.Clear()
-        lstTVEpisodeFilter.Items.AddRange(Master.eSettings.TVEpisodeFilterCustom.ToArray)
+        lstTVEpisodeFilter.Items.AddRange(Temp_TVEpisodeFilterCustom.ToArray)
     End Sub
 
     Private Sub RefreshTVShowFilters()
         lstTVShowFilter.Items.Clear()
-        lstTVShowFilter.Items.AddRange(Master.eSettings.TVShowFilterCustom.ToArray)
+        lstTVShowFilter.Items.AddRange(Temp_TVShowFilterCustom.ToArray)
     End Sub
 
     Private Sub RefreshMovieSources()
@@ -4628,17 +4642,17 @@ Public Class dlgSettings
 
     Private Sub RefreshFileSystemValidExts()
         lstFileSystemValidVideoExts.Items.Clear()
-        lstFileSystemValidVideoExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
+        lstFileSystemValidVideoExts.Items.AddRange(Temp_FileSystemValidExts.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidSubtitlesExts()
         lstFileSystemValidSubtitlesExts.Items.Clear()
-        lstFileSystemValidSubtitlesExts.Items.AddRange(Master.eSettings.FileSystemValidSubtitlesExts.ToArray)
+        lstFileSystemValidSubtitlesExts.Items.AddRange(Temp_FileSystemValidSubtitlesExts.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidThemeExts()
         lstFileSystemValidThemeExts.Items.Clear()
-        lstFileSystemValidThemeExts.Items.AddRange(Master.eSettings.FileSystemValidThemeExts.ToArray)
+        lstFileSystemValidThemeExts.Items.AddRange(Temp_FileSystemValidThemeExts.ToArray)
     End Sub
 
     Private Sub RemoveCurrPanel()
@@ -4971,7 +4985,6 @@ Public Class dlgSettings
             .MovieFanartWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
             .MovieFilterCustom.Clear()
             .MovieFilterCustom.AddRange(lstMovieFilters.Items.OfType(Of String).ToList)
-            If .MovieFilterCustom.Count <= 0 Then .MovieFilterCustomIsEmpty = True
             .MovieGeneralCustomMarker1Color = btnMovieGeneralCustomMarker1.BackColor.ToArgb
             .MovieGeneralCustomMarker2Color = btnMovieGeneralCustomMarker2.BackColor.ToArgb
             .MovieGeneralCustomMarker3Color = btnMovieGeneralCustomMarker3.BackColor.ToArgb
@@ -5200,7 +5213,6 @@ Public Class dlgSettings
             .TVEpisodeFanartWidth = If(Not String.IsNullOrEmpty(txtTVEpisodeFanartWidth.Text), Convert.ToInt32(txtTVEpisodeFanartWidth.Text), 0)
             .TVEpisodeFilterCustom.Clear()
             .TVEpisodeFilterCustom.AddRange(lstTVEpisodeFilter.Items.OfType(Of String).ToList)
-            If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
             .TVEpisodeNoFilter = chkTVEpisodeNoFilter.Checked
             .TVEpisodePosterHeight = If(Not String.IsNullOrEmpty(txtTVEpisodePosterHeight.Text), Convert.ToInt32(txtTVEpisodePosterHeight.Text), 0)
             .TVEpisodePosterKeepExisting = chkTVEpisodePosterKeepExisting.Checked
@@ -5287,7 +5299,7 @@ Public Class dlgSettings
             .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
-            .TVScraperSeasonTitleBlacklist = TempTVScraperSeasonTitleBlacklist
+            .TVScraperSeasonTitleBlacklist = Temp_TVScraperSeasonTitleBlacklist
             .TVScraperShowActors = chkTVScraperShowActors.Checked
             Integer.TryParse(txtTVScraperShowActorsLimit.Text, .TVScraperShowActorsLimit)
             .TVScraperShowCert = chkTVScraperShowCert.Checked
@@ -5372,7 +5384,6 @@ Public Class dlgSettings
             .TVShowFanartWidth = If(Not String.IsNullOrEmpty(txtTVShowFanartWidth.Text), Convert.ToInt32(txtTVShowFanartWidth.Text), 0)
             .TVShowFilterCustom.Clear()
             .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
-            If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
             .TVShowLandscapeKeepExisting = chkTVShowLandscapeKeepExisting.Checked
             .TVShowKeyartHeight = If(Not String.IsNullOrEmpty(txtTVShowKeyartHeight.Text), Convert.ToInt32(txtTVShowKeyartHeight.Text), 0)
             .TVShowKeyartKeepExisting = chkTVShowKeyartKeepExisting.Checked

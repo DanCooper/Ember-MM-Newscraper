@@ -24,7 +24,7 @@ Public Class frmTV_Data_SeasonTitleBlacklist
 
 #Region "Properties"
 
-    Public Property Result As New Settings.ExtendedListOfString
+    Public Property Result As New Settings.ExtendedListOfString(Enums.DefaultType.TitleBlackList_TVSeason)
 
 #End Region 'Properties
 
@@ -76,13 +76,12 @@ Public Class frmTV_Data_SeasonTitleBlacklist
     End Sub
 
     Private Sub Load_Defaults_Click(sender As Object, e As EventArgs) Handles btnSetDefaults.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TitleBlackList_TVSeason, True)
-        Result = Master.eSettings.TVScraperSeasonTitleBlacklist
+        Result = New Settings.ExtendedListOfString(Enums.DefaultType.TitleBlackList_TVSeason).GetDefaults
         DataGridView_Fill()
     End Sub
 
     Private Sub Save_Blacklist()
-        Dim newList As New Settings.ExtendedListOfString
+        Dim newList As New Settings.ExtendedListOfString(Enums.DefaultType.TitleBlackList_TVSeason)
         For Each r As DataGridViewRow In dgvBlacklist.Rows
             If Not r.IsNewRow AndAlso r.Cells(0).Value IsNot Nothing Then newList.Add(r.Cells(0).Value.ToString.Trim)
         Next

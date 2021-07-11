@@ -79,7 +79,7 @@ Public Class StringUtils
     ''' <c>String.Empty</c> is returned if the name is empty or Nothing.
     ''' The value of <paramref name="name"/> is returned if no filter is passed</returns>
     ''' <remarks></remarks>
-    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As List(Of String)) As String
+    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As Settings.ExtendedListOfString) As String
         If String.IsNullOrEmpty(name) Then Return String.Empty
         If filters Is Nothing OrElse filters.Count = 0 Then Return name
         Dim newName As String = name
