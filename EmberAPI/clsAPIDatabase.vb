@@ -2341,6 +2341,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
                         If Not DBNull.Value.Equals(SQLreader("userNote")) Then .UserNote = SQLreader("userNote").ToString
                         If Not DBNull.Value.Equals(SQLreader("edition")) Then .Edition = SQLreader("edition").ToString
+                        If Not DBNull.Value.Equals(SQLreader("year")) Then .Year = SQLreader("year").ToString
                     End With
                 End If
             End Using
