@@ -249,7 +249,10 @@ Public Class TVDB_Data
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
-        If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
+        If Not ScrapeModifiers.DoSearch AndAlso
+            (ScrapeModifiers.MainNFO OrElse
+            (ScrapeModifiers.withEpisodes AndAlso ScrapeModifiers.EpisodeNFO) OrElse
+            (ScrapeModifiers.withSeasons AndAlso ScrapeModifiers.SeasonNFO)) Then
             If oDBTV.TVShow.UniqueIDs.TVDbIdSpecified Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
                 nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.UniqueIDs.TVDbId.ToString, ScrapeModifiers, FilteredOptions, False)

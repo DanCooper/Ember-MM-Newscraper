@@ -1849,7 +1849,9 @@ Public Class frmMain
             DBScrapeShow = Master.DB.Load_TVShow_Full(Convert.ToInt64(tScrapeItem.DataRow.Item("idShow")))
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            If tScrapeItem.ScrapeModifiers.MainNFO Then
+            If (tScrapeItem.ScrapeModifiers.MainNFO OrElse
+                (tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeNFO) OrElse
+                (tScrapeItem.ScrapeModifiers.withSeasons AndAlso tScrapeItem.ScrapeModifiers.SeasonNFO)) Then
                 bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
@@ -9865,6 +9867,7 @@ Public Class frmMain
         lblPremiered.Text = currTV.TVEpisode.Aired
         lblPremieredHeader.Text = Master.eLang.GetString(728, "Aired")
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
         txtFilePath.Text = currTV.Filename
         txtIMDBID.Text = currTV.TVEpisode.UniqueIDs.IMDbId
         txtMetaData.Text = NFO.FIToString(currTV.TVEpisode.FileInfo, False)
@@ -12218,7 +12221,25 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub Autoscraper(ByVal sender As Object, ByVal e As EventArgs) Handles mnuScrapeSubmenuCustom.Click, mnuScrapeModifierTrailer.Click, mnuScrapeModifierTheme.Click, mnuScrapeModifierPoster.Click, mnuScrapeModifierNFO.Click, mnuScrapeModifierMetaData.Click, mnuScrapeModifierLandscape.Click, mnuScrapeModifierKeyart.Click, mnuScrapeModifierFanart.Click, mnuScrapeModifierExtrathumbs.Click, mnuScrapeModifierExtrafanarts.Click, mnuScrapeModifierDiscArt.Click, mnuScrapeModifierClearLogo.Click, mnuScrapeModifierClearArt.Click, mnuScrapeModifierCharacterArt.Click, mnuScrapeModifierBanner.Click, mnuScrapeModifierAll.Click, mnuScrapeModifierActorthumbs.Click
+    Private Sub Autoscraper(ByVal sender As Object, ByVal e As EventArgs) Handles _
+        mnuScrapeSubmenuCustom.Click,
+        mnuScrapeModifierTrailer.Click,
+        mnuScrapeModifierTheme.Click,
+        mnuScrapeModifierPoster.Click,
+        mnuScrapeModifierNFO.Click,
+        mnuScrapeModifierMetaData.Click,
+        mnuScrapeModifierLandscape.Click,
+        mnuScrapeModifierKeyart.Click,
+        mnuScrapeModifierFanart.Click,
+        mnuScrapeModifierExtrathumbs.Click,
+        mnuScrapeModifierExtrafanarts.Click,
+        mnuScrapeModifierDiscArt.Click,
+        mnuScrapeModifierClearLogo.Click,
+        mnuScrapeModifierClearArt.Click,
+        mnuScrapeModifierCharacterArt.Click,
+        mnuScrapeModifierBanner.Click,
+        mnuScrapeModifierAll.Click,
+        mnuScrapeModifierActorthumbs.Click
 
         Dim ContentType As String = String.Empty
         Dim ModifierType As String = String.Empty
