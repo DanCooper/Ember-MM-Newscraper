@@ -63,6 +63,8 @@ Public Class NumUtils
         If success Then Return result
         success = Single.TryParse(sNumber, style, cultureDE, result)
         If success Then Return result
+        success = Single.TryParse(sNumber, result)
+        If success Then Return result
 
         'If we got here, something went wrong
         Dim trace = New StackTrace()
