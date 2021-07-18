@@ -499,9 +499,9 @@ Public Class Database
     ''' </summary>
     ''' <param name="CleanMovies">If <c>True</c>, process the movie files</param>
     ''' <param name="CleanTVShows">If <c>True</c>, process the TV files</param>
-    ''' <param name="SourceID">Optional. If provided, only process entries from that source.</param>
+    ''' <param name="SourceIDs">Optional. If provided, only process entries from that source.</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTVShows As Boolean, Optional ByVal SourceID As Long = -1)
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTVShows As Boolean, Optional ByVal SourceIDs As List(Of Long) = Nothing)
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
@@ -519,10 +519,11 @@ Public Class Database
                 Dim tSource As DBSource
 
                 Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    If SourceID = -1 Then
-                        SQLcommand.CommandText = "SELECT * FROM moviesource;"
+                    If SourceIDs IsNot Nothing AndAlso SourceIDs.Count > 0 Then
+                        Dim lstWhereClauses As List(Of String) = SourceIDs.Select(Function(f) String.Concat("idSource = ", f.ToString)).ToList
+                        SQLcommand.CommandText = String.Concat("SELECT DISTINCT * FROM moviesource WHERE ", String.Join(" OR ", lstWhereClauses), ";")
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT * FROM moviesource WHERE idSource = {0}", SourceID)
+                        SQLcommand.CommandText = "SELECT * FROM moviesource;"
                     End If
                     Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
@@ -532,10 +533,11 @@ Public Class Database
                 End Using
 
                 Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    If SourceID = -1 Then
-                        SQLcommand.CommandText = "SELECT MoviePath, idMovie, idSource, Type FROM movie ORDER BY MoviePath DESC;"
+                    If SourceIDs IsNot Nothing AndAlso SourceIDs.Count > 0 Then
+                        Dim lstWhereClauses As List(Of String) = SourceIDs.Select(Function(f) String.Concat("idSource = ", f.ToString)).ToList
+                        SQLcommand.CommandText = String.Concat("SELECT DISTINCT MoviePath, idMovie, idSource, Type FROM movie WHERE ", String.Join(" OR ", lstWhereClauses), " ORDER BY MoviePath DESC;")
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT MoviePath, idMovie, idSource, Type FROM movie WHERE idSource = {0} ORDER BY MoviePath DESC;", SourceID)
+                        SQLcommand.CommandText = "SELECT MoviePath, idMovie, idSource, Type FROM movie ORDER BY MoviePath DESC;"
                     End If
                     Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
@@ -595,10 +597,11 @@ Public Class Database
             If CleanTVShows Then
                 logger.Info("Cleaning tv shows started")
                 Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    If SourceID = -1 Then
-                        SQLcommand.CommandText = "SELECT files.strFilename, episode.idEpisode FROM files INNER JOIN episode ON (files.idFile = episode.idFile) ORDER BY files.strFilename;"
+                    If SourceIDs IsNot Nothing AndAlso SourceIDs.Count > 0 Then
+                        Dim lstWhereClauses As List(Of String) = SourceIDs.Select(Function(f) String.Concat("episode.idSource = ", f.ToString)).ToList
+                        SQLcommand.CommandText = String.Concat("SELECT DISTINCT files.strFilename, episode.idEpisode FROM files INNER JOIN episode ON (files.idFile = episode.idFile) WHERE ", String.Join(" OR ", lstWhereClauses), " ORDER BY files.strFilename;")
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT files.strFilename, episode.idEpisode FROM files INNER JOIN episode ON (files.idFile = episode.idFile) WHERE episode.idSource = {0} ORDER BY files.strFilename;", SourceID)
+                        SQLcommand.CommandText = "SELECT files.strFilename, episode.idEpisode FROM files INNER JOIN episode ON (files.idFile = episode.idFile) ORDER BY files.strFilename;"
                     End If
 
                     Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader()

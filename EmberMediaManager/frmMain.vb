@@ -474,7 +474,7 @@ Public Class frmMain
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
-    Public Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceID As Long = -1, Optional ByVal Folder As String = "")
+    Public Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceIDs As List(Of Long) = Nothing, Optional ByVal Folder As String = "")
         Try
             SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
@@ -491,7 +491,7 @@ Public Class frmMain
                 dgvMovieSets.DataSource = Nothing
             End If
 
-            fScanner.Start(Scan, SourceID, Folder)
+            fScanner.Start(Scan, SourceIDs, Folder)
 
         Catch ex As Exception
             LoadingDone = True
@@ -10656,7 +10656,7 @@ Public Class frmMain
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
                         LoadingDone = False
-                        LoadMedia(CType(_params(1), Structures.ScanOrClean), Convert.ToInt64(_params(2)), CStr(_params(3)))
+                        LoadMedia(CType(_params(1), Structures.ScanOrClean), New List(Of Long) From {Convert.ToInt64(_params(2))}, CStr(_params(3)))
                         While Not LoadingDone
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -16852,13 +16852,20 @@ Public Class frmMain
                 mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
             End If
             For Each nSource In Master.DB.LoadAll_Sources_Movie
+                Dim test As New ToolStripMenuItem With {.CheckOnClick = True, .Text = "fasdfdkas"}
+                'AddHandler test.Click, AddressOf SourceSubClick_Movie
+                mnuUpdateMovies.DropDownItems.Add(test)
                 mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
+                mnuItem.Tag = nSource.ID
                 mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
+                mnuItem.Tag = nSource.ID
             Next
+            If Master.DB.LoadAll_Sources_Movie.Count > 1 Then
+                mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(9999999, "Update selected"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
+                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(9999999, "Update selected"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
+            End If
 
             'Load source list for tv shows
             mnuUpdateShows.DropDownItems.Clear()
@@ -16869,11 +16876,11 @@ Public Class frmMain
             End If
             For Each nSource In Master.DB.LoadAll_Sources_TVShow
                 mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
-                mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
+                mnuItem.Tag = nSource.ID
                 mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
-                mnuItem.Tag = nSource.ID
                 mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
+                mnuItem.Tag = nSource.ID
             Next
 
             'Load filter list DataFields for movies
@@ -17998,7 +18005,7 @@ Public Class frmMain
             SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
         End If
 
-        LoadMedia(New Structures.ScanOrClean With {.Movies = True}, SourceID)
+        LoadMedia(New Structures.ScanOrClean With {.Movies = True}, If(Not SourceID = -1, New List(Of Long) From {SourceID}, Nothing))
     End Sub
 
     Private Sub SourceSubClick_TV(ByVal sender As Object, ByVal e As EventArgs)
@@ -18008,7 +18015,7 @@ Public Class frmMain
             SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
         End If
 
-        LoadMedia(New Structures.ScanOrClean With {.TV = True}, SourceID)
+        LoadMedia(New Structures.ScanOrClean With {.TV = True}, If(Not SourceID = -1, New List(Of Long) From {SourceID}, Nothing))
     End Sub
 
     Private Sub TVSplitterMoved(sender As Object, e As SplitterEventArgs)

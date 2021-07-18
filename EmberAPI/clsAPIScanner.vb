@@ -1610,11 +1610,12 @@ Public Class Scanner
         Next
     End Sub
 
-    Public Sub Start(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long, ByVal Folder As String)
-        bwPrelim = New System.ComponentModel.BackgroundWorker
-        bwPrelim.WorkerReportsProgress = True
-        bwPrelim.WorkerSupportsCancellation = True
-        bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceID = SourceID, .Folder = Folder})
+    Public Sub Start(ByVal Scan As Structures.ScanOrClean, ByVal SourceIDs As List(Of Long), ByVal Folder As String)
+        bwPrelim = New System.ComponentModel.BackgroundWorker With {
+            .WorkerReportsProgress = True,
+            .WorkerSupportsCancellation = True
+        }
+        bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceIDs = SourceIDs, .Folder = Folder})
     End Sub
 
     ''' <summary>
@@ -1724,15 +1725,16 @@ Public Class Scanner
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
             MoviePaths = Master.DB.GetAll_Paths_Movie
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    If Not Args.SourceID = -1 Then
-                        SQLcommand.CommandText = String.Format("SELECT * FROM moviesource WHERE idSource = {0};", Args.SourceID)
+            Using sqlTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using sqlCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    If Args.SourceIDs IsNot Nothing AndAlso Args.SourceIDs.Count > 0 Then
+                        Dim lstWhereClauses As List(Of String) = Args.SourceIDs.Select(Function(f) String.Concat("idSource = ", f.ToString)).ToList
+                        sqlCommand.CommandText = String.Concat("SELECT DISTINCT * FROM moviesource WHERE ", String.Join(" OR ", lstWhereClauses), ";")
                     Else
-                        SQLcommand.CommandText = "SELECT * FROM moviesource WHERE bExclude = 0;"
+                        sqlCommand.CommandText = "SELECT * FROM moviesource WHERE bExclude = 0;"
                     End If
 
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Using SQLreader As SQLite.SQLiteDataReader = sqlCommand.ExecuteReader()
                         Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             SQLUpdatecommand.CommandText = "UPDATE moviesource SET strLastScan = (?) WHERE idSource = (?);"
                             Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "strLastScan")
@@ -1767,7 +1769,7 @@ Public Class Scanner
                         End Using
                     End Using
                 End Using
-                SQLtransaction.Commit()
+                sqlTransaction.Commit()
             End Using
         End If
 
@@ -1777,8 +1779,9 @@ Public Class Scanner
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    If Not Args.SourceID = -1 Then
-                        SQLcommand.CommandText = String.Format("SELECT * FROM tvshowsource WHERE idSource = {0};", Args.SourceID)
+                    If Args.SourceIDs IsNot Nothing AndAlso Args.SourceIDs.Count > 0 Then
+                        Dim lstWhereClauses As List(Of String) = Args.SourceIDs.Select(Function(f) String.Concat("idSource = ", f.ToString)).ToList
+                        SQLcommand.CommandText = String.Concat("SELECT DISTINCT * FROM tvshowsource WHERE ", String.Join(" OR ", lstWhereClauses), ";")
                     Else
                         SQLcommand.CommandText = "SELECT * FROM tvshowsource WHERE bExclude = 0;"
                     End If
@@ -1816,7 +1819,7 @@ Public Class Scanner
         If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
             bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.CleaningDatabase, .Message = String.Empty})
             'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID)
+            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceIDs)
         End If
 
         e.Result = Args
@@ -1838,11 +1841,11 @@ Public Class Scanner
         If Not e.Cancelled Then
             Dim Args As Arguments = DirectCast(e.Result, Arguments)
             If Args.Scan.Movies Then
-                Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
+                Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceIDs})
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_Movie, params, Nothing)
             End If
             If Args.Scan.TV Then
-                Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
+                Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceIDs})
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
             End If
             RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.ScannerEventType.ScannerEnded})
@@ -1859,7 +1862,7 @@ Public Class Scanner
 
         Dim Folder As String
         Dim Scan As Structures.ScanOrClean
-        Dim SourceID As Long
+        Dim SourceIDs As List(Of Long)
 
 #End Region 'Fields
 
