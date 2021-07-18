@@ -503,7 +503,10 @@ Public Class IMDB_Data
         Dim _scraper As New Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
-        If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
+        If Not ScrapeModifiers.DoSearch AndAlso
+            (ScrapeModifiers.MainNFO OrElse
+            (ScrapeModifiers.withEpisodes AndAlso ScrapeModifiers.EpisodeNFO) OrElse
+            (ScrapeModifiers.withSeasons AndAlso ScrapeModifiers.SeasonNFO)) Then
             If oDBElement.TVShow.UniqueIDs.IMDbIdSpecified Then
                 'IMDB-ID already available -> scrape and save data into an empty tvshow container (nTVShow)
                 nTVShow = _scraper.GetTVShowInfo(oDBElement.TVShow.UniqueIDs.IMDbId, ScrapeModifiers, FilteredOptions, False)
