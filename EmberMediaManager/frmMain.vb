@@ -16320,7 +16320,11 @@ Public Class frmMain
             End If
 
             If dgvMovies.DataSource IsNot Nothing Then
-                dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+                Try
+                    dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+                Catch ex As Exception
+                    dgvMovies.Sort(dgvMovies.Columns(3), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+                End Try
             End If
         End With
     End Sub
@@ -16333,7 +16337,11 @@ Public Class frmMain
             End If
 
             If dgvMovieSets.DataSource IsNot Nothing Then
-                dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
+                Try
+                    dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
+                Catch ex As Exception
+                    dgvMovieSets.Sort(dgvMovieSets.Columns(1), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
+                End Try
             End If
         End With
     End Sub
@@ -16376,7 +16384,11 @@ Public Class frmMain
             End If
 
             If dgvTVShows.DataSource IsNot Nothing Then
-                dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
+                Try
+                    dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
+                Catch ex As Exception
+                    dgvTVShows.Sort(dgvTVShows.Columns(1), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
+                End Try
             End If
         End With
     End Sub
