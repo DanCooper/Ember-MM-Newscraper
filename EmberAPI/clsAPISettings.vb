@@ -1720,7 +1720,7 @@ Public Class Settings
                         }
                 Case Enums.DefaultType.TitleFilters_Movie
                     Return New ExtendedListOfString(listType) From {
-                        "(?i)[\W_]\(?\d{4}\)?.*",               'year in brakets
+                        "[\W_]\(?\d{4}\)?.*",                   'year in brakets
                         "(?i)[\W_]tt\d*",                       'IMDB ID
                         "(?i)[\W_]blu[\W_]?ray.*",
                         "(?i)[\W_]bd[\W_]?rip.*",
@@ -1745,12 +1745,13 @@ Public Class Settings
                         "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
                         "(?i)[\W_]\[offline\].*",
                         "(?i)[\W_]ntsc.*",
-                        "[\W_]PAL[\W_]?.*",                     'convert dots to space
-                        "\.[->] ", "_[->] "                     'convert underscore to space
+                        "[\W_]PAL[\W_]?.*",
+                        "\.[->] ",                              'convert dots to space
+                        "_[->] "                                'convert underscore to space
                     }
                 Case Enums.DefaultType.TitleFilters_TVEpisode
                     Return New ExtendedListOfString(listType) From {
-                        "[\W_]\(?\d{4}\)?.*",
+                        "[\W_]\(?\d{4}\)?.*",                   'year in brakets
                         "(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*",
                         "(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*",
                         "(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*",
@@ -1783,7 +1784,7 @@ Public Class Settings
                     }
                 Case Enums.DefaultType.TitleFilters_TVShow
                     Return New ExtendedListOfString(listType) From {
-                        "[\W_]\(?\d{4}\,?.*",
+                        "[\W_]\(?\d{4}\)?.*",                   'year in brakets
                         "(?i)[\W_]blu[\W_]?ray.*",
                         "(?i)[\W_]bd[\W_]?rip.*",
                         "(?i)[\W_]dvd.*",
@@ -1797,12 +1798,12 @@ Public Class Settings
                         "(?i)[\W_]divx.*",
                         "(?i)[\W_]xvid.*",
                         "(?i)[\W_]dc[\W_]?.*",
-                        "(?i)[\W_]dir(ector'?s?,?\s?cut.*",
+                        "(?i)[\W_]dir(ector'?s?)?\s?cut.*",
                         "(?i)[\W_]extended.*",
-                        "(?i)[\W_]hd(tv,?.*",
+                        "(?i)[\W_]hd(tv)?.*",
                         "(?i)[\W_]unrated.*",
                         "(?i)[\W_]uncut.*",
-                        "(?i)[\W_]([a-z]{3}|multi,[sd]ub.*",
+                        "(?i)[\W_]([a-z]{3}|multi)[sd]ub.*",
                         "(?i)[\W_]\[offline\].*",
                         "(?i)[\W_]ntsc.*",
                         "[\W_]PAL[\W_]?.*",
