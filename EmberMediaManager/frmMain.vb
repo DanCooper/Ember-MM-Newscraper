@@ -10575,7 +10575,7 @@ Public Class frmMain
             End If
             MoveMPAA()
             MoveGenres()
-            ImageUtils.ResizePB(pbBackground, pbBackgroundCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
+            ImageUtils.ResizePB(pbBackground, pbBackgroundCache, scMain.Panel2.Height - 90, scMain.Panel2.Width, True)
             pbBackground.Left = Convert.ToInt32((scMain.Panel2.Width - pbBackground.Width) / 2)
             pnlNoInfo.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), Convert.ToInt32((scMain.Panel2.Height - pnlNoInfo.Height) / 2))
             pnlCancel.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), 124)
