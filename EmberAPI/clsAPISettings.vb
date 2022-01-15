@@ -144,6 +144,8 @@ Public Class Settings
     Public Property GeneralImagesGlassOverlay() As Boolean = False
     Public Property GeneralInfoPanelStateMovie() As Integer = 2
     Public Property GeneralInfoPanelStateMovieSet() As Integer = 2
+    Public Property GeneralInfoPanelStateTVEpisode() As Integer = 2
+    Public Property GeneralInfoPanelStateTVSeason() As Integer = 2
     Public Property GeneralInfoPanelStateTVShow() As Integer = 2
     Public Property GeneralLanguage() As String = "English_(en_US)"
     Public Property GeneralMainFilterSortColumn_Episodes() As Integer = 1

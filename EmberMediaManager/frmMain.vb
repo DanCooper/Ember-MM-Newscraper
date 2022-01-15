@@ -664,7 +664,7 @@ Public Class frmMain
                             InfoPanelState_TVShow = 0
                     End Select
                 End If
-            Case Else
+            Case Else '0
                 pnlInfoPanel.Height = 32
                 btnUp.Enabled = True
                 btnMid.Enabled = True
@@ -10266,6 +10266,8 @@ Public Class frmMain
                 Master.eSettings.GeneralFilterPanelIsRaisedTVShow = FilterPanelIsRaised_TVShow
                 Master.eSettings.GeneralInfoPanelStateMovie = InfoPanelState_Movie
                 Master.eSettings.GeneralInfoPanelStateMovieSet = InfoPanelState_MovieSet
+                Master.eSettings.GeneralInfoPanelStateTVEpisode = InfoPanelState_TVEpisode
+                Master.eSettings.GeneralInfoPanelStateTVSeason = InfoPanelState_TVSeason
                 Master.eSettings.GeneralInfoPanelStateTVShow = InfoPanelState_TVShow
                 Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
                 'Master.eSettings.GeneralSplitterDistanceTVShow and Master.eSettings.GeneralSplitterDistanceTVSeason will not be saved at this point
@@ -10489,6 +10491,8 @@ Public Class frmMain
                 End Select
 
                 InfoPanelState_MovieSet = Master.eSettings.GeneralInfoPanelStateMovieSet
+                InfoPanelState_TVEpisode = Master.eSettings.GeneralInfoPanelStateTVEpisode
+                InfoPanelState_TVSeason = Master.eSettings.GeneralInfoPanelStateTVSeason
                 InfoPanelState_TVShow = Master.eSettings.GeneralInfoPanelStateTVShow
 
                 'Filter panels
