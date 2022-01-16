@@ -5816,8 +5816,9 @@ Public Class frmMain
             dgvMovies.Rows(objCell.RowIndex).Selected = True
             currRow_Movie = objCell.RowIndex
 
-            Dim scrapeOptions As New Structures.ScrapeOptions
-            scrapeOptions.bMainCollectionID = True
+            Dim scrapeOptions As New Structures.ScrapeOptions With {
+                .bMainCollectionID = True
+            }
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
             Scraper_CreateList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifiers)
@@ -5837,10 +5838,8 @@ Public Class frmMain
             colName = "ThemePath" OrElse
             colName = "TrailerPath"
             ) AndAlso Not bwMovieScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
+            Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
             dgvMovies.ClearSelection()
             dgvMovies.Rows(objCell.RowIndex).Selected = True
             currRow_Movie = objCell.RowIndex
@@ -5848,40 +5847,68 @@ Public Class frmMain
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Select Case colName
                 Case "BannerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                    If Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                    End If
                 Case "ClearArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+                    If Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+                    End If
                 Case "ClearLogoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+                    If Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+                    End If
                 Case "DiscArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
+                    If Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
+                    End If
                 Case "EFanartsPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrafanarts, True)
+                    If Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrafanarts, True)
+                    End If
                 Case "EThumbsPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrathumbs, True)
+                    If Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrathumbs, True)
+                    End If
                 Case "FanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                    If Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                    End If
+                Case "HasSub"
+                    'EMM not able to scrape subtitles yet.
+                    'So don't set status for it, but leave the option open for the future.
+                    'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
                 Case "KeyartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyart, True)
+                    If Master.eSettings.MovieKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyart, True)
+                    End If
                 Case "LandscapePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                    If Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                    End If
+                Case "MetaData" 'Metadata - need to add this column to the view.
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
                 Case "NfoPath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
                 Case "PosterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                    If Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                    End If
                 Case "ThemePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
+                    If Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
+                    End If
                 Case "TrailerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTrailer, True)
-                Case "HasSub"
-                    'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
-                Case "MetaData" 'Metadata - need to add this column to the view.
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainMeta, True)
+                    If Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTrailer, True)
+                    End If
             End Select
-            If Master.eSettings.MovieClickScrapeAsk Then
-                Scraper_CreateList_Movie(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_Movie, ScrapeModifiers)
-            Else
-                Scraper_CreateList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
+            If ScrapeModifiers.AnyEnabled Then
+                If Master.eSettings.MovieClickScrapeAsk Then
+                    Scraper_CreateList_Movie(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_Movie, ScrapeModifiers)
+                Else
+                    Scraper_CreateList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
+                End If
             End If
         End If
     End Sub
@@ -5926,6 +5953,7 @@ Public Class frmMain
 
         If colName = "iLastPlayed" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
+            Cursor = Cursors.Hand
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (
             colName = "BannerPath" OrElse
@@ -5948,51 +5976,81 @@ Public Class frmMain
 
             If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim movieTitle As String = dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
+                Dim ScrapeFor As String = String.Empty
+                Dim ScrapeType As String = String.Empty
+                Dim Title As String = dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Select Case colName
                     Case "BannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        If Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner) Then
+                            ScrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        End If
                     Case "ClearArtPath"
-                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                        If Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt) Then
+                            ScrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                        End If
                     Case "ClearLogoPath"
-                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                        If Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo) Then
+                            ScrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                        End If
                     Case "DiscArtPath"
-                        scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                        If Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt) Then
+                            ScrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                        End If
                     Case "EFanartsPath"
-                        scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                        If Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts) Then
+                            ScrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                        End If
                     Case "EThumbsPath"
-                        scrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
+                        If Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs) Then
+                            ScrapeFor = Master.eLang.GetString(74, "Extrathumbs Only")
+                        End If
                     Case "FanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case "KeyartPath"
-                        scrapeFor = Master.eLang.GetString(1238, "Keyart Only")
-                    Case "LandscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
-                    Case "NfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                    Case "MetaData"
-                        scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
-                    Case "PosterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
-                    Case "ThemePath"
-                        scrapeFor = Master.eLang.GetString(1125, "Theme Only")
-                    Case "TrailerPath"
-                        scrapeFor = Master.eLang.GetString(75, "Trailer Only")
+                        If Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                            ScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        End If
                     Case "HasSet"
-                        scrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
+                        ScrapeFor = Master.eLang.GetString(1354, "MovieSet Informations Only")
                     Case "HasSub"
-                        scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                        'EMM not able to scrape subtitles yet.
+                        'So don't set status for it, but leave the option open for the future.
+                        'ScrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                    Case "KeyartPath"
+                        If Master.eSettings.MovieKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyart) Then
+                            ScrapeFor = Master.eLang.GetString(1238, "Keyart Only")
+                        End If
+                    Case "LandscapePath"
+                        If Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape) Then
+                            ScrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        End If
+                    Case "MetaData"
+                        ScrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                    Case "NfoPath"
+                        ScrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case "PosterPath"
+                        If Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster) Then
+                            ScrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        End If
+                    Case "ThemePath"
+                        If Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme) Then
+                            ScrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                        End If
+                    Case "TrailerPath"
+                        If Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer) Then
+                            ScrapeFor = Master.eLang.GetString(75, "Trailer Only")
+                        End If
                 End Select
 
-                If Master.eSettings.MovieClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                If Not String.IsNullOrEmpty(ScrapeFor) Then
+                    If Master.eSettings.MovieClickScrapeAsk Then
+                        ScrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                    Else
+                        ScrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    End If
+                    Cursor = Cursors.Hand
+                    SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", Title, ScrapeFor, ScrapeType))
                 Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    oldStatus = String.Empty
                 End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", movieTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -6002,6 +6060,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMovies_CellMouseLeave(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvMovies.CellMouseLeave
+        Cursor = Cursors.Default
         If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
@@ -6535,36 +6594,55 @@ Public Class frmMain
             colName = "NfoPath" OrElse
             colName = "PosterPath"
             ) AndAlso Not bwMovieSetScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
+            Dim objCell As DataGridViewCell = dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex)
             dgvMovieSets.ClearSelection()
             dgvMovieSets.Rows(objCell.RowIndex).Selected = True
             currRow_MovieSet = objCell.RowIndex
+
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Select Case colName
                 Case "BannerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                    If Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                    End If
                 Case "ClearArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+                    If Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+                    End If
                 Case "ClearLogoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+                    If Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+                    End If
                 Case "DiscArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
+                    If Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainDiscArt, True)
+                    End If
                 Case "FanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                    If Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                    End If
                 Case "KeyartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyart, True)
+                    If Master.eSettings.MovieSetKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainKeyart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyart, True)
+                    End If
                 Case "LandscapePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                    If Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                    End If
                 Case "NfoPath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
                 Case "PosterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                    If Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                    End If
             End Select
-            If Master.eSettings.MovieSetClickScrapeAsk Then
-                Scraper_CreateList_Movieset(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_MovieSet, ScrapeModifiers)
-            Else
-                Scraper_CreateList_Movieset(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+            If ScrapeModifiers.AnyEnabled Then
+                If Master.eSettings.MovieSetClickScrapeAsk Then
+                    Scraper_CreateList_Movieset(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                Else
+                    Scraper_CreateList_Movieset(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                End If
             End If
         End If
     End Sub
@@ -6622,35 +6700,57 @@ Public Class frmMain
 
             If Master.eSettings.MovieSetClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim moviesetTitle As String = dgvMovieSets.Rows(e.RowIndex).Cells("Title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
+                Dim ScrapeFor As String = String.Empty
+                Dim ScrapeType As String = String.Empty
+                Dim Title As String = dgvMovieSets.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Select Case colName
                     Case "BannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        If Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner) Then
+                            ScrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        End If
                     Case "ClearArtPath"
-                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                        If Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt) Then
+                            ScrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                        End If
                     Case "ClearLogoPath"
-                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                        If Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo) Then
+                            ScrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                        End If
                     Case "DiscArtPath"
-                        scrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                        If Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt) Then
+                            ScrapeFor = Master.eLang.GetString(1124, "DiscArt Only")
+                        End If
                     Case "FanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        If Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart) Then
+                            ScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        End If
                     Case "KeyartPath"
-                        scrapeFor = Master.eLang.GetString(1238, "Keyart Only")
+                        If Master.eSettings.MovieSetKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainKeyart) Then
+                            ScrapeFor = Master.eLang.GetString(1238, "Keyart Only")
+                        End If
                     Case "LandscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        If Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape) Then
+                            ScrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        End If
                     Case "NfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                        ScrapeFor = Master.eLang.GetString(71, "NFO Only")
                     Case "PosterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        If Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster) Then
+                            ScrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        End If
                 End Select
-                If Master.eSettings.MovieSetClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+
+                If Not String.IsNullOrEmpty(ScrapeFor) Then
+                    If Master.eSettings.MovieSetClickScrapeAsk Then
+                        ScrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                    Else
+                        ScrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    End If
+                    Cursor = Cursors.Hand
+                    SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", Title, ScrapeFor, ScrapeType))
                 Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    oldStatus = String.Empty
                 End If
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", moviesetTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -6660,6 +6760,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMovieSets_CellMouseLeave(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvMovieSets.CellMouseLeave
+        Cursor = Cursors.Default
         If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
@@ -7021,10 +7122,8 @@ Public Class frmMain
             colName = "NfoPath" OrElse
             colName = "PosterPath"
             ) AndAlso Not bwTVEpisodeScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
+            Dim objCell As DataGridViewCell = dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex)
             dgvTVEpisodes.ClearSelection()
             dgvTVEpisodes.Rows(objCell.RowIndex).Selected = True
             currRow_TVEpisode = objCell.RowIndex
@@ -7032,20 +7131,28 @@ Public Class frmMain
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Select Case colName
                 Case "FanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
-                Case "NfoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeNFO, True)
-                Case "PosterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
+                    If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
+                    End If
                 Case "HasSub"
+                    'EMM not able to scrape subtitles yet.
+                    'So don't set status for it, but leave the option open for the future.
                     'Functions.SetScraperMod(Enums.ModType.Subtitles, True)
                 Case "MetaData" 'Metadata - need to add this column to the view.
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
+                Case "NfoPath"
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeNFO, True)
+                Case "PosterPath"
+                    If Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
+                    End If
             End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
-                Scraper_CreateList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
-            Else
-                Scraper_CreateList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+            If ScrapeModifiers.AnyEnabled Then
+                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                    Scraper_CreateList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
+                Else
+                    Scraper_CreateList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                End If
             End If
         End If
     End Sub
@@ -7091,6 +7198,7 @@ Public Class frmMain
 
         If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
+            Cursor = Cursors.Hand
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (
             colName = "FanartPath" OrElse
@@ -7102,29 +7210,39 @@ Public Class frmMain
 
             If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVEpisodeScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim episodeTitle As String = dgvTVEpisodes.Rows(e.RowIndex).Cells("Title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
+                Dim ScrapeFor As String = String.Empty
+                Dim ScrapeType As String = String.Empty
+                Dim Title As String = dgvTVEpisodes.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Select Case colName
                     Case "FanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
-                    Case "NfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
-                    Case "MetaData"
-                        scrapeFor = Master.eLang.GetString(76, "Meta Data Only")
-                    Case "PosterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) Then
+                            ScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        End If
                     Case "HasSub"
-                        scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                        'EMM not able to scrape subtitles yet.
+                        'So don't set status for it, but leave the option open for the future.
+                        'ScrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
+                    Case "NfoPath"
+                        ScrapeFor = Master.eLang.GetString(71, "NFO Only")
+                    Case "MetaData"
+                        ScrapeFor = Master.eLang.GetString(76, "Meta Data Only")
+                    Case "PosterPath"
+                        If Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) Then
+                            ScrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        End If
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                If Not String.IsNullOrEmpty(ScrapeFor) Then
+                    If Master.eSettings.TVGeneralClickScrapeAsk Then
+                        ScrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                    Else
+                        ScrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    End If
+                    Cursor = Cursors.Hand
+                    SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", Title, ScrapeFor, ScrapeType))
                 Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    oldStatus = String.Empty
                 End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", episodeTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -7134,6 +7252,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVEpisodes_CellMouseLeave(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellMouseLeave
+        Cursor = Cursors.Default
         If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
@@ -7490,29 +7609,46 @@ Public Class frmMain
             colName = "LandscapePath" OrElse
             colName = "PosterPath"
             ) AndAlso Not bwTVSeasonScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
+            Dim objCell As DataGridViewCell = dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex)
             dgvTVSeasons.ClearSelection()
             dgvTVSeasons.Rows(objCell.RowIndex).Selected = True
             currRow_TVSeason = objCell.RowIndex
 
+            Dim IsAllSeasons = CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = -1
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Select Case colName
                 Case "BannerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
+                    If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonBanner, True)
+                    ElseIf IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsBanner, True)
+                    End If
                 Case "FanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
+                    If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonFanart, True)
+                    ElseIf IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsFanart, True)
+                    End If
                 Case "LandscapePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
+                    If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonLandscape, True)
+                    ElseIf IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsLandscape, True)
+                    End If
                 Case "PosterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
+                    If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.SeasonPoster, True)
+                    ElseIf IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.AllSeasonsPoster, True)
+                    End If
             End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
-                Scraper_CreateList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
-            Else
-                Scraper_CreateList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+            If ScrapeModifiers.AnyEnabled Then
+                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                    Scraper_CreateList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
+                Else
+                    Scraper_CreateList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                End If
             End If
         End If
     End Sub
@@ -7557,6 +7693,7 @@ Public Class frmMain
 
         If colName = "HasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = -1 Then
             oldStatus = GetStatus()
+            Cursor = Cursors.Hand
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (
             colName = "BannerPath" OrElse
@@ -7568,27 +7705,44 @@ Public Class frmMain
 
             If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("Title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
+                Dim IsAllSeasons = CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = -1
+                Dim ScrapeFor As String = String.Empty
+                Dim ScrapeType As String = String.Empty
+                Dim Title As String = dgvTVSeasons.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Select Case colName
                     Case "BannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner) OrElse
+                            IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner) Then
+                            ScrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        End If
                     Case "FanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart) OrElse
+                            IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart) Then
+                            ScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        End If
                     Case "LandscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape) OrElse
+                            IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape) Then
+                            ScrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        End If
                     Case "PosterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        If Not IsAllSeasons AndAlso Master.eSettings.TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster) OrElse
+                            IsAllSeasons AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster) Then
+                            ScrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        End If
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                If Not String.IsNullOrEmpty(ScrapeFor) Then
+                    If Master.eSettings.TVGeneralClickScrapeAsk Then
+                        ScrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                    Else
+                        ScrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    End If
+                    Cursor = Cursors.Hand
+                    SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", Title, ScrapeFor, ScrapeType))
                 Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    oldStatus = String.Empty
                 End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", seasonTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -7598,6 +7752,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVSeasons_CellMouseLeave(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvTVSeasons.CellMouseLeave
+        Cursor = Cursors.Default
         If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 
@@ -7915,10 +8070,8 @@ Public Class frmMain
             colName = "PosterPath" OrElse
             colName = "ThemePath"
             ) AndAlso Not bwTVScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
-            'EMM not able to scrape subtitles yet.
-            'So don't set status for it, but leave the option open for the future.
+            Dim objCell As DataGridViewCell = dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex)
             dgvTVShows.ClearSelection()
             dgvTVShows.Rows(objCell.RowIndex).Selected = True
             currRow_TVShow = objCell.RowIndex
@@ -7926,32 +8079,54 @@ Public Class frmMain
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Select Case colName
                 Case "BannerPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                    If Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+                    End If
                 Case "CharacterArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainCharacterArt, True)
+                    If Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainCharacterArt, True)
+                    End If
                 Case "ClearArtPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+                    If Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+                    End If
                 Case "ClearLogoPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+                    If Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+                    End If
                 Case "EFanartsPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrafanarts, True)
+                    If Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainExtrafanarts) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainExtrafanarts, True)
+                    End If
                 Case "FanartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                    If Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+                    End If
                 Case "KeyartPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyart, True)
+                    If Master.eSettings.TVShowKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainKeyart) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainKeyart, True)
+                    End If
                 Case "LandscapePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                    If Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+                    End If
                 Case "NfoPath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
                 Case "PosterPath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                    If Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+                    End If
                 Case "ThemePath"
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
+                    If Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme) Then
+                        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainTheme, True)
+                    End If
             End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
-                Scraper_CreateList_TVShow(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
-            Else
-                Scraper_CreateList_TVShow(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+            If ScrapeModifiers.AnyEnabled Then
+                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                    Scraper_CreateList_TVShow(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
+                Else
+                    Scraper_CreateList_TVShow(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
+                End If
             End If
         End If
     End Sub
@@ -7996,6 +8171,7 @@ Public Class frmMain
 
         If colName = "HasWatched" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
+            Cursor = Cursors.Hand
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (
             colName = "BannerPath" OrElse
@@ -8014,41 +8190,65 @@ Public Class frmMain
 
             If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVScraper.IsBusy Then
                 oldStatus = GetStatus()
-                Dim tvshowTitle As String = dgvTVShows.Rows(e.RowIndex).Cells("Title").Value.ToString
-                Dim scrapeFor As String = String.Empty
-                Dim scrapeType As String = String.Empty
+                Dim ScrapeFor As String = String.Empty
+                Dim ScrapeType As String = String.Empty
+                Dim Title As String = dgvTVShows.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Select Case colName
                     Case "BannerPath"
-                        scrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        If Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner) Then
+                            ScrapeFor = Master.eLang.GetString(1060, "Banner Only")
+                        End If
                     Case "CharacterArtPath"
-                        scrapeFor = Master.eLang.GetString(1121, "CharacterArt Only")
+                        If Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt) Then
+                            ScrapeFor = Master.eLang.GetString(1121, "CharacterArt Only")
+                        End If
                     Case "ClearArtPath"
-                        scrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                        If Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt) Then
+                            ScrapeFor = Master.eLang.GetString(1122, "ClearArt Only")
+                        End If
                     Case "ClearLogoPath"
-                        scrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                        If Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo) Then
+                            ScrapeFor = Master.eLang.GetString(1123, "ClearLogo Only")
+                        End If
                     Case "EFanartsPath"
-                        scrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                        If Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainExtrafanarts) Then
+                            ScrapeFor = Master.eLang.GetString(975, "Extrafanarts Only")
+                        End If
                     Case "FanartPath"
-                        scrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        If Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
+                            ScrapeFor = Master.eLang.GetString(73, "Fanart Only")
+                        End If
                     Case "KeyartPath"
-                        scrapeFor = Master.eLang.GetString(1238, "Keyart Only")
+                        If Master.eSettings.TVShowKeyartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainKeyart) Then
+                            ScrapeFor = Master.eLang.GetString(1238, "Keyart Only")
+                        End If
                     Case "LandscapePath"
-                        scrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        If Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape) Then
+                            ScrapeFor = Master.eLang.GetString(1061, "Landscape Only")
+                        End If
                     Case "NfoPath"
-                        scrapeFor = Master.eLang.GetString(71, "NFO Only")
+                        ScrapeFor = Master.eLang.GetString(71, "NFO Only")
                     Case "PosterPath"
-                        scrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        If Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster) Then
+                            ScrapeFor = Master.eLang.GetString(72, "Poster Only")
+                        End If
                     Case "ThemePath"
-                        scrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                        If Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme) Then
+                            ScrapeFor = Master.eLang.GetString(1125, "Theme Only")
+                        End If
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
-                    scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                If Not String.IsNullOrEmpty(ScrapeFor) Then
+                    If Master.eSettings.TVGeneralClickScrapeAsk Then
+                        ScrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                    Else
+                        ScrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    End If
+                    Cursor = Cursors.Hand
+                    SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", Title, ScrapeFor, ScrapeType))
                 Else
-                    scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                    oldStatus = String.Empty
                 End If
-
-                SetStatus(String.Format("Scrape ""{0}"" for {1} - {2}", tvshowTitle, scrapeFor, scrapeType))
             Else
                 oldStatus = String.Empty
             End If
@@ -8058,6 +8258,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvTVShows_CellMouseLeave(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles dgvTVShows.CellMouseLeave
+        Cursor = Cursors.Default
         If Not String.IsNullOrEmpty(oldStatus) Then SetStatus(oldStatus)
     End Sub
 

@@ -1794,6 +1794,9 @@ Public Class Structures
     End Structure
 
     Public Structure ScrapeModifiers
+
+#Region "Fields"
+
         Dim AllSeasonsBanner As Boolean
         Dim AllSeasonsFanart As Boolean
         Dim AllSeasonsLandscape As Boolean
@@ -1831,6 +1834,54 @@ Public Class Structures
         Dim SeasonPoster As Boolean
         Dim withEpisodes As Boolean
         Dim withSeasons As Boolean
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public ReadOnly Property AnyEnabled As Boolean
+            Get
+                Return AllSeasonsBanner OrElse
+                    AllSeasonsFanart OrElse
+                    AllSeasonsLandscape OrElse
+                    AllSeasonsPoster OrElse
+                    DoSearch OrElse
+                    EpisodeActorThumbs OrElse
+                    EpisodeFanart OrElse
+                    EpisodePoster OrElse
+                    EpisodeMeta OrElse
+                    EpisodeNFO OrElse
+                    EpisodeSubtitles OrElse
+                    EpisodeWatchedFile OrElse
+                    MainActorthumbs OrElse
+                    MainBanner OrElse
+                    MainCharacterArt OrElse
+                    MainClearArt OrElse
+                    MainClearLogo OrElse
+                    MainDiscArt OrElse
+                    MainExtrafanarts OrElse
+                    MainExtrathumbs OrElse
+                    MainFanart OrElse
+                    MainKeyart OrElse
+                    MainLandscape OrElse
+                    MainMeta OrElse
+                    MainNFO OrElse
+                    MainPoster OrElse
+                    MainSubtitles OrElse
+                    MainTheme OrElse
+                    MainTrailer OrElse
+                    MainWatchedFile OrElse
+                    SeasonBanner OrElse
+                    SeasonFanart OrElse
+                    SeasonLandscape OrElse
+                    SeasonNFO OrElse
+                    SeasonPoster OrElse
+                    withEpisodes OrElse
+                    withSeasons
+            End Get
+        End Property
+#End Region 'Properties
+
     End Structure
     ''' <summary>
     ''' Structure representing posible scrape fields
