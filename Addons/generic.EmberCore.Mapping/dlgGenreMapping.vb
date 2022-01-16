@@ -180,7 +180,7 @@ Public Class dlgGenreMapping
     End Sub
 
     Private Sub dgvGenres_CellPainting(sender As Object, e As DataGridViewCellPaintingEventArgs) Handles dgvGenres.CellPainting
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvGenres.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvGenres.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If
@@ -274,7 +274,7 @@ Public Class dlgGenreMapping
     End Sub
 
     Private Sub dgvMappings_CellPainting(sender As Object, e As DataGridViewCellPaintingEventArgs) Handles dgvMappings.CellPainting
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvMappings.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvMappings.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If

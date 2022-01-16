@@ -7618,15 +7618,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub pbMSAAInfo_Click(sender As Object, e As EventArgs) Handles pbMSAAInfo.Click
-        If Master.isWindows Then
-            Process.Start("http://forum.xbmc.org/showthread.php?tid=153502")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://forum.xbmc.org/showthread.php?tid=153502"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("http://forum.xbmc.org/showthread.php?tid=153502")
     End Sub
 
     Private Sub pbMSAAInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbMSAAInfo.MouseEnter
@@ -7638,27 +7630,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub pbMovieSourcesADInfo_Click(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.Click
-        If Master.isWindows Then
-            Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:Artwork_Downloader"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader")
     End Sub
 
     Private Sub pbMovieSourcesTvTunesInfo_Click(sender As Object, e As EventArgs) Handles pbMovieSourcesTvTunesInfo.Click
-        If Master.isWindows Then
-            Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:TvTunes"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
     End Sub
 
     Private Sub pbMovieSourcesADInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbMovieSourcesADInfo.MouseEnter
@@ -7678,15 +7654,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub pbTVSourcesADInfo_Click(sender As Object, e As EventArgs) Handles pbTVSourcesADInfo.Click
-        If Master.isWindows Then
-            Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming")
     End Sub
 
     Private Sub pbTVSourcesADInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbTVSourcesADInfo.MouseEnter
@@ -7698,15 +7666,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub pbTVSourcesTvTunesInfo_Click(sender As Object, e As EventArgs) Handles pbTVSourcesTvTunesInfo.Click
-        If Master.isWindows Then
-            Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://kodi.wiki/view/Add-on:TvTunes"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
     End Sub
 
     Private Sub pbTVSourcesTvTunesInfo_MouseEnter(sender As Object, e As EventArgs) Handles pbTVSourcesTvTunesInfo.MouseEnter

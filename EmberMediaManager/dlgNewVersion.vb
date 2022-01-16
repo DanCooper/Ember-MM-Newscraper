@@ -40,15 +40,7 @@ Public Class dlgNewVersion
     End Sub
 
     Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
-        If Master.isWindows Then
-            Process.Start(Path.Combine(Functions.AppPath, "EmberSetup.exe"), "-force")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = String.Concat(Path.Combine(Functions.AppPath, "EmberSetup.exe"), " -force")
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start(Path.Combine(Functions.AppPath, "EmberSetup.exe"), "-force")
         DialogResult = DialogResult.Abort
     End Sub
 

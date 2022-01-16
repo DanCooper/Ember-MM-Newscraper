@@ -347,14 +347,12 @@ Public Class frmMain
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Visible = False
 
-        If Master.isWindows Then
-            TrayIcon = New NotifyIcon(components) With {
-                .ContextMenuStrip = cmnuTray,
-                .Icon = Icon,
-                .Text = "Ember Media Manager",
-                .Visible = True
-            }
-        End If
+        TrayIcon = New NotifyIcon(components) With {
+            .ContextMenuStrip = cmnuTray,
+            .Icon = Icon,
+            .Text = "Ember Media Manager",
+            .Visible = True
+        }
 
         bwCheckVersion.RunWorkerAsync()
 
@@ -663,7 +661,6 @@ Public Class frmMain
             BringToFront()
             Activate()
             cmnuTray.Enabled = True
-            If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
     ''' <summary>
@@ -2569,13 +2566,8 @@ Public Class frmMain
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                     Using Explorer As New Process
-                        If Master.isWindows Then
-                            Explorer.StartInfo.FileName = "explorer.exe"
-                            Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", sRow.Cells("TVShowPath").Value.ToString)
-                        Else
-                            Explorer.StartInfo.FileName = "xdg-open"
-                            Explorer.StartInfo.Arguments = String.Format("""{0}""", sRow.Cells("TVShowPath").Value.ToString)
-                        End If
+                        Explorer.StartInfo.FileName = "explorer.exe"
+                        Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", sRow.Cells("TVShowPath").Value.ToString)
                         Explorer.Start()
                     End Using
                 Next
@@ -2765,13 +2757,8 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(ePath) Then
                                 Using Explorer As New Process
-                                    If Master.isWindows Then
-                                        Explorer.StartInfo.FileName = "explorer.exe"
-                                        Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", ePath)
-                                    Else
-                                        Explorer.StartInfo.FileName = "xdg-open"
-                                        Explorer.StartInfo.Arguments = String.Format("""{0}""", ePath)
-                                    End If
+                                    Explorer.StartInfo.FileName = "explorer.exe"
+                                    Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", ePath)
                                     Explorer.Start()
                                 End Using
                             End If
@@ -3848,21 +3835,11 @@ Public Class frmMain
                     SeasonPath = Functions.GetSeasonDirectoryFromShowPath(currTV.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
 
                     Using Explorer As New Process
-                        If Master.isWindows Then
-                            Explorer.StartInfo.FileName = "explorer.exe"
-                            If String.IsNullOrEmpty(SeasonPath) Then
-                                Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", currTV.ShowPath)
-                            Else
-                                Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", SeasonPath)
-                            End If
-
+                        Explorer.StartInfo.FileName = "explorer.exe"
+                        If String.IsNullOrEmpty(SeasonPath) Then
+                            Explorer.StartInfo.Arguments = String.Format("/root,""{0}""", currTV.ShowPath)
                         Else
-                            Explorer.StartInfo.FileName = "xdg-open"
-                            If String.IsNullOrEmpty(SeasonPath) Then
-                                Explorer.StartInfo.Arguments = String.Format("""{0}""", currTV.ShowPath)
-                            Else
-                                Explorer.StartInfo.Arguments = String.Format("""{0}""", SeasonPath)
-                            End If
+                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", SeasonPath)
                         End If
                         Explorer.Start()
                     End Using
@@ -4376,8 +4353,7 @@ Public Class frmMain
 
                 dgvMovies.Columns("idMovie").ValueType = GetType(Long)
 
-                If Master.isWindows Then dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                MediaList_Resize_Movie()
+                dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             End If
 
             If doMovieSets Then
@@ -4486,8 +4462,7 @@ Public Class frmMain
 
                 dgvMovieSets.Columns("idSet").ValueType = GetType(Long)
 
-                If Master.isWindows Then dgvMovieSets.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                MediaList_Resize_Movieset()
+                dgvMovieSets.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
                 dgvMovieSets.Enabled = True
             End If
@@ -4726,8 +4701,7 @@ Public Class frmMain
 
                 dgvTVShows.Columns("idShow").ValueType = GetType(Long)
 
-                If Master.isWindows Then dgvTVShows.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                MediaList_Resize_TVShow(dgvTVShows.Columns("ListTitle").Index)
+                dgvTVShows.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
                 dgvTVShows.Enabled = True
             End If
@@ -4926,8 +4900,7 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Episode").ValueType = GetType(Integer)
         dgvTVEpisodes.Columns("Season").ValueType = GetType(Integer)
 
-        If Master.isWindows Then dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        MediaList_Resize_TVShow(dgvTVEpisodes.Columns("Title").Index)
+        dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
         dgvTVEpisodes.CurrentCell = Nothing
         dgvTVEpisodes.ClearSelection()
@@ -5064,8 +5037,7 @@ Public Class frmMain
         dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
         dgvTVSeasons.Columns("Season").ValueType = GetType(Integer)
 
-        If Master.isWindows Then dgvTVSeasons.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-        MediaList_Resize_TVShow(dgvTVSeasons.Columns("Title").Index)
+        dgvTVSeasons.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
 
         If Not Master.isCL Then DataGridView_Sorting_Restore_TVSeason()
 
@@ -6039,7 +6011,7 @@ Public Class frmMain
             Return
         End If
 
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If
@@ -6445,10 +6417,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub dgvMovies_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMovies.Resize
-        MediaList_Resize_Movie()
-    End Sub
-
     Private Sub dgvMovies_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvMovies.RowsRemoved
         MainTab_SetCount_Movie()
     End Sub
@@ -6701,7 +6669,7 @@ Public Class frmMain
             Return
         End If
 
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvMovieSets.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvMovieSets.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If
@@ -7003,10 +6971,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub dgvMovieSets_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMovieSets.Resize
-        MediaList_Resize_Movieset()
-    End Sub
-
     Private Sub dgvMovieSets_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvMovieSets.RowsRemoved
         MainTab_SetCount_Movieset()
     End Sub
@@ -7179,7 +7143,7 @@ Public Class frmMain
             Return
         End If
 
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvTVEpisodes.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If
@@ -7473,10 +7437,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub dgvTVEpisodes_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles dgvTVEpisodes.Resize
-        MediaList_Resize_TVShow(3)
-    End Sub
-
     Private Sub dgvTVEpisodes_SelectionChanged(sender As Object, e As EventArgs) Handles dgvTVEpisodes.SelectionChanged
         If dgvTVEpisodes.SelectedRows.Count > 0 Then
             If dgvTVEpisodes.SelectedRows.Count > 1 Then
@@ -7647,7 +7607,7 @@ Public Class frmMain
             Return
         End If
 
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvTVSeasons.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If
@@ -7897,10 +7857,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub dgvTVSeasons_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles dgvTVSeasons.Resize
-        MediaList_Resize_TVShow(2)
-    End Sub
-
     Private Sub dgvTVSeasons_SelectionChanged(sender As Object, e As EventArgs) Handles dgvTVSeasons.SelectionChanged
         If dgvTVSeasons.SelectedRows.Count > 0 Then
             If dgvTVSeasons.SelectedRows.Count > 1 Then
@@ -8111,7 +8067,7 @@ Public Class frmMain
             Return
         End If
 
-        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+        If e.RowIndex >= 0 AndAlso Not dgvTVShows.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return
         End If
@@ -8456,10 +8412,6 @@ Public Class frmMain
                 cmnuShowTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
             End If
         End If
-    End Sub
-
-    Private Sub dgvTVShows_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles dgvTVShows.Resize
-        MediaList_Resize_TVShow(1)
     End Sub
 
     Private Sub dgvTVShows_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvTVShows.RowsRemoved
@@ -13586,91 +13538,6 @@ Public Class frmMain
         Next
     End Sub
 
-    Private Sub MediaList_Resize_Movie()
-        If Not Master.isWindows Then
-            If dgvMovies.ColumnCount > 0 Then
-                dgvMovies.Columns(3).Width = dgvMovies.Width -
-                If(DataGridView_CheckColumnHide_Movie("Year"), dgvMovies.Columns(17).Width, 0) -
-                If(DataGridView_CheckColumnHide_Movie("BannerPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("ClearArtPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("ClearLogoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("DiscArtPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("EFanartsPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("EThumbsPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("FanartPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("LandscapePath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("NfoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("PosterPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("HasSet"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("HasSub"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("ThemePath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("TrailerPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movie("iLastPlayed"), 20, 0) -
-                If(dgvMovies.DisplayRectangle.Height > dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
-            End If
-        End If
-    End Sub
-
-    Private Sub MediaList_Resize_Movieset()
-        If Not Master.isWindows Then
-            If dgvMovieSets.ColumnCount > 0 Then
-                dgvMovieSets.Columns(0).Width = dgvMovieSets.Width -
-                If(DataGridView_CheckColumnHide_Movieset("NfoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("PosterPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("FanartPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("BannerPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("LandscapePath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("DiscArtPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("ClearLogoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_Movieset("ClearArtPath"), 20, 0) -
-                If(dgvMovieSets.DisplayRectangle.Height > dgvMovieSets.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
-            End If
-        End If
-    End Sub
-
-    Private Sub MediaList_Resize_TVShow(ByVal iType As Integer)
-        '0 = all.... needed???
-
-        If Not Master.isWindows Then
-            If (iType = 0 OrElse iType = 1) AndAlso dgvTVShows.ColumnCount > 0 Then
-                dgvTVShows.Columns(1).Width = dgvTVShows.Width -
-                If(DataGridView_CheckColumnHide_TVShow("BannerPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("CharacterArtPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("ClearArtPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("ClearLogoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("EFanartsPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("FanartPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("LandscapePath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("NfoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("PosterPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("ThemePath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVShow("Playcount"), 20, 0) -
-                If(dgvTVShows.DisplayRectangle.Height > dgvTVShows.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
-            End If
-
-            If (iType = 0 OrElse iType = 2) AndAlso dgvTVSeasons.ColumnCount > 0 Then
-                dgvTVSeasons.Columns(1).Width = dgvTVSeasons.Width -
-                If(DataGridView_CheckColumnHide_TVSeason("BannerPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVSeason("FanartPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVSeason("LandscapePath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVSeason("PosterPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVSeason("Playcount"), 20, 0) -
-                If(dgvTVSeasons.DisplayRectangle.Height > dgvTVSeasons.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
-            End If
-
-            If (iType = 0 OrElse iType = 3) AndAlso dgvTVEpisodes.ColumnCount > 0 Then
-                dgvTVEpisodes.Columns(2).Width = dgvTVEpisodes.Width - 40 -
-                If(DataGridView_CheckColumnHide_TVEpisode("FanartPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVEpisode("NfoPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVEpisode("PosterPath"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVEpisode("HasSub"), 20, 0) -
-                If(DataGridView_CheckColumnHide_TVEpisode("Playcount"), 20, 0) -
-                If(dgvTVEpisodes.DisplayRectangle.Height > dgvTVEpisodes.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
-            End If
-
-        End If
-    End Sub
-
     Private Sub MediaList_SplitContianer_Main_SplitterMoved(ByVal sender As Object, ByVal e As SplitterEventArgs) Handles scMain.SplitterMoved
         Try
             If Created Then
@@ -16433,27 +16300,11 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuMainDonatePatreon_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainDonatePatreon.Click
-        If Master.isWindows Then
-            Process.Start("https://www.patreon.com/embermediamanager")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "https://www.patreon.com/embermediamanager"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("https://www.patreon.com/embermediamanager")
     End Sub
 
     Private Sub mnuMainDonatePayPal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainDonatePayPal.Click
-        If Master.isWindows Then
-            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VWVJCUV3KAUX2&lc=CH&item_name=Ember%20Media%20Manager&currency_code=CHF&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VWVJCUV3KAUX2&lc=CH&item_name=Ember%20Media%20Manager&currency_code=CHF&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VWVJCUV3KAUX2&lc=CH&item_name=Ember%20Media%20Manager&currency_code=CHF&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
     End Sub
 
     Private Sub mnuMainError_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainError.Click
@@ -17837,10 +17688,6 @@ Public Class frmMain
         End Select
     End Sub
 
-    Private Sub Mono_Shown()
-        pnlNoInfo.Location = New Point(Convert.ToInt32((scMain.Panel2.Width - pnlNoInfo.Width) / 2), Convert.ToInt32((scMain.Panel2.Height - pnlNoInfo.Height) / 2))
-    End Sub
-
     Private Sub ShowEpisodeMenuItems(ByVal Visible As Boolean)
         Dim cMnu As ToolStripMenuItem
         Dim cSep As ToolStripSeparator
@@ -17897,13 +17744,8 @@ Public Class frmMain
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     Using Explorer As New Process
-                        If Master.isWindows Then
-                            Explorer.StartInfo.FileName = "explorer.exe"
-                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells("MoviePath").Value)
-                        Else
-                            Explorer.StartInfo.FileName = "xdg-open"
-                            Explorer.StartInfo.Arguments = String.Format("""{0}""", Path.GetDirectoryName(sRow.Cells("MoviePath").Value.ToString))
-                        End If
+                        Explorer.StartInfo.FileName = "explorer.exe"
+                        Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells("MoviePath").Value)
                         Explorer.Start()
                     End Using
                 Next

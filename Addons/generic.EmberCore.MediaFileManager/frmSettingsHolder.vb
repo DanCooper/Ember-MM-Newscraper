@@ -116,15 +116,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub lblTeraCopyLink_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblTeraCopyLink.LinkClicked
-        If Master.isWindows Then
-            Process.Start("https://codesector.com/teracopy")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "https://codesector.com/teracopy"
-                Explorer.Start()
-            End Using
-        End If
+        Process.Start("https://codesector.com/teracopy")
     End Sub
 
     Private Sub lvPaths_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvPaths.SelectedIndexChanged

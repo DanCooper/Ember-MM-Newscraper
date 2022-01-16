@@ -611,12 +611,7 @@ Public Class MediaInfo
         Dim fiOut As New MediaContainers.Fileinfo
 
         Handle = MediaInfo_New()
-
-        If Master.isWindows Then
-            UseAnsi = False
-        Else
-            UseAnsi = True
-        End If
+        UseAnsi = False
 
         Open(IFOPath)
 
@@ -781,12 +776,7 @@ Public Class MediaInfo
 
                 If Not sPath = String.Empty Then
                     Handle = MediaInfo_New()
-
-                    If Master.isWindows Then
-                        UseAnsi = False
-                    Else
-                        UseAnsi = True
-                    End If
+                    UseAnsi = False
 
                     Open(sPath)
 

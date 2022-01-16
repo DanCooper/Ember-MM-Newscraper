@@ -41,7 +41,6 @@ Public Class Master
     Public Shared eLang As New Localization
     Public Shared eProfiles As New Profiles
     Public Shared eSettings As New Settings
-    Public Shared isWindows As Boolean = Functions.CheckIfWindows
 
 #End Region 'Fields
 

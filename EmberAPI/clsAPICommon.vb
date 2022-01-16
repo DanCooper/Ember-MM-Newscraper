@@ -1020,18 +1020,6 @@ Public Class Functions
         Return (IntPtr.Size = 8)
     End Function
     ''' <summary>
-    ''' Are we running on a Windows operating system?
-    ''' </summary>
-    ''' <returns><c>True</c>if we are running on Windows, <c>False</c> otherwise</returns>
-    Public Shared Function CheckIfWindows() As Boolean
-        Dim os As OperatingSystem = Environment.OSVersion
-        Dim pid As PlatformID = os.Platform
-        If pid = PlatformID.Win32NT OrElse pid = PlatformID.Win32Windows OrElse pid = PlatformID.Win32S OrElse pid = PlatformID.WinCE Then
-            Return True
-        End If
-        Return False
-    End Function
-    ''' <summary>
     ''' Determine whether this instance is intended as a beta test version
     ''' </summary>
     ''' <returns><c>True</c> if this instance is a beta version, <c>False</c> otherwise</returns>
@@ -1319,11 +1307,7 @@ Public Class Functions
     ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory.
     ''' Note that no validation is done to ensure that ffmpeg actually exists.</remarks>
     Public Shared Function GetFFMpeg() As String
-        If Master.isWindows Then
-            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-        Else
-            Return "ffmpeg"
-        End If
+        Return String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
     End Function
 
     ''' <summary>
@@ -1333,11 +1317,7 @@ Public Class Functions
     ''' <remarks>Windows distributions have FFProbe in the Bin subdirectory.
     ''' Note that no validation is done to ensure that FFProbe actually exists.</remarks>
     Public Shared Function GetFFProbe() As String
-        If Master.isWindows Then
-            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffprobe.exe")
-        Else
-            Return "ffprobe"
-        End If
+        Return String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "ffprobe.exe")
     End Function
     ''' <summary>
     ''' Determines the path to the desired season of a given show
@@ -1690,30 +1670,14 @@ Public Class Functions
                         logger.Error("Destination is a file, but it does not exist <{0}>", Destination)
                         Return False
                     Else
-                        If Master.isWindows Then
-                            Process.Start(uriDestination.LocalPath)
-                        Else
-                            Using Explorer As New Process
-                                Explorer.StartInfo.FileName = "xdg-open"
-                                Explorer.StartInfo.Arguments = uriDestination.LocalPath
-                                Explorer.Start()
-                            End Using
-                        End If
+                        Process.Start(uriDestination.LocalPath)
                         Return True
                     End If
                 End If
             End If
 
             'If we got this far, everything is OK, so we can go ahead and launch it!
-            If Master.isWindows Then
-                Process.Start(uriDestination.AbsoluteUri())
-            Else
-                Using Explorer As New Process
-                    Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = uriDestination.AbsoluteUri()
-                    Explorer.Start()
-                End Using
-            End If
+            Process.Start(uriDestination.AbsoluteUri())
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Destination & ">")
             Return False
