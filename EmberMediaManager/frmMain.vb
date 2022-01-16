@@ -10485,51 +10485,21 @@ Public Class frmMain
         InfoPanel_Move()
     End Sub
 
-    Private Sub InfoPanel_LinkHeader_IMDb_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lblIMDBHeader.Click
-        If lblIMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblIMDBHeader.Tag.ToString) Then
-            Functions.Launch(lblIMDBHeader.Tag.ToString)
+    Private Sub InfoPanel_LinkHeader_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lblIMDBHeader.Click, lblTMDBHeader.Click, lblTVDBHeader.Click
+        Dim Label As Label = CType(sender, Label)
+        If Label.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Label.Tag.ToString) Then
+            Functions.Launch(Label.Tag.ToString)
         End If
     End Sub
 
-    Private Sub InfoPanel_LinkHeader_IMDb_MouseEnter(ByVal sender As Object, ByVal e As EventArgs) Handles lblIMDBHeader.MouseEnter
-        If lblIMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblIMDBHeader.Tag.ToString) Then
+    Private Sub InfoPanel_LinkHeader_MouseEnter(ByVal sender As Object, ByVal e As EventArgs) Handles lblIMDBHeader.MouseEnter, lblTMDBHeader.MouseEnter, lblTVDBHeader.MouseEnter
+        Dim Label As Label = CType(sender, Label)
+        If Label.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Label.Tag.ToString) Then
             Cursor = Cursors.Hand
         End If
     End Sub
 
-    Private Sub InfoPanel_LinkHeader_IMDb_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles lblIMDBHeader.MouseLeave
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub InfoPanel_LinkHeader_TMDb_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lblTMDBHeader.Click
-        If lblTMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString) Then
-            Functions.Launch(lblTMDBHeader.Tag.ToString)
-        End If
-    End Sub
-
-    Private Sub InfoPanel_LinkHeader_TMDb_MouseEnter(ByVal sender As Object, ByVal e As EventArgs) Handles lblTMDBHeader.MouseEnter
-        If lblTMDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTMDBHeader.Tag.ToString) Then
-            Cursor = Cursors.Hand
-        End If
-    End Sub
-
-    Private Sub InfoPanel_LinkHeader_TMDb_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles lblTMDBHeader.MouseLeave
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub InfoPanel_LinkHeader_TVDb_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lblTVDBHeader.Click
-        If lblTVDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTVDBHeader.Tag.ToString) Then
-            Functions.Launch(lblTVDBHeader.Tag.ToString)
-        End If
-    End Sub
-
-    Private Sub InfoPanel_LinkHeader_TVDb_MouseEnter(ByVal sender As Object, ByVal e As EventArgs) Handles lblTVDBHeader.MouseEnter
-        If lblTVDBHeader.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(lblTVDBHeader.Tag.ToString) Then
-            Cursor = Cursors.Hand
-        End If
-    End Sub
-
-    Private Sub InfoPanel_LinkHeader_TVDb_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles lblTVDBHeader.MouseLeave
+    Private Sub InfoPanel_LinkHeader_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles lblIMDBHeader.MouseLeave, lblTMDBHeader.MouseLeave, lblTVDBHeader.MouseLeave
         Cursor = Cursors.Default
     End Sub
 
@@ -12832,12 +12802,15 @@ Public Class frmMain
         lblCountries.Text = String.Join(" / ", currTV.TVShow.Countries.ToArray)
         lblDirectors.Text = String.Join(" / ", currTV.TVShow.Creators.ToArray)
         lblDirectorsHeader.Text = Master.eLang.GetString(744, "Creators")
+        lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
         lblPremiered.Text = currTV.TVShow.Premiered
         lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
         'lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
         lblStatus.Text = currTV.TVShow.Status
         lblTagline.Text = currTV.TVShow.Tagline
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
+        lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
+        lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
         txtIMDBID.Text = currTV.TVShow.UniqueIDs.IMDbId
         txtPlot.Text = currTV.TVShow.Plot
         txtTMDBID.Text = currTV.TVShow.UniqueIDs.TMDbId.ToString
