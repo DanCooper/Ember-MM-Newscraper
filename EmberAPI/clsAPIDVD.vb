@@ -77,7 +77,7 @@ Public Class DVD
                         'assume ac3
                         ReturnArray(0) = "ac3"
                     End If
-                    ReturnArray(1) = Localization.ISOGetLangByCode2(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
+                    ReturnArray(1) = Localization.Languages.Get_Name_By_Alpha2(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
                     ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
                 End If
             Catch ex As Exception
@@ -106,7 +106,7 @@ Public Class DVD
             Try
                 If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
                     bytSubPicIndex -= 1
-                    Return Localization.ISOGetLangByCode2(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
+                    Return Localization.Languages.Get_Name_By_Alpha2(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
                 End If
             Catch ex As Exception
                 logger.Error(ex, "GetIFOSubPic")

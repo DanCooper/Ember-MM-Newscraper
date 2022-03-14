@@ -4,13 +4,9 @@ Thumbs.db
 #Ember Media Manager
 EmberMM*/
 
-#ignore files downloaded by Transifex Downloader
-Transifex/.tx/*
-Transifex/translations/*
-
 #ignore files from BuildSetup that not needed
 BuildSetup/.tx/*
-BuildSetup/translations/*
+BuildSetup/Transifex/*
 BuildSetup/Builds/*
 
 ## Ignore Visual Studio temporary files, build results, and

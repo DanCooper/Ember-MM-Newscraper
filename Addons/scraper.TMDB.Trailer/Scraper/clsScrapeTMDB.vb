@@ -93,7 +93,7 @@ Public Class clsAPITMDB
             For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
                 Dim nTrailer = YouTube.Scraper.GetVideoDetails(Video.Key)
                 If nTrailer IsNot Nothing Then
-                    nTrailer.LongLanguage = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1))
+                    nTrailer.LongLanguage = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.Languages.Get_Name_By_Alpha2(Video.Iso_639_1))
                     nTrailer.Scraper = "TMDb"
                     nTrailer.Language = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1)
                     nTrailer.VideoType = GetVideoType(Video.Type)

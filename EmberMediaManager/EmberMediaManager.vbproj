@@ -5296,16 +5296,6 @@
     <Content Include="Images\Studios\Zweites Deutsches Fernsehen %28ZDF%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Langs\Debug_%28db_DB%29.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\English_%28en_US%29.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Langs\Languages.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="logo.ico" />
     <None Include="Resources\haswatched.png" />
     <None Include="Resources\EmberSplashScreen.jpg" />

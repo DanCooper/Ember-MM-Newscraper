@@ -30,7 +30,6 @@ Public Class APIXML
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared CertificationLanguages As New clsXMLCertificationLanguages()
     Public Shared CertificationMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Certifications.xml"))
     Public Shared CountryMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Countries.xml"))
     Public Shared EditionMapping As New clsXMLRegexMapping("Core.Mapping.Editions.xml")
@@ -75,9 +74,6 @@ Public Class APIXML
             If File.Exists(CertificationMapping.FileNameFullPath) Then
                 CertificationMapping.Load()
             End If
-
-            'Certification languages
-            CertificationLanguages.Load()
 
             'Country mapping
             If File.Exists(CountryMapping.FileNameFullPath) Then
@@ -379,7 +375,7 @@ Public Class APIXML
         Dim imgLanguage As Image = Nothing
         Dim sLang As String = String.Empty
 
-        sLang = Localization.ISOLangGetCode2ByCode3(strLanguage)
+        sLang = Localization.Languages.Get_Alpha2_By_Alpha3(strLanguage)
 
         If Not String.IsNullOrEmpty(sLang) Then
             If LanguageIcons.ContainsKey(sLang.ToLower) Then
@@ -505,8 +501,8 @@ Public Class APIXML
 
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
-        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-            Dim tCountry = CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieScraperCertLang)
+        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertCountry = Master.eLang.All Then
+            Dim tCountry = Localization.Countries.Items.FirstOrDefault(Function(l) l.Alpha2 = Master.eSettings.MovieScraperCertCountry)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
                 For Each r In RatingXML.Movies.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
                     retRatings.Add(r.Searchstring)
@@ -523,8 +519,8 @@ Public Class APIXML
 
     Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
-        If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-            Dim tCountry = CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVScraperShowCertLang)
+        If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertCountry = Master.eLang.All Then
+            Dim tCountry = Localization.Countries.Items.FirstOrDefault(Function(l) l.Alpha2 = Master.eSettings.TVScraperShowCertCountry)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
                 For Each r In RatingXML.TV.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
                     retRatings.Add(r.Searchstring)

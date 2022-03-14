@@ -98,7 +98,7 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkGetAdult_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGetAdultItems.CheckedChanged, chkSearchDeviant.CheckedChanged
+    Private Sub chkGetAdult_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGetAdultItems.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

@@ -1210,7 +1210,7 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVLockEpisodeRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowRuntime = New System.Windows.Forms.CheckBox()
-        Me.cbTVScraperShowCertLang = New System.Windows.Forms.ComboBox()
+        Me.cbTVScraperShowCertCountry = New System.Windows.Forms.ComboBox()
         Me.chkTVLockEpisodeRatings = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowStudio = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowStatus = New System.Windows.Forms.CheckBox()
@@ -1325,7 +1325,7 @@ Partial Class dlgSettings
         Me.chkTVScraperEpisodeGuestStarsToActors = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperCastWithImg = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowOriginalTitleAsTitle = New System.Windows.Forms.CheckBox()
-        Me.cbMovieScraperCertLang = New System.Windows.Forms.ComboBox()
+        Me.cbMovieScraperCertCountry = New System.Windows.Forms.ComboBox()
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
         Me.txtMovieScraperOutlineLimit = New System.Windows.Forms.TextBox()
         Me.gbMovieScraperMetaDataOpts = New System.Windows.Forms.GroupBox()
@@ -17419,7 +17419,7 @@ Partial Class dlgSettings
         Me.tblTVScraperGlobalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeRuntime, 8, 18)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowRuntime, 2, 18)
-        Me.tblTVScraperGlobalOpts.Controls.Add(Me.cbTVScraperShowCertLang, 3, 4)
+        Me.tblTVScraperGlobalOpts.Controls.Add(Me.cbTVScraperShowCertCountry, 3, 4)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockEpisodeRatings, 8, 16)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowStudio, 2, 20)
         Me.tblTVScraperGlobalOpts.Controls.Add(Me.chkTVLockShowStatus, 2, 19)
@@ -17566,19 +17566,19 @@ Partial Class dlgSettings
         '
         'cbTVScraperShowCertLang
         '
-        Me.cbTVScraperShowCertLang.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.cbTVScraperShowCertLang.DropDownHeight = 200
-        Me.cbTVScraperShowCertLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVScraperShowCertLang.DropDownWidth = 110
-        Me.cbTVScraperShowCertLang.Enabled = False
-        Me.cbTVScraperShowCertLang.FormattingEnabled = True
-        Me.cbTVScraperShowCertLang.IntegralHeight = False
-        Me.cbTVScraperShowCertLang.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
-        Me.cbTVScraperShowCertLang.Location = New System.Drawing.Point(172, 91)
-        Me.cbTVScraperShowCertLang.Name = "cbTVScraperShowCertLang"
-        Me.cbTVScraperShowCertLang.Size = New System.Drawing.Size(70, 21)
-        Me.cbTVScraperShowCertLang.Sorted = True
-        Me.cbTVScraperShowCertLang.TabIndex = 5
+        Me.cbTVScraperShowCertCountry.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cbTVScraperShowCertCountry.DropDownHeight = 200
+        Me.cbTVScraperShowCertCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVScraperShowCertCountry.DropDownWidth = 110
+        Me.cbTVScraperShowCertCountry.Enabled = False
+        Me.cbTVScraperShowCertCountry.FormattingEnabled = True
+        Me.cbTVScraperShowCertCountry.IntegralHeight = False
+        Me.cbTVScraperShowCertCountry.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
+        Me.cbTVScraperShowCertCountry.Location = New System.Drawing.Point(172, 91)
+        Me.cbTVScraperShowCertCountry.Name = "cbTVScraperShowCertLang"
+        Me.cbTVScraperShowCertCountry.Size = New System.Drawing.Size(70, 21)
+        Me.cbTVScraperShowCertCountry.Sorted = True
+        Me.cbTVScraperShowCertCountry.TabIndex = 5
         '
         'chkTVLockEpisodeRatings
         '
@@ -18838,20 +18838,20 @@ Partial Class dlgSettings
         '
         'cbMovieScraperCertLang
         '
-        Me.cbMovieScraperCertLang.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.cbMovieScraperCertLang.DropDownHeight = 200
-        Me.cbMovieScraperCertLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieScraperCertLang.DropDownWidth = 110
-        Me.cbMovieScraperCertLang.Enabled = False
-        Me.cbMovieScraperCertLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieScraperCertLang.FormattingEnabled = True
-        Me.cbMovieScraperCertLang.IntegralHeight = False
-        Me.cbMovieScraperCertLang.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
-        Me.cbMovieScraperCertLang.Location = New System.Drawing.Point(203, 226)
-        Me.cbMovieScraperCertLang.Name = "cbMovieScraperCertLang"
-        Me.cbMovieScraperCertLang.Size = New System.Drawing.Size(70, 21)
-        Me.cbMovieScraperCertLang.Sorted = True
-        Me.cbMovieScraperCertLang.TabIndex = 5
+        Me.cbMovieScraperCertCountry.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cbMovieScraperCertCountry.DropDownHeight = 200
+        Me.cbMovieScraperCertCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieScraperCertCountry.DropDownWidth = 110
+        Me.cbMovieScraperCertCountry.Enabled = False
+        Me.cbMovieScraperCertCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieScraperCertCountry.FormattingEnabled = True
+        Me.cbMovieScraperCertCountry.IntegralHeight = False
+        Me.cbMovieScraperCertCountry.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
+        Me.cbMovieScraperCertCountry.Location = New System.Drawing.Point(203, 226)
+        Me.cbMovieScraperCertCountry.Name = "cbMovieScraperCertLang"
+        Me.cbMovieScraperCertCountry.Size = New System.Drawing.Size(70, 21)
+        Me.cbMovieScraperCertCountry.Sorted = True
+        Me.cbMovieScraperCertCountry.TabIndex = 5
         '
         'lblMovieScraperOutlineLimit
         '
@@ -19135,7 +19135,7 @@ Partial Class dlgSettings
         Me.tblMovieScraperGlobalOpts.Controls.Add(Me.chkMovieLockCollectionID, 2, 21)
         Me.tblMovieScraperGlobalOpts.Controls.Add(Me.lblMovieScraperGlobalHeaderLock, 2, 0)
         Me.tblMovieScraperGlobalOpts.Controls.Add(Me.lblMovieScraperGlobalHeaderLimit, 3, 0)
-        Me.tblMovieScraperGlobalOpts.Controls.Add(Me.cbMovieScraperCertLang, 3, 11)
+        Me.tblMovieScraperGlobalOpts.Controls.Add(Me.cbMovieScraperCertCountry, 3, 11)
         Me.tblMovieScraperGlobalOpts.Controls.Add(Me.chkMovieLockRatings, 2, 7)
         Me.tblMovieScraperGlobalOpts.Controls.Add(Me.chkMovieLockTitle, 2, 1)
         Me.tblMovieScraperGlobalOpts.Controls.Add(Me.lblMovieScraperGlobalTitle, 0, 1)
@@ -25090,7 +25090,7 @@ End Sub
     Friend WithEvents gbMovieScraperMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieScraperCastWithImg As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCertForMPAA As System.Windows.Forms.CheckBox
-    Friend WithEvents cbMovieScraperCertLang As System.Windows.Forms.ComboBox
+    Friend WithEvents cbMovieScraperCertCountry As System.Windows.Forms.ComboBox
     Friend WithEvents pnlMovieScraper As System.Windows.Forms.Panel
     Friend WithEvents tpTVImagesSeason As System.Windows.Forms.TabPage
     Friend WithEvents gbTVImagesSeasonPosterOpts As System.Windows.Forms.GroupBox
@@ -26189,7 +26189,7 @@ End Sub
     Friend WithEvents chkTVScraperShowCertForMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents txtTVScraperShowMPAANotRated As System.Windows.Forms.TextBox
     Friend WithEvents lblTVScraperShowMPAANotRated As System.Windows.Forms.Label
-    Friend WithEvents cbTVScraperShowCertLang As System.Windows.Forms.ComboBox
+    Friend WithEvents cbTVScraperShowCertCountry As System.Windows.Forms.ComboBox
     Friend WithEvents lblTVScraperGlobalHeaderShowsLimit As System.Windows.Forms.Label
     Friend WithEvents lblTVScraperGlobalCertifications As System.Windows.Forms.Label
     Friend WithEvents chkTVScraperShowCert As System.Windows.Forms.CheckBox

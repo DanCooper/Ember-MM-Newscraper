@@ -1704,7 +1704,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
-        If Not cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
+        If Not cbGeneralLanguage.SelectedItem.ToString = Master.eLang.Translations.FirstOrDefault(Function(f) f.Language = Master.eSettings.GeneralLanguage).Description Then
             Handle_SetupNeedsRestart()
         End If
         SetApplyButton(True)
@@ -1805,15 +1805,15 @@ Public Class dlgSettings
         SetApplyButton(True)
 
         If Not chkMovieScraperCert.Checked Then
-            cbMovieScraperCertLang.Enabled = False
-            cbMovieScraperCertLang.SelectedIndex = 0
+            cbMovieScraperCertCountry.Enabled = False
+            cbMovieScraperCertCountry.SelectedIndex = 0
             chkMovieScraperCertForMPAA.Enabled = False
             chkMovieScraperCertForMPAA.Checked = False
             chkMovieScraperCertOnlyValue.Enabled = False
             chkMovieScraperCertOnlyValue.Checked = False
         Else
-            cbMovieScraperCertLang.Enabled = True
-            cbMovieScraperCertLang.SelectedIndex = 0
+            cbMovieScraperCertCountry.Enabled = True
+            cbMovieScraperCertCountry.SelectedIndex = 0
             chkMovieScraperCertForMPAA.Enabled = True
             chkMovieScraperCertOnlyValue.Enabled = True
         End If
@@ -1823,15 +1823,15 @@ Public Class dlgSettings
         SetApplyButton(True)
 
         If Not chkTVScraperShowCert.Checked Then
-            cbTVScraperShowCertLang.Enabled = False
-            cbTVScraperShowCertLang.SelectedIndex = 0
+            cbTVScraperShowCertCountry.Enabled = False
+            cbTVScraperShowCertCountry.SelectedIndex = 0
             chkTVScraperShowCertForMPAA.Enabled = False
             chkTVScraperShowCertForMPAA.Checked = False
             chkTVScraperShowCertOnlyValue.Enabled = False
             chkTVScraperShowCertOnlyValue.Checked = False
         Else
-            cbTVScraperShowCertLang.Enabled = True
-            cbTVScraperShowCertLang.SelectedIndex = 0
+            cbTVScraperShowCertCountry.Enabled = True
+            cbTVScraperShowCertCountry.SelectedIndex = 0
             chkTVScraperShowCertForMPAA.Enabled = True
             chkTVScraperShowCertOnlyValue.Enabled = True
         End If
@@ -2856,7 +2856,7 @@ Public Class dlgSettings
             btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
             cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
             cbGeneralDateTime.SelectedValue = .GeneralDateTime
-            cbGeneralLanguage.SelectedItem = .GeneralLanguage
+            cbGeneralLanguage.SelectedItem = Master.eLang.Translations.FirstOrDefault(Function(f) f.Language = .GeneralLanguage).Description
             cbGeneralTheme.SelectedItem = .GeneralTheme
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
@@ -3430,21 +3430,21 @@ Public Class dlgSettings
             LoadTVShowMatching()
 
             Try
-                cbMovieScraperCertLang.Items.Clear()
-                cbMovieScraperCertLang.Items.Add(Master.eLang.All)
-                cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.CertificationLanguages.Languages Select lLang.Name).ToArray)
-                If cbMovieScraperCertLang.Items.Count > 0 Then
-                    If .MovieScraperCertLang = Master.eLang.All Then
-                        cbMovieScraperCertLang.SelectedIndex = 0
-                    ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                        Dim tLanguage = APIXML.CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = .MovieScraperCertLang)
+                cbMovieScraperCertCountry.Items.Clear()
+                cbMovieScraperCertCountry.Items.Add(Master.eLang.All)
+                cbMovieScraperCertCountry.Items.AddRange((From lLang In Localization.Countries.Items Select lLang.Name).ToArray)
+                If cbMovieScraperCertCountry.Items.Count > 0 Then
+                    If .MovieScraperCertCountry = Master.eLang.All Then
+                        cbMovieScraperCertCountry.SelectedIndex = 0
+                    ElseIf Not String.IsNullOrEmpty(.MovieScraperCertCountry) Then
+                        Dim tLanguage = Localization.Countries.Items.FirstOrDefault(Function(l) l.Alpha2 = .MovieScraperCertCountry)
                         If tLanguage IsNot Nothing AndAlso tLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.Name) Then
-                            cbMovieScraperCertLang.Text = tLanguage.Name
+                            cbMovieScraperCertCountry.Text = tLanguage.Name
                         Else
-                            cbMovieScraperCertLang.SelectedIndex = 0
+                            cbMovieScraperCertCountry.SelectedIndex = 0
                         End If
                     Else
-                        cbMovieScraperCertLang.SelectedIndex = 0
+                        cbMovieScraperCertCountry.SelectedIndex = 0
                     End If
                 End If
             Catch ex As Exception
@@ -3524,21 +3524,21 @@ Public Class dlgSettings
             End Try
 
             Try
-                cbTVScraperShowCertLang.Items.Clear()
-                cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
-                cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertificationLanguages.Languages Select lLang.Name).ToArray)
-                If cbTVScraperShowCertLang.Items.Count > 0 Then
-                    If .TVScraperShowCertLang = Master.eLang.All Then
-                        cbTVScraperShowCertLang.SelectedIndex = 0
-                    ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
-                        Dim tLanguage = APIXML.CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVScraperShowCertLang)
+                cbTVScraperShowCertCountry.Items.Clear()
+                cbTVScraperShowCertCountry.Items.Add(Master.eLang.All)
+                cbTVScraperShowCertCountry.Items.AddRange((From lLang In Localization.Countries.Items Select lLang.Name).ToArray)
+                If cbTVScraperShowCertCountry.Items.Count > 0 Then
+                    If .TVScraperShowCertCountry = Master.eLang.All Then
+                        cbTVScraperShowCertCountry.SelectedIndex = 0
+                    ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertCountry) Then
+                        Dim tLanguage = Localization.Countries.Items.FirstOrDefault(Function(l) l.Alpha2 = .TVScraperShowCertCountry)
                         If tLanguage IsNot Nothing AndAlso tLanguage.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.Name) Then
-                            cbTVScraperShowCertLang.Text = tLanguage.Name
+                            cbTVScraperShowCertCountry.Text = tLanguage.Name
                         Else
-                            cbTVScraperShowCertLang.SelectedIndex = 0
+                            cbTVScraperShowCertCountry.SelectedIndex = 0
                         End If
                     Else
-                        cbTVScraperShowCertLang.SelectedIndex = 0
+                        cbTVScraperShowCertCountry.SelectedIndex = 0
                     End If
                 End If
             Catch ex As Exception
@@ -3963,7 +3963,7 @@ Public Class dlgSettings
         End Using
 
         LoadIntLangs()
-        LoadLangs()
+        LoadLanguages()
         LoadThemes()
         FillSettings()
         lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
@@ -4062,23 +4062,14 @@ Public Class dlgSettings
 
     Private Sub LoadIntLangs()
         cbGeneralLanguage.Items.Clear()
-        If Directory.Exists(Path.Combine(Functions.AppPath, "Langs")) Then
-            Dim alL As New List(Of String)
-            Dim alLangs As New List(Of String)
-            Try
-                alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
-            Catch
-            End Try
-            alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToList)
-            cbGeneralLanguage.Items.AddRange(alLangs.ToArray)
-        End If
+        cbGeneralLanguage.Items.AddRange(Master.eLang.Translations.Select(Function(f) f.Description).ToArray)
     End Sub
 
-    Private Sub LoadLangs()
+    Private Sub LoadLanguages()
         cbMovieLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbMovieLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+        cbMovieLanguageOverlay.Items.AddRange(Localization.Languages.Get_Languages_List.ToArray)
         cbTVLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbTVLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+        cbTVLanguageOverlay.Items.AddRange(Localization.Languages.Get_Languages_List.ToArray)
     End Sub
 
     Private Sub LoadMovieGeneralMediaListSorting()
@@ -4915,7 +4906,7 @@ Public Class dlgSettings
             Else
                 .GeneralImageFilterPosterMatchTolerance = 1
             End If
-            .GeneralLanguage = cbGeneralLanguage.Text
+            .GeneralLanguage = Master.eLang.Translations.FirstOrDefault(Function(f) f.Description = cbGeneralLanguage.Text).Language
             .GeneralNotificationAddedMovie = chkGeneralNotificationAdded_Movie.Checked
             .GeneralNotificationAddedMovieset = chkGeneralNotificationAdded_MovieSet.Checked
             .GeneralNotificationAddedTVEpisode = chkGeneralNotificationAdded_TVEpisode.Checked
@@ -5114,11 +5105,11 @@ Public Class dlgSettings
             .MovieScraperCertForMPAA = chkMovieScraperCertForMPAA.Checked
             .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
             .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
-            If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
-                If cbMovieScraperCertLang.SelectedIndex = 0 Then
-                    .MovieScraperCertLang = Master.eLang.All
+            If Not String.IsNullOrEmpty(cbMovieScraperCertCountry.Text) Then
+                If cbMovieScraperCertCountry.SelectedIndex = 0 Then
+                    .MovieScraperCertCountry = Master.eLang.All
                 Else
-                    .MovieScraperCertLang = APIXML.CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Name = cbMovieScraperCertLang.Text).Abbreviation
+                    .MovieScraperCertCountry = Localization.Countries.Items.FirstOrDefault(Function(l) l.Name = cbMovieScraperCertCountry.Text).Alpha2
                 End If
             End If
             .MovieScraperCleanFields = chkMovieScraperCleanFields.Checked
@@ -5309,11 +5300,11 @@ Public Class dlgSettings
             .TVScraperShowCertForMPAA = chkTVScraperShowCertForMPAA.Checked
             .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
             .TVScraperShowCertOnlyValue = chkTVScraperShowCertOnlyValue.Checked
-            If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then
-                If cbTVScraperShowCertLang.SelectedIndex = 0 Then
-                    .TVScraperShowCertLang = Master.eLang.All
+            If Not String.IsNullOrEmpty(cbTVScraperShowCertCountry.Text) Then
+                If cbTVScraperShowCertCountry.SelectedIndex = 0 Then
+                    .TVScraperShowCertCountry = Master.eLang.All
                 Else
-                    .TVScraperShowCertLang = APIXML.CertificationLanguages.Languages.FirstOrDefault(Function(l) l.Name = cbTVScraperShowCertLang.Text).Abbreviation
+                    .TVScraperShowCertCountry = Localization.Countries.Items.FirstOrDefault(Function(l) l.Name = cbTVScraperShowCertCountry.Text).Alpha2
                 End If
             End If
             .TVScraperShowEpiGuideURL = chkTVScraperShowEpiGuideURL.Checked
@@ -7901,7 +7892,7 @@ Public Class dlgSettings
         cbMovieKeyartPrefSize.SelectedIndexChanged,
         cbMovieLanguageOverlay.SelectedIndexChanged,
         cbMoviePosterPrefSize.SelectedIndexChanged,
-        cbMovieScraperCertLang.SelectedIndexChanged,
+        cbMovieScraperCertCountry.SelectedIndexChanged,
         cbMovieSetBannerPrefSize.SelectedIndexChanged,
         cbMovieSetFanartPrefSize.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,

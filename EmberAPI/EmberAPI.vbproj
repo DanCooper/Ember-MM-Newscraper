@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -245,11 +245,8 @@
     <Compile Include="XML Serialization\clsXMLSimpleMapping.vb" />
     <Compile Include="XML Serialization\clsXMLAdvancedSettings.vb" />
     <Compile Include="XML Serialization\clsXMLGenreMapping.vb" />
-    <Compile Include="XML Serialization\clsXMLLanguage.vb" />
-    <Compile Include="XML Serialization\clsXMLLanguageHelp.vb" />
-    <Compile Include="XML Serialization\clsXMLLanguages.vb" />
+    <Compile Include="XML Serialization\clsXmlTranslations.vb" />
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
-    <Compile Include="XML Serialization\clsXMLCertificationLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +283,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Defaults\Core.Languages.Scrapers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Translations\db-DB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Translations\en-US.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="DB\MyVideosDBSQL_v2_Patch.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -462,12 +469,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConverts.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Defaults\Core.Languages.Certifications.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Defaults\Core.Languages.Scrapers.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">

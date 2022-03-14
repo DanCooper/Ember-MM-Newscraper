@@ -129,7 +129,7 @@ Public Class Scraper
                                 Dim nTrailer As New MediaContainers.MediaFile With {
                                     .Duration = StringUtils.SecondsToDuration(Regex.Match(strDuration, "\d+").Value),
                                     .Language = If(Not String.IsNullOrEmpty(strLanguage), strLanguage, String.Empty),
-                                    .LongLanguage = If(Not String.IsNullOrEmpty(strLanguage), Localization.ISOGetLangByCode3(strLanguage), String.Empty),
+                                    .LongLanguage = If(Not String.IsNullOrEmpty(strLanguage), Localization.Languages.Get_Name_By_Alpha3(strLanguage), String.Empty),
                                     .Scraper = "Videobuster.de",
                                     .Source = "Videobuster.de",
                                     .Title = strTitle,

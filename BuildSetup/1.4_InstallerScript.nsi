@@ -14,15 +14,6 @@
   !include "WinVer.nsh"
 
 ;--------------------------------
-;define global used name
-  ;!define APP_NAME "Ember Media Manager"
-  ;!define emm_root ".."
-  ;!define emm_release "EmberMM - Release - x86"
-  ;!define emm_revision "1.4.0.0"
-  ;!define emm_branch "Master"
-  ;!define transifex_path ".\translations"
-
-;--------------------------------
 ;General
 
   ;Name and file
@@ -114,6 +105,7 @@ Section "Ember Media Manager" SecEmberMediaManager
   RMDir /r "$INSTDIR\Langs"
   RMDir /r "$INSTDIR\Modules"
   RMDir /r "$INSTDIR\Themes"
+  RMDir /r "$INSTDIR\Translations"
   RMDir /r "$INSTDIR\x64"
   RMDir /r "$INSTDIR\x86"
   
@@ -137,12 +129,12 @@ Section "Ember Media Manager" SecEmberMediaManager
   File /r /x *.so "${emm_root}\${emm_folder}\Defaults\*.*"
   SetOutPath "$INSTDIR\Images"
   File /r /x *.so "${emm_root}\${emm_folder}\Images\*.*"
-  SetOutPath "$INSTDIR\Langs"
-  File /r /x *.so "${emm_root}\${emm_folder}\Langs\*.*"
   SetOutPath "$INSTDIR\Modules"
   File /r /x *.so "${emm_root}\${emm_folder}\Modules\*.*"
   SetOutPath "$INSTDIR\Themes"
   File /r /x *.so "${emm_root}\${emm_folder}\Themes\*.*"
+  SetOutPath "$INSTDIR\Translations"
+  File /r /x *.so "${emm_root}\${emm_folder}\Translations\*.*"
   SetOutPath "$INSTDIR\x64"
   File /r /x *.so "${emm_root}\${emm_folder}\x64\*.*"
   SetOutPath "$INSTDIR\x86"
@@ -205,7 +197,7 @@ Section "Additional Languages" SecAddLangs
   ;SectionIn RO
   SectionIn 1 2 3 #section is in install type Portable/UserFolder/Minimal
   ;ADD YOUR OWN FILES HERE...
-  SetOutPath "$INSTDIR\Langs"
+  SetOutPath "$INSTDIR"
   File /r /x *.so "${emm_addlangpath}\*.*"
 SectionEnd
 
@@ -326,6 +318,7 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\Log"
   RMDir /r "$INSTDIR\Modules"
   RMDir /r "$INSTDIR\Themes"
+  RMDir /r "$INSTDIR\Translations"
   RMDir /r "$INSTDIR\x64"
   RMDir /r "$INSTDIR\x86"
 

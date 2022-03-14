@@ -95,7 +95,7 @@ Public Class clsXMLScraperLanguages
             Case File.Exists(strVersion1)
                 Dim objStreamReader = New StreamReader(strVersion1)
                 Try
-                    Languages = CType(New XmlSerializer(GetType(clsXMLScraperLanguagesOld1)).Deserialize(objStreamReader), clsXMLScraperLanguagesOld1).Languages
+                    Languages = CType(New XmlSerializer(GetType(clsXMLScraperLanguagesOld)).Deserialize(objStreamReader), clsXMLScraperLanguagesOld).Languages
                     objStreamReader.Close()
                     Save()
                     File.Delete(strVersion1)
@@ -167,7 +167,7 @@ End Class
 
 <XmlRoot("core.scraperlanguages")>
 <Obsolete("This class is only to load old versions of this XML")>
-Public Class clsXMLScraperLanguagesOld1
+Public Class clsXMLScraperLanguagesOld
 
 #Region "Properties"
 

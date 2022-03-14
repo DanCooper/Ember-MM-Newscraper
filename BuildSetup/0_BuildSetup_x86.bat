@@ -6,12 +6,11 @@ SET EMM_APPNAME=Ember Media Manager
 SET EMM_ROOT=%CD%\..
 SET EMM_FOLDER=EmberMM - Release - x86
 SET EMM_SYSTEM=x86
-SET EMM_REVISION=1.11.1
+SET EMM_REVISION=1.12.0
 SET EMM_BRANCH=Master
 SET EMM_SETUPFILE=%EMM_APPNAME% %EMM_REVISION% %EMM_SYSTEM%.exe
 SET EMM_OUTFILE=Builds\%EMM_SETUPFILE%
-SET EMM_ADDLANGPATH=.\translations
-CLS
+SET EMM_ADDLANGPATH=.\Transifex
 ECHO *******************************************
 ECHO *         Build Installer Script          *
 ECHO *         Ember Media Manager x86         *
@@ -24,11 +23,8 @@ ECHO *                                         *
 ECHO *******************************************
 ECHO *               by DanCooper              *
 ECHO *******************************************
-rem check if an Transifex account is existing
-IF NOT EXIST %HOMEPATH%\.transifexrc CALL txAccount.bat
 rem downloading additional language files from transifex
 CALL txDownload.bat
-CLS
 ECHO *******************************************
 ECHO *           Get NSIS EXE Path...          *
 ECHO *******************************************
@@ -66,8 +62,7 @@ ECHO *******************************************
     rem try with space delim instead of tab
     FOR /F "tokens=3* delims= " %%A IN ('REG QUERY "HKLM\Software\Wow6432Node\NSIS" /ve') DO SET NSISExePath=%%B
   )
-
-CLS
+ECHO UPPER ERRORS CAN BE IGNORED
 ECHO *******************************************
 ECHO *         Creating setup file...          *
 ECHO *             PLEASE WAIT                 *

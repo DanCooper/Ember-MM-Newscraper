@@ -46,7 +46,7 @@ Public Class dlgFIStreamEditor
         If stream_type = Master.eLang.GetString(595, "Video Streams") Then
             gbVideoStreams.Visible = True
             cbVideoCodec.Items.AddRange((From vCo In APIXML.Flags Where vCo.Type = APIXML.FlagType.VideoCodec AndAlso Not vCo.Name = "defaultscreen" Select vCo.Name).ToArray)
-            cbVideoLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+            cbVideoLanguage.Items.AddRange(Localization.Languages.Get_Languages_List.ToArray)
             If Not movie Is Nothing Then
                 cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
                 txtVideoAspect.Text = movie.StreamDetails.Video(idx).Aspect.ToString
@@ -70,7 +70,7 @@ Public Class dlgFIStreamEditor
         If stream_type = Master.eLang.GetString(596, "Audio Streams") Then
             gbAudioStreams.Visible = True
             cbAudioCodec.Items.AddRange((From aCo In APIXML.Flags Where aCo.Type = APIXML.FlagType.AudioCodec AndAlso Not aCo.Name = "defaultaudio" Select aCo.Name).ToArray)
-            cbAudioLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+            cbAudioLanguage.Items.AddRange(Localization.Languages.Get_Languages_List.ToArray)
             cbAudioChannels.Items.AddRange(New String() {"8", "7", "6", "2", "1"})
             If Not movie Is Nothing Then
                 cbAudioCodec.Text = movie.StreamDetails.Audio(idx).Codec
@@ -82,7 +82,7 @@ Public Class dlgFIStreamEditor
         If stream_type = Master.eLang.GetString(597, "Subtitle Streams") Then
             gbSubtitleStreams.Visible = True
 
-            cbSubtitleLanguage.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
+            cbSubtitleLanguage.Items.AddRange(Localization.Languages.Get_Languages_List.ToArray)
             If Not movie Is Nothing Then
                 cbSubtitleLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
                 chkSubtitleForced.Checked = movie.StreamDetails.Subtitle(idx).Forced
@@ -106,20 +106,20 @@ Public Class dlgFIStreamEditor
                 stream_v.MultiViewLayout = cbVideoMultiViewLayout.Text
                 stream_v.StereoMode = txtVideoStereoMode.Text
                 If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
-                If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.ISOLangGetCode3ByLang(cbVideoLanguage.SelectedItem.ToString)
+                If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = Localization.Languages.Get_Alpha3_T_By_Name(cbVideoLanguage.SelectedItem.ToString)
                 Return stream_v
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Streams") Then
                 stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, String.Empty, cbAudioCodec.SelectedItem.ToString)
                 If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
-                If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.ISOLangGetCode3ByLang(cbAudioLanguage.SelectedItem.ToString)
+                If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.Languages.Get_Alpha3_T_By_Name(cbAudioLanguage.SelectedItem.ToString)
                 stream_a.Channels = If(cbAudioChannels.SelectedItem Is Nothing, String.Empty, cbAudioChannels.SelectedItem.ToString)
                 stream_a.Bitrate = txtAudioBitrate.Text
                 Return stream_a
             End If
             If stream_type = Master.eLang.GetString(597, "Subtitle Streams") Then
-                If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubtitleLanguage.SelectedItem Is Nothing, "", cbSubtitleLanguage.SelectedItem.ToString)
-                If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.ISOLangGetCode3ByLang(cbSubtitleLanguage.SelectedItem.ToString)
+                If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubtitleLanguage.SelectedItem Is Nothing, String.Empty, cbSubtitleLanguage.SelectedItem.ToString)
+                If Not cbSubtitleLanguage.SelectedItem Is Nothing Then stream_s.Language = Localization.Languages.Get_Alpha3_T_By_Name(cbSubtitleLanguage.SelectedItem.ToString)
                 stream_s.Forced = chkSubtitleForced.Checked
                 stream_s.Path = txtSubtitlePath.Text
                 Return stream_s
@@ -130,11 +130,11 @@ Public Class dlgFIStreamEditor
         End If
     End Function
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged
+    Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbAudioCodec.SelectedIndexChanged
         'If cbAudioCodec.SelectedIndex >= 0 Then
         'Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(cbAudioCodec.SelectedItem, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.@searchstring
         'End If
@@ -162,11 +162,11 @@ Public Class dlgFIStreamEditor
     End Function
 
 
-    Private Sub dlgFIStreamEditor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgFIStreamEditor_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         SetUp()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         DialogResult = DialogResult.OK
     End Sub
 

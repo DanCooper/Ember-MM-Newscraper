@@ -18,12 +18,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.Xml.Serialization
-Imports System.Net
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports NLog
+Imports System.Drawing
+Imports System.IO
+Imports System.Net
+Imports System.Text.RegularExpressions
+Imports System.Windows.Forms
+Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("Settings")>
@@ -35,10 +36,14 @@ Public Class Settings
 
     Private _moviegenerallanguage As String = "en-US"
     Private _tvgenerallanguage As String = "en-US"
+    Private Const _settingsversion As UInteger = 1
 
 #End Region 'Fields
 
 #Region "Properties"
+
+    <XmlAttribute("version")>
+    Public Property Version As UInteger = 0
 
     Public Property CleanDotFanartJPG() As Boolean = False
     Public Property CleanExtrathumbs() As Boolean = False
@@ -147,7 +152,7 @@ Public Class Settings
     Public Property GeneralInfoPanelStateTVEpisode() As Integer = 2
     Public Property GeneralInfoPanelStateTVSeason() As Integer = 2
     Public Property GeneralInfoPanelStateTVShow() As Integer = 2
-    Public Property GeneralLanguage() As String = "English_(en_US)"
+    Public Property GeneralLanguage() As String = "en-US"
     Public Property GeneralMainFilterSortColumn_Episodes() As Integer = 1
     Public Property GeneralMainFilterSortColumn_MovieSets() As Integer = 1
     Public Property GeneralMainFilterSortColumn_Movies() As Integer = 3
@@ -350,9 +355,18 @@ Public Class Settings
     Public Property MovieScraperCastLimit() As Integer = 0
     Public Property MovieScraperCastWithImgOnly() As Boolean = False
     Public Property MovieScraperCert() As Boolean = False
+    Public Property MovieScraperCertCountry() As String = String.Empty
     Public Property MovieScraperCertForMPAA() As Boolean = False
     Public Property MovieScraperCertForMPAAFallback() As Boolean = False
+    <Obsolete("Use ""MovieScraperCertCountry"" instead")>
     Public Property MovieScraperCertLang() As String = String.Empty
+#Disable Warning BC40000 'The type or member is obsolete.
+    Public ReadOnly Property MovieScraperCertLangSpecified As Boolean
+        Get
+            Return Not String.IsNullOrEmpty(MovieScraperCertLang)
+        End Get
+    End Property
+#Enable Warning BC40000 'The type or member is obsolete.
     Public Property MovieScraperCertOnlyValue() As Boolean = False
     Public Property MovieScraperCleanFields() As Boolean = False
     Public Property MovieScraperCleanPlotOutline() As Boolean = False
@@ -652,9 +666,18 @@ Public Class Settings
     Public Property TVScraperShowActors() As Boolean = True
     Public Property TVScraperShowActorsLimit() As Integer = 0
     Public Property TVScraperShowCert() As Boolean = False
+    Public Property TVScraperShowCertCountry() As String = String.Empty
     Public Property TVScraperShowCertForMPAA() As Boolean = False
     Public Property TVScraperShowCertForMPAAFallback() As Boolean = False
+    <Obsolete("Use ""TVScraperShowCertCountry"" instead")>
     Public Property TVScraperShowCertLang() As String = String.Empty
+#Disable Warning BC40000 'The type or member is obsolete.
+    Public ReadOnly Property TVScraperShowCertLangSpecified As Boolean
+        Get
+            Return Not String.IsNullOrEmpty(TVScraperShowCertLang)
+        End Get
+    End Property
+#Enable Warning BC40000 'The type or member is obsolete.
     Public Property TVScraperShowCertOnlyValue() As Boolean = False
     Public Property TVScraperShowCountry() As Boolean = True
     Public Property TVScraperShowCountryLimit() As Integer = 0
@@ -775,7 +798,6 @@ Public Class Settings
     Public Property TVShowThemeKeepExisting() As Boolean = False
     Public Property TVSkipLessThan() As Integer = 0
     Public Property Username() As String = String.Empty
-    Public Property Version() As String = String.Empty
 
 #End Region 'Properties
 
@@ -1092,7 +1114,6 @@ Public Class Settings
 #Region "Methods"
 
     Public Sub Load()
-        'Cocotus, Load from central "Settings" folder if it exists!
         Dim configpath As String = Path.Combine(Master.SettingsPath, "Settings.xml")
 
         Try
@@ -1110,16 +1131,16 @@ Public Class Settings
                 Using srSettings As New StreamReader(configpath)
                     Dim sSettings As String = srSettings.ReadToEnd
                     'old Fanart/Poster sizes
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Xlrg<", "PrefSize>Any<")
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Lrg<", "PrefSize>Any<")
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Mid<", "PrefSize>Any<")
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefSize>Small<", "PrefSize>Any<")
+                    sSettings = Regex.Replace(sSettings, "PrefSize>Xlrg<", "PrefSize>Any<")
+                    sSettings = Regex.Replace(sSettings, "PrefSize>Lrg<", "PrefSize>Any<")
+                    sSettings = Regex.Replace(sSettings, "PrefSize>Mid<", "PrefSize>Any<")
+                    sSettings = Regex.Replace(sSettings, "PrefSize>Small<", "PrefSize>Any<")
                     'old Trailer Audio/Video quality
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
+                    sSettings = Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
                     'old allseasons/season/tvshow banner type
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
+                    sSettings = Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
                     'old seasonposter size HD1000
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>",
+                    sSettings = Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>",
                                                                              "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
 
                     Dim xXMLSettings As New XmlSerializer(GetType(Settings))
@@ -1137,7 +1158,10 @@ Public Class Settings
 
         SetDefaultsForLists(Enums.DefaultType.All, False)
 
-        ' Fix added to avoid to have no movie NFO saved
+        'Patch older settings files if needed
+        PatchSettings()
+
+        'Fix added to avoid to have no movie NFO saved
         If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
             Master.eSettings.MovieActorThumbsFrodo = True
@@ -1150,7 +1174,7 @@ Public Class Settings
             Master.eSettings.MovieScraperXBMCTrailerFormat = True
         End If
 
-        ' Fix added to avoid to have no tv show NFO saved
+        'Fix added to avoid to have no tv show NFO saved
         If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseExpert OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
             Master.eSettings.TVUseFrodo = True
             Master.eSettings.TVEpisodeActorThumbsFrodo = True
@@ -1168,7 +1192,40 @@ Public Class Settings
         End If
     End Sub
 
+    Private Sub PatchSettings()
+#Disable Warning BC40000 'The type or member is obsolete.
+        Dim needsSave As Boolean
+        If Master.eSettings.Version < 1 Then
+            'change "GeneralLanguage" from e.g. "English_(en_US)" to "en-US"
+            Dim currentLanguage = Regex.Match(Master.eSettings.GeneralLanguage, "\((.*)\)")
+            If currentLanguage.Success Then
+                If currentLanguage.Groups(1).Value.Length = 5 Then
+                    Master.eSettings.GeneralLanguage = currentLanguage.Groups(1).Value.Replace("_", "-")
+                Else
+                    Master.eSettings.GeneralLanguage = String.Format("{0}-{1}", currentLanguage.Groups(1).Value, currentLanguage.Groups(1).Value.ToUpper)
+                End If
+            ElseIf Not Master.eSettings.GeneralLanguage.Length = 5 Then
+                Master.eSettings.GeneralLanguage = GeneralLanguage
+            End If
+            'copy "MovieScraperCertLang" value to "MovieScraperCertCountry" and change it to upper case
+            If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperCertLang) Then
+                Master.eSettings.MovieScraperCertCountry = Master.eSettings.MovieScraperCertLang.ToUpper
+                Master.eSettings.MovieScraperCertLang = String.Empty
+            End If
+            'copy "TVScraperShowCertLang" value to "TVScraperShowCertCountry" and change it to upper case
+            If Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowCertLang) Then
+                Master.eSettings.TVScraperShowCertCountry = Master.eSettings.TVScraperShowCertLang.ToUpper
+                Master.eSettings.TVScraperShowCertLang = String.Empty
+            End If
+            needsSave = True
+        End If
+        If needsSave Then Master.eSettings.Save()
+#Enable Warning BC40000 'The type or member is obsolete.
+    End Sub
+
     Public Sub Save()
+        'set database version
+        Version = _settingsversion
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
             Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Settings.xml"))
@@ -1842,8 +1899,11 @@ Public Class Settings
 #Region "Properties"
 
         Public Property ContentType As Enums.ContentType = Enums.ContentType.None
+
         Public Property DefaultList As String = String.Empty
+
         Public Property Order As Integer = -1
+
         Public Property Title As String = String.Empty
 
 #End Region 'Properties
@@ -1852,73 +1912,17 @@ Public Class Settings
 
     Public Class MetadataPerType
 
-#Region "Fields"
-
-        Private _filetype As String
-        Private _metadata As MediaContainers.Fileinfo
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property FileType() As String
-            Get
-                Return _filetype
-            End Get
-            Set(ByVal value As String)
-                _filetype = value
-            End Set
-        End Property
+        Public Property FileType As String = String.Empty
 
-        Public Property MetaData() As MediaContainers.Fileinfo
-            Get
-                Return _metadata
-            End Get
-            Set(ByVal value As MediaContainers.Fileinfo)
-                _metadata = value
-            End Set
-        End Property
+        Public Property MetaData As MediaContainers.Fileinfo = New MediaContainers.Fileinfo
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _filetype = String.Empty
-            _metadata = New MediaContainers.Fileinfo
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
     Public Class ListSorting
-
-#Region "Fields"
-
-        Private _column As String
-        Private _displayindex As Integer
-        Private _hide As Boolean
-        Private _labelid As Integer
-        Private _labeltext As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
 
 #Region "Properties"
         ''' <summary>
@@ -1927,151 +1931,48 @@ Public Class Settings
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Column() As String
-            Get
-                Return _column
-            End Get
-            Set(ByVal value As String)
-                _column = value
-            End Set
-        End Property
+        Public Property Column As String = String.Empty
 
-        Public Property DisplayIndex() As Integer
-            Get
-                Return _displayindex
-            End Get
-            Set(ByVal value As Integer)
-                _displayindex = value
-            End Set
-        End Property
+        Public Property DisplayIndex As Integer = -1
         ''' <summary>
         ''' Hide or show column in media lists
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Hide() As Boolean
-            Get
-                Return _hide
-            End Get
-            Set(ByVal value As Boolean)
-                _hide = value
-            End Set
-        End Property
+        Public Property Hide As Boolean = False
         ''' <summary>
         ''' ID of string in Master.eLangs.GetString
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property LabelID() As Integer
-            Get
-                Return _labelid
-            End Get
-            Set(ByVal value As Integer)
-                _labelid = value
-            End Set
-        End Property
+        Public Property LabelID As UInteger = 1
         ''' <summary>
         ''' Default text for the LabelID in Master.eLangs.GetString
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property LabelText() As String
-            Get
-                Return _labeltext
-            End Get
-            Set(ByVal value As String)
-                _labeltext = value
-            End Set
-        End Property
+        Public Property LabelText As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _column = String.Empty
-            _displayindex = -1
-            _hide = False
-            _labelid = 1
-            _labeltext = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
     Public Class regexp
 
-#Region "Fields"
-
-        Private _bydate As Boolean
-        Private _defaultSeason As Integer
-        Private _id As Integer
-        Private _regexp As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
 #Region "Properties"
 
-        Public Property byDate() As Boolean
-            Get
-                Return _bydate
-            End Get
-            Set(ByVal value As Boolean)
-                _bydate = value
-            End Set
-        End Property
+        Public Property byDate As Boolean = False
 
-        Public Property defaultSeason() As Integer
-            Get
-                Return _defaultSeason
-            End Get
-            Set(ByVal value As Integer)
-                _defaultSeason = value
-            End Set
-        End Property
+        Public Property defaultSeason As Integer = -2 '-1 is reserved for "* All Seasons" entry 
 
-        Public Property ID() As Integer
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Integer)
-                _id = value
-            End Set
-        End Property
+        Public Property ID As Integer = -1
 
-        Public Property Regexp() As String
-            Get
-                Return _regexp
-            End Get
-            Set(ByVal value As String)
-                _regexp = value
-            End Set
-        End Property
+        Public Property Regexp As String = String.Empty
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _bydate = False
-            _defaultSeason = -2 '-1 is reserved for "* All Seasons" entry
-            _id = -1
-            _regexp = String.Empty
-        End Sub
-
-#End Region 'Methods
 
     End Class
 
