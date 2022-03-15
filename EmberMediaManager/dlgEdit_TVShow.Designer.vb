@@ -23,9 +23,9 @@ Partial Class dlgEdit_TVShow
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_TVShow))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.tblTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
@@ -853,13 +853,14 @@ Partial Class dlgEdit_TVShow
         'dtpPremiered
         '
         Me.dtpPremiered.Checked = False
-        Me.dtpPremiered.CustomFormat = "yyyy-dd-MM"
-        Me.dtpPremiered.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpPremiered.CustomFormat = ""
+        Me.dtpPremiered.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpPremiered.Location = New System.Drawing.Point(595, 3)
         Me.dtpPremiered.Name = "dtpPremiered"
         Me.dtpPremiered.ShowCheckBox = True
         Me.dtpPremiered.Size = New System.Drawing.Size(120, 22)
         Me.dtpPremiered.TabIndex = 6
+        Me.dtpPremiered.Value = New Date(2021, 1, 1, 0, 0, 0, 0)
         '
         'cbUserRating
         '
@@ -944,8 +945,8 @@ Partial Class dlgEdit_TVShow
         'colRatingsValue
         '
         Me.colRatingsValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle4
         Me.colRatingsValue.HeaderText = "Value"
         Me.colRatingsValue.Name = "colRatingsValue"
         Me.colRatingsValue.Width = 60
@@ -953,8 +954,8 @@ Partial Class dlgEdit_TVShow
         'colRatingsMax
         '
         Me.colRatingsMax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle5
         Me.colRatingsMax.HeaderText = "Max"
         Me.colRatingsMax.Name = "colRatingsMax"
         Me.colRatingsMax.Width = 53
@@ -962,8 +963,8 @@ Partial Class dlgEdit_TVShow
         'colRatingsVotes
         '
         Me.colRatingsVotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle6
         Me.colRatingsVotes.HeaderText = "Votes"
         Me.colRatingsVotes.Name = "colRatingsVotes"
         Me.colRatingsVotes.Width = 60

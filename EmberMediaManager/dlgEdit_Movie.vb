@@ -475,9 +475,12 @@ Public Class dlgEdit_Movie
             'Plot
             txtPlot.Text = .Plot
             'Premiered
-            If .PremieredSpecified Then
-                dtpPremiered.Text = .Premiered
+            Dim nDatePremiered As Date
+            If .PremieredSpecified AndAlso Date.TryParseExact(.Premiered, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, nDatePremiered) Then
+                dtpPremiered.Value = nDatePremiered
                 dtpPremiered.Checked = True
+            Else
+                dtpPremiered.Value = Date.Now
             End If
             'Ratings
             Ratings_Fill()
@@ -1795,21 +1798,33 @@ Public Class dlgEdit_Movie
                 Dim iVotes As Integer
                 If r.Cells(colRatingsSource.Name).Value IsNot Nothing AndAlso
                     Not String.IsNullOrEmpty(r.Cells(colRatingsSource.Name).Value.ToString.Trim) AndAlso
+                    r.Cells(colRatingsMax.Name).Value IsNot Nothing AndAlso
                     Integer.TryParse(r.Cells(colRatingsMax.Name).Value.ToString, iMax) AndAlso
+                    r.Cells(colRatingsValue.Name).Value IsNot Nothing AndAlso
                     Double.TryParse(r.Cells(colRatingsValue.Name).Value.ToString, dblValue) AndAlso
+                    r.Cells(colRatingsVotes.Name).Value IsNot Nothing AndAlso
                     Integer.TryParse(r.Cells(colRatingsVotes.Name).Value.ToString, iVotes) Then
                     nList.Add(New MediaContainers.RatingDetails With {
-                             .IsDefault = CBool(r.Cells(colRatingsDefault.Name).Value),
-                             .Max = iMax,
-                             .Type = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
-                             .Value = dblValue,
-                             .Votes = iVotes
-                             })
+                              .IsDefault = CBool(r.Cells(colRatingsDefault.Name).Value),
+                              .Max = iMax,
+                              .Type = r.Cells(colRatingsSource.Name).Value.ToString.Trim,
+                              .Value = dblValue,
+                              .Votes = iVotes
+                              })
                 End If
             End If
         Next
         Return nList
     End Function
+
+    Private Sub Ratings_DefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles dgvRatings.DefaultValuesNeeded
+        With e.Row
+            .Cells(colRatingsSource.Name).Value = String.Empty
+            .Cells(colRatingsValue.Name).Value = 0
+            .Cells(colRatingsMax.Name).Value = 0
+            .Cells(colRatingsVotes.Name).Value = 0
+        End With
+    End Sub
 
     Private Sub Subtitles_Delete()
         If lvSubtitles.SelectedItems.Count > 0 Then

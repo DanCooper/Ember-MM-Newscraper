@@ -351,6 +351,11 @@ Public Class dlgEdit_Movieset
 
         'Information part
         With tmpDBElement.MovieSet
+            'CollectionID
+            .UniqueIDs.Items.Add(New MediaContainers.Uniqueid With {
+                                 .IsDefault = True, .Type = "tmdb",
+                                 .Value = txtCollectionID.Text
+                                 })
             'Plot
             .Plot = txtPlot.Text.Trim
             'Title

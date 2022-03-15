@@ -671,13 +671,14 @@ Partial Class dlgEdit_TVEpisode
         'dtpAired
         '
         Me.dtpAired.Checked = False
-        Me.dtpAired.CustomFormat = "yyyy-dd-MM"
-        Me.dtpAired.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpAired.CustomFormat = ""
+        Me.dtpAired.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpAired.Location = New System.Drawing.Point(598, 3)
         Me.dtpAired.Name = "dtpAired"
         Me.dtpAired.ShowCheckBox = True
         Me.dtpAired.Size = New System.Drawing.Size(120, 22)
         Me.dtpAired.TabIndex = 13
+        Me.dtpAired.Value = New Date(2021, 1, 1, 0, 0, 0, 0)
         '
         'lblRuntime
         '
