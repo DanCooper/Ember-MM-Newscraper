@@ -3426,6 +3426,7 @@ Public Class Database
             Dim par_userNote As SQLiteParameter = sqlCommand.Parameters.Add("par_userNote", DbType.String, 0, "userNote")
             Dim par_edition As SQLiteParameter = sqlCommand.Parameters.Add("par_edition", DbType.String, 0, "edition")
 
+            'DateAdded
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso dbElement.Movie.DateAddedSpecified Then
                     Dim DateTimeAdded As Date = Date.ParseExact(dbElement.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -3476,6 +3477,7 @@ Public Class Database
                 dbElement.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            'DateModified
             Try
                 If Not dbElement.IDSpecified AndAlso dbElement.Movie.DateModifiedSpecified Then
                     Dim DateTimeDateModified As Date = Date.ParseExact(dbElement.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -3493,6 +3495,7 @@ Public Class Database
                 dbElement.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
+            'LastPlayed
             Dim DateTimeLastPlayedUnix As Double = -1
             If dbElement.Movie.LastPlayedSpecified Then
                 Try
@@ -5030,13 +5033,15 @@ Public Class Database
                         'secondly check if a movieset with the same name is already existing
                         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                             sqlCommand.CommandText = String.Concat("SELECT idSet, Plot ",
-                                                                       "FROM sets WHERE Title LIKE """, entry.Title, """;")
+                                                                       "FROM sets WHERE Title LIKE ?;")
+                            Dim par_Title As SQLiteParameter = sqlCommand.Parameters.Add("par_Title", DbType.String, 0, "Title")
+                            par_Title.Value = entry.Title
                             Using sqlReader As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If sqlReader.HasRows Then
                                     sqlReader.Read()
                                     If Not DBNull.Value.Equals(sqlReader("idSet")) Then entry.ID = CLng(sqlReader("idSet"))
                                     If Not DBNull.Value.Equals(sqlReader("Plot")) AndAlso
-                                                    Not String.IsNullOrEmpty(CStr(sqlReader("Plot"))) Then entry.Plot = CStr(sqlReader("Plot"))
+                                        Not String.IsNullOrEmpty(CStr(sqlReader("Plot"))) Then entry.Plot = CStr(sqlReader("Plot"))
                                     bIsNewSet = False
                                     NFO.SaveToNFO_Movie(dbElement, False) 'to save the "new" Title and/or Plot
                                 Else
@@ -5113,7 +5118,9 @@ Public Class Database
                         End Using
 
                         Using sqlCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            sqlCommand.CommandText = String.Concat("SELECT idSet, Title FROM sets WHERE Title Like """, entry.Title, """;")
+                            sqlCommand.CommandText = String.Concat("SELECT idSet, Title FROM sets WHERE Title Like ?;")
+                            Dim par_Title As SQLiteParameter = sqlCommand.Parameters.Add("par_Title", DbType.String, 0, "Title")
+                            par_Title.Value = entry.Title
                             Using rdrSets As SQLiteDataReader = sqlCommand.ExecuteReader()
                                 If rdrSets.Read Then
                                     entry.ID = Convert.ToInt64(rdrSets(0))
