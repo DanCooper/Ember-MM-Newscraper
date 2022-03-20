@@ -293,12 +293,14 @@ Namespace TVDBs
 
             'Rating
             If FilteredOptions.bMainRating Then
-                nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
-                                    .Max = 10,
-                                    .Type = "tvdb",
-                                    .Value = TVShowInfo.Series.Rating,
-                                    .Votes = TVShowInfo.Series.RatingCount
-                                    })
+                If TVShowInfo.Series.Rating > 0 AndAlso TVShowInfo.Series.RatingCount > 0 Then
+                    nTVShow.Ratings.Add(New MediaContainers.RatingDetails With {
+                                        .Max = 10,
+                                        .Type = "tvdb",
+                                        .Value = TVShowInfo.Series.Rating,
+                                        .Votes = TVShowInfo.Series.RatingCount
+                                        })
+                End If
             End If
 
             If bwTVDB.CancellationPending Then Return Nothing
@@ -537,12 +539,14 @@ Namespace TVDBs
 
             'Rating
             If FilteredOptions.bMainRating Then
-                nEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
-                                     .Max = 10,
-                                     .Type = "tvdb",
-                                     .Value = EpisodeInfo.Rating,
-                                     .Votes = EpisodeInfo.RatingCount
-                                     })
+                If EpisodeInfo.Rating > 0 AndAlso EpisodeInfo.RatingCount > 0 Then
+                    nEpisode.Ratings.Add(New MediaContainers.RatingDetails With {
+                                         .Max = 10,
+                                         .Type = "tvdb",
+                                         .Value = EpisodeInfo.Rating,
+                                         .Votes = EpisodeInfo.RatingCount
+                                         })
+                End If
             End If
 
             'ThumbPoster
