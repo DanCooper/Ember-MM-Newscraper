@@ -22,6 +22,7 @@ Imports EmberAPI
 Imports generic.Interface.Kodi.KodiInterface
 Imports NLog
 Imports XBMCRPC
+Imports System.Globalization
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Web
@@ -1191,7 +1192,7 @@ Namespace Kodi
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.Movie.Votes), mDBElement.Movie.Votes, Nothing)
                     If Master.eSettings.GeneralDigitGrpSymbolVotes Then
                         If mDBElement.Movie.VotesSpecified Then
-                            Dim vote As String = Double.Parse(mDBElement.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                            Dim vote As String = Double.Parse(mDBElement.Movie.Votes, CultureInfo.InvariantCulture).ToString("N0", CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
                                 mVotes = vote
                             End If
@@ -1200,7 +1201,7 @@ Namespace Kodi
 
                     'integer or 0
                     Dim mPlaycount As Integer = If(mDBElement.Movie.PlayCountSpecified, mDBElement.Movie.PlayCount, 0)
-                    Dim mRating As Double = If(mDBElement.Movie.RatingSpecified, CType(Double.Parse(mDBElement.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRating As Double = If(mDBElement.Movie.RatingSpecified, CType(Double.Parse(mDBElement.Movie.Rating, CultureInfo.InvariantCulture).ToString("N1", CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = 0
                     If mDBElement.Movie.RuntimeSpecified AndAlso Integer.TryParse(mDBElement.Movie.Runtime, 0) Then
                         mRuntime = CType(mDBElement.Movie.Runtime, Integer) * 60 'API requires runtime in seconds
@@ -1509,7 +1510,7 @@ Namespace Kodi
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.TVEpisode.Votes), mDBElement.TVEpisode.Votes, Nothing)
                     If Master.eSettings.GeneralDigitGrpSymbolVotes Then
                         If mDBElement.TVEpisode.VotesSpecified Then
-                            Dim vote As String = Double.Parse(mDBElement.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                            Dim vote As String = Double.Parse(mDBElement.TVEpisode.Votes, CultureInfo.InvariantCulture).ToString("N0", CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
                                 mVotes = vote
                             End If
@@ -1518,7 +1519,7 @@ Namespace Kodi
 
                     'integer or 0
                     Dim mPlaycount As Integer = If(mDBElement.TVEpisode.PlaycountSpecified, CType(mDBElement.TVEpisode.Playcount, Integer), 0)
-                    Dim mRating As Double = If(mDBElement.TVEpisode.RatingSpecified, CType(Double.Parse(mDBElement.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRating As Double = If(mDBElement.TVEpisode.RatingSpecified, CType(Double.Parse(mDBElement.TVEpisode.Rating, CultureInfo.InvariantCulture).ToString("N1", CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = 0
                     If mDBElement.TVEpisode.RuntimeSpecified AndAlso Integer.TryParse(mDBElement.TVEpisode.Runtime, 0) Then
                         mRuntime = CType(mDBElement.TVEpisode.Runtime, Integer) * 60 'API requires runtime in seconds
@@ -1788,7 +1789,7 @@ Namespace Kodi
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.TVShow.Votes), mDBElement.TVShow.Votes, Nothing)
                     If Master.eSettings.GeneralDigitGrpSymbolVotes Then
                         If mDBElement.TVShow.VotesSpecified Then
-                            Dim vote As String = Double.Parse(mDBElement.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                            Dim vote As String = Double.Parse(mDBElement.TVShow.Votes, CultureInfo.InvariantCulture).ToString("N0", CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
                                 mVotes = vote
                             End If
@@ -1796,7 +1797,7 @@ Namespace Kodi
                     End If
 
                     'integer or 0
-                    Dim mRating As Double = If(mDBElement.TVShow.RatingSpecified, CType(Double.Parse(mDBElement.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
+                    Dim mRating As Double = If(mDBElement.TVShow.RatingSpecified, CType(Double.Parse(mDBElement.TVShow.Rating, CultureInfo.InvariantCulture).ToString("N1", CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = If(mDBElement.TVShow.RuntimeSpecified, CType(mDBElement.TVShow.Runtime, Integer), 0)
                     Dim mUserRating As Integer = mDBElement.TVShow.UserRating
 

@@ -92,7 +92,7 @@ Public Class genericMediaListEditor
         SPanel.Prefix = "MediaListEditor_"
         SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1
-        SPanel.Image = My.Resources.FilterEditor
+        SPanel.Image = My.Resources.icon
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlMediaListEditor
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged

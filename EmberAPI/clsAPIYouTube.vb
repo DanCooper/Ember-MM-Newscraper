@@ -63,12 +63,10 @@ Namespace YouTube
             End Select
         End Function
 
-        Private Shared Function ConvertAudioCodec(ByVal codec As VideoLibrary.AudioFormat) As Enums.AudioCodec
+        Private Shared Function ConvertAudioCodec(ByVal codec As AudioFormat) As Enums.AudioCodec
             Select Case codec
                 Case AudioFormat.Aac
                     Return Enums.AudioCodec.AAC
-                Case AudioFormat.Mp3
-                    Return Enums.AudioCodec.MP3
                 Case AudioFormat.Opus
                     Return Enums.AudioCodec.Opus
                 Case AudioFormat.Vorbis
