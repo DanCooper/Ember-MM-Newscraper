@@ -2227,32 +2227,32 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("imdbid")>
-        Public Property IMDB() As String = String.Empty
+        Public Property IMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property IMDBSpecified() As Boolean
+        Public ReadOnly Property IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(IMDB)
+                Return Not String.IsNullOrEmpty(IMDbId)
             End Get
         End Property
 
         <XmlElement("tmdbid")>
-        Public Property TMDB() As String = String.Empty
+        Public Property TMDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TMDBSpecified() As Boolean
+        Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TMDB)
+                Return Not String.IsNullOrEmpty(TMDbId)
             End Get
         End Property
 
         <XmlElement("tvdbid")>
-        Public Property TVDB() As String = String.Empty
+        Public Property TVDbId() As String = String.Empty
 
         <XmlIgnore()>
-        Public ReadOnly Property TVDBSpecified() As Boolean
+        Public ReadOnly Property TVDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(TVDB)
+                Return Not String.IsNullOrEmpty(TVDbId)
             End Get
         End Property
 

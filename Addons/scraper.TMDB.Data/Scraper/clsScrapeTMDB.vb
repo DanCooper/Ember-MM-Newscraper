@@ -353,7 +353,7 @@ Public Class Scraper
                                       .Name = aCast.Name,
                                       .Role = aCast.Character,
                                       .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                      .TMDB = CStr(aCast.Id)
+                                      .TMDbId = CStr(aCast.Id)
                                       })
                 Next
             End If
@@ -673,7 +673,7 @@ Public Class Scraper
                                           .Name = aCast.Name,
                                           .Role = aCast.Character,
                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                          .TMDB = CStr(aCast.Id)})
+                                          .TMDbId = CStr(aCast.Id)})
                 Next
             End If
         End If
@@ -712,7 +712,7 @@ Public Class Scraper
                                               .Name = aCast.Name,
                                               .Role = aCast.Character,
                                               .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                              .TMDB = CStr(aCast.Id)
+                                              .TMDbId = CStr(aCast.Id)
                                               })
                 Next
             End If
@@ -913,7 +913,7 @@ Public Class Scraper
                                            .Name = aCast.Name,
                                            .Role = aCast.Character,
                                            .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_client.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                           .TMDB = CStr(aCast.Id)
+                                           .TMDbId = CStr(aCast.Id)
                                            })
                 Next
             End If

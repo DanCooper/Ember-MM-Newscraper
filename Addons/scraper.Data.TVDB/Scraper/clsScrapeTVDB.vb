@@ -215,7 +215,7 @@ Namespace TVDBs
                                            .Order = aCast.SortOrder,
                                            .Role = aCast.Role,
                                            .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                           .TVDB = CStr(aCast.Id)
+                                           .TVDbId = CStr(aCast.Id)
                                            })
                     Next
                 End If
@@ -474,7 +474,7 @@ Namespace TVDBs
                                             .Order = aCast.SortOrder,
                                             .Role = aCast.Role,
                                             .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                            .TVDB = CStr(aCast.Id)
+                                            .TVDbId = CStr(aCast.Id)
                                             })
                     Next
                 End If

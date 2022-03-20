@@ -138,7 +138,7 @@ Public Class Database
 
         Dim iOrder As Integer = 0
         For Each actor As MediaContainers.Person In cast
-            Dim idActor = Add_Actor(actor.Name, actor.URLOriginal, actor.LocalFilePath, actor.IMDB, actor.TMDB, True)
+            Dim idActor = Add_Actor(actor.Name, actor.URLOriginal, actor.LocalFilePath, actor.IMDbId, actor.TMDbId, True)
             Add_LinkToActor(table, idActor, field, idMedia, actor.Role, iOrder)
             iOrder += 1
         Next
@@ -203,7 +203,7 @@ Public Class Database
 
         Dim iOrder As Integer = 0
         For Each actor As MediaContainers.Person In cast
-            Dim idActor = Add_Actor(actor.Name, actor.URLOriginal, actor.LocalFilePath, actor.IMDB, actor.TMDB, True)
+            Dim idActor = Add_Actor(actor.Name, actor.URLOriginal, actor.LocalFilePath, actor.IMDbId, actor.TMDbId, True)
             Add_LinkToGuestStar(table, idActor, field, idMedia, actor.Role, iOrder)
             iOrder += 1
         Next
