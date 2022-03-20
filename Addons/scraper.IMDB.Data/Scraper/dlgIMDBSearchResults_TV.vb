@@ -113,7 +113,7 @@ Public Class dlgIMDBSearchResults_TV
             _InfoCache.Clear()
             _PosterCache.Clear()
             ClearInfo()
-            Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
+            lblLoading.Text = String.Concat(Master.eLang.GetString(758, "Please wait"), "...")
             pnlLoading.Visible = True
 
             chkManual.Enabled = False
@@ -359,7 +359,7 @@ Public Class dlgIMDBSearchResults_TV
         lblGenreHeader.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
         lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
         lblPlotHeader.Text = String.Concat(Master.eLang.GetString(65, "Plot"), ":")
-        Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
+        lblLoading.Text = String.Concat(Master.eLang.GetString(758, "Please wait"), "...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrLoad.Tick
@@ -369,7 +369,7 @@ Public Class dlgIMDBSearchResults_TV
         tmrWait.Stop()
         tmrLoad.Stop()
         pnlLoading.Visible = True
-        Label3.Text = Master.eLang.GetString(875, "Downloading details...")
+        lblLoading.Text = Master.eLang.GetString(875, "Downloading details...")
 
         _IMDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, pOpt)
     End Sub

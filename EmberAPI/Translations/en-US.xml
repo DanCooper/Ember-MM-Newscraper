@@ -756,7 +756,7 @@
   <string name="755">Episode #</string>
   <string name="756">Loading All Episodes:</string>
   <string name="757">Saving All Images:</string>
-  <string name="758">Searching TVDB</string>
+  <string name="758">Please wait</string>
   <string name="759">Select Images:</string>
   <string name="760">Downloading Show Zip:</string>
   <string name="761">Verifying TV Show Details:</string>
@@ -796,7 +796,7 @@
   <string name="795">Interface</string>
   <string name="796">Scan in order of last write time</string>
   <string name="797">Default Episode Ordering</string>
-  <string name="798">Searching IMDB...</string>
+  <string name="798"></string>
   <string name="799">The ID you entered is not a valid IMDB ID.</string>
   <string name="800">Preferred Quality:</string>
   <string name="801">TVDB Mirror</string>
@@ -932,7 +932,7 @@
   <string name="931">Open In Browser</string>
   <string name="932">TVDB API Key</string>
   <string name="933">TMDB ID</string>
-  <string name="934">Searching TMDB...</string>
+  <string name="934"></string>
   <string name="935">Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again.</string>
   <string name="936">Get your API Key from www.themoviedb.org</string>
   <string name="937">Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again.</string>

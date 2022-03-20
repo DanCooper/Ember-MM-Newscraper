@@ -107,7 +107,7 @@ Public Class dlgTVDBSearchResults
             _InfoCache.Clear()
             _PosterCache.Clear()
             ClearInfo()
-            Label3.Text = String.Concat(Master.eLang.GetString(758, "Searching TVDB"), "...")
+            lblLoading.Text = String.Concat(Master.eLang.GetString(758, "Please wait"), "...")
             pnlLoading.Visible = True
             chkManual.Enabled = False
             TVDB.CancelAsync()
@@ -328,7 +328,7 @@ Public Class dlgTVDBSearchResults
         lblGenreHeader.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
         lblTVDBHeader.Text = String.Concat(Master.eLang.GetString(941, "TVDB ID"), ":")
         lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Label3.Text = String.Concat(Master.eLang.GetString(758, "Searching TVDB"), "...")
+        lblLoading.Text = String.Concat(Master.eLang.GetString(758, "Please wait"), "...")
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrLoad.Tick
@@ -338,7 +338,7 @@ Public Class dlgTVDBSearchResults
         tmrWait.Stop()
         tmrLoad.Stop()
         pnlLoading.Visible = True
-        Label3.Text = Master.eLang.GetString(875, "Downloading details...")
+        lblLoading.Text = Master.eLang.GetString(875, "Downloading details...")
 
         TVDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpTVShow, pOpt)
     End Sub

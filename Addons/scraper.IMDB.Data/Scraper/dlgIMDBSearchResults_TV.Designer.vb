@@ -47,8 +47,8 @@ Partial Class dlgIMDBSearchResults_TV
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.pnlLoading = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.lblLoading = New System.Windows.Forms.Label()
+        Me.pbLoading = New System.Windows.Forms.ProgressBar()
         Me.pnlPicStatus = New System.Windows.Forms.Panel()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtFileName = New System.Windows.Forms.TextBox()
@@ -214,7 +214,7 @@ Partial Class dlgIMDBSearchResults_TV
         Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkManual.Location = New System.Drawing.Point(8, 433)
         Me.chkManual.Name = "chkManual"
-        Me.chkManual.Size = New System.Drawing.Size(128, 17)
+        Me.chkManual.Size = New System.Drawing.Size(127, 17)
         Me.chkManual.TabIndex = 6
         Me.chkManual.Text = "Manual IMDB Entry:"
         Me.chkManual.UseVisualStyleBackColor = True
@@ -236,7 +236,7 @@ Partial Class dlgIMDBSearchResults_TV
         Me.lblIMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblIMDBID.Location = New System.Drawing.Point(476, 277)
         Me.lblIMDBID.Name = "lblIMDBID"
-        Me.lblIMDBID.Size = New System.Drawing.Size(35, 13)
+        Me.lblIMDBID.Size = New System.Drawing.Size(34, 13)
         Me.lblIMDBID.TabIndex = 19
         Me.lblIMDBID.Text = "IMDB"
         Me.lblIMDBID.Visible = False
@@ -305,31 +305,31 @@ Partial Class dlgIMDBSearchResults_TV
         '
         Me.pnlLoading.BackColor = System.Drawing.Color.White
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlLoading.Controls.Add(Me.Label3)
-        Me.pnlLoading.Controls.Add(Me.ProgressBar1)
+        Me.pnlLoading.Controls.Add(Me.lblLoading)
+        Me.pnlLoading.Controls.Add(Me.pbLoading)
         Me.pnlLoading.Location = New System.Drawing.Point(368, 213)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 20
         '
-        'Label3
+        'lblLoading
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(3, 10)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(98, 13)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Searching IMDB..."
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblLoading.AutoSize = True
+        Me.lblLoading.Location = New System.Drawing.Point(3, 10)
+        Me.lblLoading.Name = "lblLoading"
+        Me.lblLoading.Size = New System.Drawing.Size(73, 13)
+        Me.lblLoading.TabIndex = 0
+        Me.lblLoading.Text = "Please wait..."
+        Me.lblLoading.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ProgressBar1
+        'pbLoading
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 1
+        Me.pbLoading.Location = New System.Drawing.Point(3, 32)
+        Me.pbLoading.MarqueeAnimationSpeed = 25
+        Me.pbLoading.Name = "pbLoading"
+        Me.pbLoading.Size = New System.Drawing.Size(192, 17)
+        Me.pbLoading.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbLoading.TabIndex = 1
         '
         'pnlPicStatus
         '
@@ -442,8 +442,8 @@ Partial Class dlgIMDBSearchResults_TV
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents lblLoading As System.Windows.Forms.Label
+    Friend WithEvents pbLoading As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlPicStatus As System.Windows.Forms.Panel
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtFileName As System.Windows.Forms.TextBox
