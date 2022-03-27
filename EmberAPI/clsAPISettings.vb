@@ -1201,6 +1201,12 @@ Public Class Settings
             If currentLanguage.Success Then
                 If currentLanguage.Groups(1).Value.Length = 5 Then
                     Master.eSettings.GeneralLanguage = currentLanguage.Groups(1).Value.Replace("_", "-")
+                ElseIf currentLanguage.Groups(1).Value = "ch" Then
+                    'change "ch" to "ch-CN"
+                    Master.eSettings.GeneralLanguage = "ch-CN"
+                ElseIf currentLanguage.Groups(1).Value = "cs" Then
+                    'change "cs" to "cs-CZ"
+                    Master.eSettings.GeneralLanguage = "cs-CZ"
                 Else
                     Master.eSettings.GeneralLanguage = String.Format("{0}-{1}", currentLanguage.Groups(1).Value, currentLanguage.Groups(1).Value.ToUpper)
                 End If

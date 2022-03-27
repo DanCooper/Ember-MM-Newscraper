@@ -2856,7 +2856,14 @@ Public Class dlgSettings
             btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
             cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
             cbGeneralDateTime.SelectedValue = .GeneralDateTime
-            cbGeneralLanguage.SelectedItem = Master.eLang.Translations.FirstOrDefault(Function(f) f.Language = .GeneralLanguage).Description
+            Dim GeneralLanguage = Master.eLang.Translations.FirstOrDefault(Function(f) f.Language = .GeneralLanguage)
+            If GeneralLanguage IsNot Nothing Then
+                cbGeneralLanguage.SelectedItem = GeneralLanguage.Description
+            Else
+                'Translation does no longer exists, switch to default "en-US"
+                Master.eSettings.GeneralLanguage = "en-US"
+                cbGeneralLanguage.SelectedItem = Master.eLang.Translations.FirstOrDefault(Function(f) f.Language = "en-US").Description
+            End If
             cbGeneralTheme.SelectedItem = .GeneralTheme
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
