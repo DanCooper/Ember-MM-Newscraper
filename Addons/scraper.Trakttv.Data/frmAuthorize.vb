@@ -22,10 +22,6 @@ Imports EmberAPI
 
 Public Class frmAuthorize
 
-#Region "Fields"
-
-#End Region 'Fields
-
 #Region "Properties"
 
     Public ReadOnly Property Result As String
@@ -36,12 +32,12 @@ Public Class frmAuthorize
 
 #End Region 'Properties
 
-#Region "Methods"
+#Region "Dialog Methods"
 
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        SetUp()
+        Setup()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
@@ -52,6 +48,17 @@ Public Class frmAuthorize
         Return ShowDialog()
     End Function
 
+    Private Sub Setup()
+        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnOpen.Text = Master.eLang.GetString(931, "Open In Browser")
+        lblInfo.Text = Master.eLang.GetString(1141, "The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.")
+        lblPIN.Text = Master.eLang.GetString(1142, "PIN Code")
+    End Sub
+
+#End Region 'Dialog Methods
+
+#Region "Methods"
+
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         DialogResult = DialogResult.OK
     End Sub
@@ -59,13 +66,6 @@ Public Class frmAuthorize
     Private Sub btnOpen_Click(sender As Object, e As EventArgs) Handles btnOpen.Click
         Functions.Launch(txtAutorizeURL.Text.Trim)
         txtPIN.Focus()
-    End Sub
-
-    Private Sub SetUp()
-        btnOK.Text = Master.eLang.GetString(179, "OK")
-        btnOpen.Text = Master.eLang.GetString(931, "Open In Browser")
-        lblInfo.Text = Master.eLang.GetString(1141, "The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.")
-        lblPIN.Text = Master.eLang.GetString(1142, "PIN Code")
     End Sub
 
     Private Sub txtAutorizeURL_Click(sender As Object, e As EventArgs) Handles txtAutorizeURL.Click

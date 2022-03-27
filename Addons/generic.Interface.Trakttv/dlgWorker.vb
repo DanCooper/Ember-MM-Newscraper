@@ -20,7 +20,7 @@
 
 Imports EmberAPI
 Imports NLog
-Imports TraktApiSharp
+Imports TraktNet
 
 Public Class dlgWorker
 
@@ -74,7 +74,7 @@ Public Class dlgWorker
         Dim iItemsSynced As Integer
         Select Case _contenttype
             Case Enums.ContentType.Movie
-                Dim lstWatchedMovies As IEnumerable(Of Objects.Get.Watched.TraktWatchedMovie) = Nothing
+                Dim lstWatchedMovies As IEnumerable(Of Objects.Get.Watched.ITraktWatchedMovie) = Nothing
                 bwGetWatchedState.ReportProgress(1)
                 lstWatchedMovies = _client.GetWatched_Movies
                 If bwGetWatchedState.CancellationPending Then
@@ -123,7 +123,7 @@ Public Class dlgWorker
                     bwGetWatchedState.ReportProgress(9)
                 End If
             Case Enums.ContentType.TVEpisode
-                Dim lstWatchedShows As IEnumerable(Of Objects.Get.Watched.TraktWatchedShow) = Nothing
+                Dim lstWatchedShows As IEnumerable(Of Objects.Get.Watched.ITraktWatchedShow) = Nothing
                 bwGetWatchedState.ReportProgress(1)
                 lstWatchedShows = _client.GetWatched_TVShows
                 If bwGetWatchedState.CancellationPending Then
@@ -145,7 +145,7 @@ Public Class dlgWorker
                                                                        (nWatchedShow.Show.Ids.Tmdb IsNot Nothing AndAlso f.TVShow.UniqueIDs.TMDbId = CInt(nWatchedShow.Show.Ids.Tmdb)) OrElse
                                                                        (nWatchedShow.Show.Ids.Tvdb IsNot Nothing AndAlso f.TVShow.UniqueIDs.TVDbId = CInt(nWatchedShow.Show.Ids.Tvdb)))
                             If lstDBTVShow IsNot Nothing Then
-                                For Each nWatchedSeason In nWatchedShow.Seasons
+                                For Each nWatchedSeason In nWatchedShow.WatchedSeasons
                                     For Each nWatchedEpisode In nWatchedSeason.Episodes
                                         If bwGetWatchedState.CancellationPending Then
                                             e.Result = New Results With {.Cancelled = bwGetWatchedState.CancellationPending}

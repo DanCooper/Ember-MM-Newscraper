@@ -29,18 +29,14 @@ Public Class frmSettingsHolder
 
 #End Region 'Events
 
-#Region "Methods"
-
-    Private Sub chkTraktEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
-    End Sub
+#Region "Dialog Methods"
 
     Public Sub New()
         InitializeComponent()
-        SetUp()
+        Setup()
     End Sub
 
-    Private Sub SetUp()
+    Private Sub Setup()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         chkGetWatchedStateBeforeEdit_Movie.Text = Master.eLang.GetString(1055, "Before Edit")
         chkGetWatchedStateBeforeEdit_TVEpisode.Text = Master.eLang.GetString(1055, "Before Edit")
@@ -51,6 +47,14 @@ Public Class frmSettingsHolder
         gbGetWatchedState.Text = Master.eLang.GetString(1070, "Get Watched State")
         gbGetWatchedStateMovies.Text = Master.eLang.GetString(36, "Movies")
         gbGetWatchedStateTVEpisodes.Text = Master.eLang.GetString(682, "Episodes")
+    End Sub
+
+#End Region 'Dialog Methods
+
+#Region "Methods"
+
+    Private Sub chkTraktEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
 
     Private Sub EnableApplyButton() Handles _

@@ -29,14 +29,27 @@ Public Class frmSettingsHolder_Movie
 
 #End Region 'Events
 
-#Region "Methods"
+#Region "Dialog Methods"
 
     Public Sub New()
         InitializeComponent()
-        SetUp()
+        Setup()
     End Sub
 
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+    Private Sub Setup()
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkRating.Text = Master.eLang.GetString(400, "Rating")
+        chkUserRating.Text = Master.eLang.GetString(1467, "User Rating")
+        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+    End Sub
+
+#End Region 'Dialog Methods
+
+#Region "Methods"
+
+    Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = Addon._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
@@ -46,7 +59,7 @@ Public Class frmSettingsHolder_Movie
         End If
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+    Private Sub btnUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUp.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = Addon._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
@@ -73,15 +86,6 @@ Public Class frmSettingsHolder_Movie
             btnDown.Enabled = False
             btnUp.Enabled = False
         End If
-    End Sub
-
-    Private Sub SetUp()
-        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        chkRating.Text = Master.eLang.GetString(400, "Rating")
-        chkUserRating.Text = Master.eLang.GetString(1467, "User Rating")
-        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

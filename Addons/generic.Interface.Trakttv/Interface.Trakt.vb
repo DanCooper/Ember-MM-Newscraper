@@ -23,7 +23,6 @@ Imports NLog
 Imports System.Drawing
 Imports System.IO
 Imports System.Xml.Serialization
-Imports TraktApiSharp
 
 Public Class Addon
     Implements Interfaces.GenericModule
@@ -171,7 +170,7 @@ Public Class Addon
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Sub Disable()
+    Private Sub Disable()
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools
@@ -183,7 +182,7 @@ Public Class Addon
         RemoveToolStripItem(tsi, cmnuTrayToolsTrakt)
     End Sub
 
-    Sub Enable()
+    Private Sub Enable()
         _TraktAPI.CreateAPI(_AddonSettings, "77bfb26ae2b5e2217151bbb3a20309dbd5e638c5a85e17505457edd14c6399fa", "240bd5554e2c8065dfe3cf7027b292193a113d96106a5f04a0b088f9d2371757")
         PopulateMenus()
     End Sub
@@ -696,225 +695,7 @@ Public Class Addon
 #End Region 'Properties
 
     End Class
-    ''' <summary>
-    ''' structure used to read setting file of Kodi Interface
-    ''' </summary>
-    ''' <remarks></remarks>
-    <Serializable()>
-    <XmlRoot("interface.kodi")>
-    Class KodiSettings
-
-#Region "Fields"
-
-        Private _hosts As New List(Of Host)
-        Private _sendnotifications As Boolean
-        Private _syncplaycounts As Boolean
-        Private _syncplaycountshost As String
-
-#End Region 'Fields
-
-#Region "Properties"
-
-        <XmlElement("sendnotifications")>
-        Public Property SendNotifications() As Boolean
-            Get
-                Return _sendnotifications
-            End Get
-            Set(ByVal value As Boolean)
-                _sendnotifications = value
-            End Set
-        End Property
-
-        <XmlElement("syncplaycounts")>
-        Public Property SyncPlayCounts() As Boolean
-            Get
-                Return _syncplaycounts
-            End Get
-            Set(ByVal value As Boolean)
-                _syncplaycounts = value
-            End Set
-        End Property
-
-        <XmlElement("syncplaycountshost")>
-        Public Property SyncPlayCountsHost() As String
-            Get
-                Return _syncplaycountshost
-            End Get
-            Set(ByVal value As String)
-                _syncplaycountshost = value
-            End Set
-        End Property
-
-        <XmlElement("host")>
-        Public Property Hosts() As List(Of Host)
-            Get
-                Return _hosts
-            End Get
-            Set(ByVal value As List(Of Host))
-                _hosts = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-    End Class
-
-    <Serializable()>
-    Class Host
-
-#Region "Fields"
-
-        Private _address As String
-        Private _label As String
-        Private _moviesetartworkspath As String
-        Private _password As String
-        Private _port As Integer
-        Private _realtimesync As Boolean
-        Private _sources As New List(Of Source)
-        Private _username As String
-
-#End Region 'Fields
-
-#Region "Properties"
-
-        <XmlElement("label")>
-        Public Property Label() As String
-            Get
-                Return _label
-            End Get
-            Set(ByVal value As String)
-                _label = value
-            End Set
-        End Property
-
-        <XmlElement("address")>
-        Public Property Address() As String
-            Get
-                Return _address
-            End Get
-            Set(ByVal value As String)
-                _address = value
-            End Set
-        End Property
-
-        <XmlElement("port")>
-        Public Property Port() As Integer
-            Get
-                Return _port
-            End Get
-            Set(ByVal value As Integer)
-                _port = value
-            End Set
-        End Property
-
-        <XmlElement("username")>
-        Public Property Username() As String
-            Get
-                Return _username
-            End Get
-            Set(ByVal value As String)
-                _username = value
-            End Set
-        End Property
-
-        <XmlElement("password")>
-        Public Property Password() As String
-            Get
-                Return _password
-            End Get
-            Set(ByVal value As String)
-                _password = value
-            End Set
-        End Property
-
-        <XmlElement("realtimesync")>
-        Public Property RealTimeSync() As Boolean
-            Get
-                Return _realtimesync
-            End Get
-            Set(ByVal value As Boolean)
-                _realtimesync = value
-            End Set
-        End Property
-
-        <XmlElement("moviesetartworkspath")>
-        Public Property MovieSetArtworksPath() As String
-            Get
-                Return _moviesetartworkspath
-            End Get
-            Set(ByVal value As String)
-                _moviesetartworkspath = value
-            End Set
-        End Property
-
-        <XmlElement("source")>
-        Public Property Sources() As List(Of Source)
-            Get
-                Return _sources
-            End Get
-            Set(ByVal value As List(Of Source))
-                _sources = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-    End Class
-
-
-    <Serializable()>
-    Class Source
-
-#Region "Fields"
-
-        Private _contenttype As Enums.ContentType
-        Private _localpath As String
-        Private _remotepath As String
-
-#End Region 'Fields
-
-#Region "Properties"
-
-        <XmlElement("contenttype")>
-        Public Property ContentType() As Enums.ContentType
-            Get
-                Return _contenttype
-            End Get
-            Set(ByVal value As Enums.ContentType)
-                _contenttype = value
-            End Set
-        End Property
-
-        <XmlElement("localpath")>
-        Public Property LocalPath() As String
-            Get
-                Return _localpath
-            End Get
-            Set(ByVal value As String)
-                _localpath = value
-            End Set
-        End Property
-
-        <XmlElement("remotepath")>
-        Public Property RemotePath() As String
-            Get
-                Return _remotepath
-            End Get
-            Set(ByVal value As String)
-                _remotepath = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-    End Class
 
 #End Region 'Nested Types
 
 End Class
-
-
-
-
-
-

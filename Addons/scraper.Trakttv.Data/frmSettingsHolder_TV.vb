@@ -29,9 +29,31 @@ Public Class frmSettingsHolder_TV
 
 #End Region 'Events
 
+#Region "Dialog Methods"
+
+    Public Sub New()
+        InitializeComponent()
+        Setup()
+    End Sub
+
+    Private Sub Setup()
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
+        chkScraperEpisodeUserRating.Text = Master.eLang.GetString(1467, "User Rating")
+        chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        chkScraperShowUserRating.Text = Master.eLang.GetString(1467, "User Rating")
+        gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
+        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+    End Sub
+
+#End Region 'Dialog Methods
+
 #Region "Methods"
 
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+    Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = Addon._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Data_TV.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
@@ -41,7 +63,7 @@ Public Class frmSettingsHolder_TV
         End If
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+    Private Sub btnUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUp.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = Addon._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
@@ -51,7 +73,7 @@ Public Class frmSettingsHolder_TV
         End If
     End Sub
 
-    Private Sub bEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub bEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
@@ -63,11 +85,6 @@ Public Class frmSettingsHolder_TV
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Public Sub New()
-        InitializeComponent()
-        SetUp()
-    End Sub
-
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = Addon._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_Data_TV.Count > 1 Then
@@ -77,19 +94,6 @@ Public Class frmSettingsHolder_TV
             btnDown.Enabled = False
             btnUp.Enabled = False
         End If
-    End Sub
-
-    Private Sub SetUp()
-        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
-        chkScraperEpisodeUserRating.Text = Master.eLang.GetString(1467, "User Rating")
-        chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
-        chkScraperShowUserRating.Text = Master.eLang.GetString(1467, "User Rating")
-        gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
-        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
-        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods
