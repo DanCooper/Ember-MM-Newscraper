@@ -575,8 +575,8 @@ Public Class FileFolderRenamer
 
         'MovieSets
         If _DBElement.Movie.SetsSpecified Then
-            MovieFile.Collection = _DBElement.Movie.Sets.Item(0).Title
-            MovieFile.CollectionListTitle = StringUtils.SortTokens(_DBElement.Movie.Sets.Item(0).Title)
+            MovieFile.Collection = _DBElement.Movie.Sets.Items(0).Title
+            MovieFile.CollectionListTitle = StringUtils.SortTokens(_DBElement.Movie.Sets.Items(0).Title)
         End If
 
         'MPAA

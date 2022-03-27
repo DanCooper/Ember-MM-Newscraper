@@ -24,11 +24,11 @@ Partial Class dlgEdit_Movie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit_Movie))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -106,7 +106,7 @@ Partial Class dlgEdit_Movie
         Me.dgvCountries = New System.Windows.Forms.DataGridView()
         Me.colCountriesName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.cbMovieset = New System.Windows.Forms.ComboBox()
-        Me.lblMovieSet = New System.Windows.Forms.Label()
+        Me.lblMovieset = New System.Windows.Forms.Label()
         Me.lblStudios = New System.Windows.Forms.Label()
         Me.dgvStudios = New System.Windows.Forms.DataGridView()
         Me.colStudiosName = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -135,6 +135,8 @@ Partial Class dlgEdit_Movie
         Me.cbTags = New System.Windows.Forms.ComboBox()
         Me.lbGenres = New System.Windows.Forms.ListBox()
         Me.lbTags = New System.Windows.Forms.ListBox()
+        Me.lblMoviesetAdditional = New System.Windows.Forms.Label()
+        Me.clbMoviesets = New System.Windows.Forms.CheckedListBox()
         Me.tpCastCrew = New System.Windows.Forms.TabPage()
         Me.tblCastCrew = New System.Windows.Forms.TableLayoutPanel()
         Me.lblActors = New System.Windows.Forms.Label()
@@ -950,8 +952,8 @@ Partial Class dlgEdit_Movie
         'colRatingsValue
         '
         Me.colRatingsValue.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsValue.DefaultCellStyle = DataGridViewCellStyle1
         Me.colRatingsValue.HeaderText = "Value"
         Me.colRatingsValue.Name = "colRatingsValue"
         Me.colRatingsValue.Width = 60
@@ -959,8 +961,8 @@ Partial Class dlgEdit_Movie
         'colRatingsMax
         '
         Me.colRatingsMax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsMax.DefaultCellStyle = DataGridViewCellStyle2
         Me.colRatingsMax.HeaderText = "Max"
         Me.colRatingsMax.Name = "colRatingsMax"
         Me.colRatingsMax.Width = 53
@@ -968,8 +970,8 @@ Partial Class dlgEdit_Movie
         'colRatingsVotes
         '
         Me.colRatingsVotes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colRatingsVotes.DefaultCellStyle = DataGridViewCellStyle3
         Me.colRatingsVotes.HeaderText = "Votes"
         Me.colRatingsVotes.Name = "colRatingsVotes"
         Me.colRatingsVotes.Width = 60
@@ -1110,6 +1112,7 @@ Partial Class dlgEdit_Movie
         '
         'tblDetails2
         '
+        Me.tblDetails2.AutoScroll = True
         Me.tblDetails2.AutoSize = True
         Me.tblDetails2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.tblDetails2.ColumnCount = 7
@@ -1126,46 +1129,42 @@ Partial Class dlgEdit_Movie
         Me.tblDetails2.Controls.Add(Me.dtpDateAdded_Date, 1, 0)
         Me.tblDetails2.Controls.Add(Me.chkWatched, 0, 1)
         Me.tblDetails2.Controls.Add(Me.dtpLastPlayed_Date, 1, 1)
-        Me.tblDetails2.Controls.Add(Me.lblCountries, 0, 5)
-        Me.tblDetails2.Controls.Add(Me.dgvCountries, 1, 5)
+        Me.tblDetails2.Controls.Add(Me.lblCountries, 0, 7)
+        Me.tblDetails2.Controls.Add(Me.dgvCountries, 1, 7)
         Me.tblDetails2.Controls.Add(Me.cbMovieset, 1, 4)
-        Me.tblDetails2.Controls.Add(Me.lblMovieSet, 0, 4)
-        Me.tblDetails2.Controls.Add(Me.lblStudios, 4, 5)
-        Me.tblDetails2.Controls.Add(Me.dgvStudios, 5, 5)
+        Me.tblDetails2.Controls.Add(Me.lblMovieset, 0, 4)
+        Me.tblDetails2.Controls.Add(Me.lblStudios, 4, 7)
+        Me.tblDetails2.Controls.Add(Me.dgvStudios, 5, 7)
         Me.tblDetails2.Controls.Add(Me.lblTVShowLinks, 4, 0)
         Me.tblDetails2.Controls.Add(Me.clbTVShowLinks, 5, 0)
-        Me.tblDetails2.Controls.Add(Me.lblGenres, 0, 7)
-        Me.tblDetails2.Controls.Add(Me.lblTags, 4, 7)
+        Me.tblDetails2.Controls.Add(Me.lblGenres, 0, 9)
+        Me.tblDetails2.Controls.Add(Me.lblTags, 4, 9)
         Me.tblDetails2.Controls.Add(Me.dtpDateAdded_Time, 2, 0)
         Me.tblDetails2.Controls.Add(Me.dtpLastPlayed_Time, 2, 1)
-        Me.tblDetails2.Controls.Add(Me.lblUniqueIds, 0, 13)
-        Me.tblDetails2.Controls.Add(Me.dgvUniqueIds, 1, 13)
+        Me.tblDetails2.Controls.Add(Me.lblUniqueIds, 0, 15)
+        Me.tblDetails2.Controls.Add(Me.dgvUniqueIds, 1, 15)
         Me.tblDetails2.Controls.Add(Me.lblEdition, 0, 3)
         Me.tblDetails2.Controls.Add(Me.cbEdition, 1, 3)
-        Me.tblDetails2.Controls.Add(Me.btnGenres_Add, 0, 8)
-        Me.tblDetails2.Controls.Add(Me.btnGenres_Remove, 0, 9)
-        Me.tblDetails2.Controls.Add(Me.btnGenres_Up, 0, 10)
-        Me.tblDetails2.Controls.Add(Me.btnGenres_Down, 0, 11)
-        Me.tblDetails2.Controls.Add(Me.cbGenres, 1, 12)
-        Me.tblDetails2.Controls.Add(Me.btnTags_Add, 4, 8)
-        Me.tblDetails2.Controls.Add(Me.btnTags_Remove, 4, 9)
-        Me.tblDetails2.Controls.Add(Me.btnTags_Up, 4, 10)
-        Me.tblDetails2.Controls.Add(Me.btnTags_Down, 4, 11)
-        Me.tblDetails2.Controls.Add(Me.cbTags, 5, 12)
-        Me.tblDetails2.Controls.Add(Me.lbGenres, 1, 7)
-        Me.tblDetails2.Controls.Add(Me.lbTags, 5, 7)
+        Me.tblDetails2.Controls.Add(Me.btnGenres_Add, 0, 10)
+        Me.tblDetails2.Controls.Add(Me.btnGenres_Remove, 0, 11)
+        Me.tblDetails2.Controls.Add(Me.btnGenres_Up, 0, 12)
+        Me.tblDetails2.Controls.Add(Me.btnGenres_Down, 0, 13)
+        Me.tblDetails2.Controls.Add(Me.cbGenres, 1, 14)
+        Me.tblDetails2.Controls.Add(Me.btnTags_Add, 4, 10)
+        Me.tblDetails2.Controls.Add(Me.btnTags_Remove, 4, 11)
+        Me.tblDetails2.Controls.Add(Me.btnTags_Up, 4, 12)
+        Me.tblDetails2.Controls.Add(Me.btnTags_Down, 4, 13)
+        Me.tblDetails2.Controls.Add(Me.cbTags, 5, 14)
+        Me.tblDetails2.Controls.Add(Me.lbGenres, 1, 9)
+        Me.tblDetails2.Controls.Add(Me.lbTags, 5, 9)
+        Me.tblDetails2.Controls.Add(Me.lblMoviesetAdditional, 0, 5)
+        Me.tblDetails2.Controls.Add(Me.clbMoviesets, 1, 5)
         Me.tblDetails2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblDetails2.Location = New System.Drawing.Point(0, 0)
         Me.tblDetails2.Name = "tblDetails2"
-        Me.tblDetails2.RowCount = 16
+        Me.tblDetails2.RowCount = 18
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -1173,8 +1172,15 @@ Partial Class dlgEdit_Movie
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
         Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetails2.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetails2.Size = New System.Drawing.Size(1276, 675)
         Me.tblDetails2.TabIndex = 0
         '
@@ -1196,7 +1202,7 @@ Partial Class dlgEdit_Movie
         Me.lblVideoSource.Location = New System.Drawing.Point(3, 63)
         Me.lblVideoSource.Name = "lblVideoSource"
         Me.lblVideoSource.Size = New System.Drawing.Size(78, 13)
-        Me.lblVideoSource.TabIndex = 48
+        Me.lblVideoSource.TabIndex = 6
         Me.lblVideoSource.Text = "Video Source:"
         '
         'cbVideoSource
@@ -1206,7 +1212,7 @@ Partial Class dlgEdit_Movie
         Me.cbVideoSource.Location = New System.Drawing.Point(87, 59)
         Me.cbVideoSource.Name = "cbVideoSource"
         Me.cbVideoSource.Size = New System.Drawing.Size(200, 21)
-        Me.cbVideoSource.TabIndex = 49
+        Me.cbVideoSource.TabIndex = 7
         '
         'dtpDateAdded_Date
         '
@@ -1215,7 +1221,7 @@ Partial Class dlgEdit_Movie
         Me.dtpDateAdded_Date.Location = New System.Drawing.Point(87, 3)
         Me.dtpDateAdded_Date.Name = "dtpDateAdded_Date"
         Me.dtpDateAdded_Date.Size = New System.Drawing.Size(97, 22)
-        Me.dtpDateAdded_Date.TabIndex = 31
+        Me.dtpDateAdded_Date.TabIndex = 1
         Me.dtpDateAdded_Date.Value = New Date(2021, 1, 1, 0, 0, 0, 0)
         '
         'chkWatched
@@ -1227,7 +1233,7 @@ Partial Class dlgEdit_Movie
         Me.chkWatched.Location = New System.Drawing.Point(9, 33)
         Me.chkWatched.Name = "chkWatched"
         Me.chkWatched.Size = New System.Drawing.Size(72, 17)
-        Me.chkWatched.TabIndex = 30
+        Me.chkWatched.TabIndex = 3
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
@@ -1239,17 +1245,17 @@ Partial Class dlgEdit_Movie
         Me.dtpLastPlayed_Date.Location = New System.Drawing.Point(87, 31)
         Me.dtpLastPlayed_Date.Name = "dtpLastPlayed_Date"
         Me.dtpLastPlayed_Date.Size = New System.Drawing.Size(97, 22)
-        Me.dtpLastPlayed_Date.TabIndex = 31
+        Me.dtpLastPlayed_Date.TabIndex = 4
         Me.dtpLastPlayed_Date.Value = New Date(2021, 1, 1, 20, 0, 0, 0)
         '
         'lblCountries
         '
         Me.lblCountries.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblCountries.AutoSize = True
-        Me.lblCountries.Location = New System.Drawing.Point(21, 144)
+        Me.lblCountries.Location = New System.Drawing.Point(21, 273)
         Me.lblCountries.Name = "lblCountries"
         Me.lblCountries.Size = New System.Drawing.Size(60, 13)
-        Me.lblCountries.TabIndex = 59
+        Me.lblCountries.TabIndex = 17
         Me.lblCountries.Text = "Countries:"
         '
         'dgvCountries
@@ -1263,12 +1269,12 @@ Partial Class dlgEdit_Movie
         Me.dgvCountries.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colCountriesName})
         Me.tblDetails2.SetColumnSpan(Me.dgvCountries, 2)
         Me.dgvCountries.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvCountries.Location = New System.Drawing.Point(87, 140)
+        Me.dgvCountries.Location = New System.Drawing.Point(87, 269)
         Me.dgvCountries.Name = "dgvCountries"
         Me.dgvCountries.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.tblDetails2.SetRowSpan(Me.dgvCountries, 2)
         Me.dgvCountries.Size = New System.Drawing.Size(400, 150)
-        Me.dgvCountries.TabIndex = 60
+        Me.dgvCountries.TabIndex = 18
         '
         'colCountriesName
         '
@@ -1286,27 +1292,27 @@ Partial Class dlgEdit_Movie
         Me.cbMovieset.Location = New System.Drawing.Point(87, 113)
         Me.cbMovieset.Name = "cbMovieset"
         Me.cbMovieset.Size = New System.Drawing.Size(200, 21)
-        Me.cbMovieset.TabIndex = 51
+        Me.cbMovieset.TabIndex = 12
         '
-        'lblMovieSet
+        'lblMovieset
         '
-        Me.lblMovieSet.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblMovieSet.AutoSize = True
-        Me.lblMovieSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMovieSet.Location = New System.Drawing.Point(25, 117)
-        Me.lblMovieSet.Name = "lblMovieSet"
-        Me.lblMovieSet.Size = New System.Drawing.Size(56, 13)
-        Me.lblMovieSet.TabIndex = 50
-        Me.lblMovieSet.Text = "Movieset:"
+        Me.lblMovieset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblMovieset.AutoSize = True
+        Me.lblMovieset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieset.Location = New System.Drawing.Point(25, 117)
+        Me.lblMovieset.Name = "lblMovieset"
+        Me.lblMovieset.Size = New System.Drawing.Size(56, 13)
+        Me.lblMovieset.TabIndex = 11
+        Me.lblMovieset.Text = "Movieset:"
         '
         'lblStudios
         '
         Me.lblStudios.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblStudios.AutoSize = True
-        Me.lblStudios.Location = New System.Drawing.Point(548, 144)
+        Me.lblStudios.Location = New System.Drawing.Point(548, 273)
         Me.lblStudios.Name = "lblStudios"
         Me.lblStudios.Size = New System.Drawing.Size(49, 13)
-        Me.lblStudios.TabIndex = 61
+        Me.lblStudios.TabIndex = 19
         Me.lblStudios.Text = "Studios:"
         '
         'dgvStudios
@@ -1319,12 +1325,12 @@ Partial Class dlgEdit_Movie
         Me.dgvStudios.ColumnHeadersVisible = False
         Me.dgvStudios.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colStudiosName})
         Me.dgvStudios.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvStudios.Location = New System.Drawing.Point(603, 140)
+        Me.dgvStudios.Location = New System.Drawing.Point(603, 269)
         Me.dgvStudios.Name = "dgvStudios"
         Me.dgvStudios.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.tblDetails2.SetRowSpan(Me.dgvStudios, 2)
         Me.dgvStudios.Size = New System.Drawing.Size(400, 150)
-        Me.dgvStudios.TabIndex = 62
+        Me.dgvStudios.TabIndex = 20
         '
         'colStudiosName
         '
@@ -1341,7 +1347,7 @@ Partial Class dlgEdit_Movie
         Me.lblTVShowLinks.Location = New System.Drawing.Point(513, 7)
         Me.lblTVShowLinks.Name = "lblTVShowLinks"
         Me.lblTVShowLinks.Size = New System.Drawing.Size(84, 13)
-        Me.lblTVShowLinks.TabIndex = 52
+        Me.lblTVShowLinks.TabIndex = 15
         Me.lblTVShowLinks.Text = "TV Show Links:"
         '
         'clbTVShowLinks
@@ -1352,17 +1358,17 @@ Partial Class dlgEdit_Movie
         Me.clbTVShowLinks.Name = "clbTVShowLinks"
         Me.tblDetails2.SetRowSpan(Me.clbTVShowLinks, 5)
         Me.clbTVShowLinks.Size = New System.Drawing.Size(400, 131)
-        Me.clbTVShowLinks.TabIndex = 53
+        Me.clbTVShowLinks.TabIndex = 16
         '
         'lblGenres
         '
         Me.lblGenres.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblGenres.AutoSize = True
         Me.lblGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenres.Location = New System.Drawing.Point(35, 300)
+        Me.lblGenres.Location = New System.Drawing.Point(35, 429)
         Me.lblGenres.Name = "lblGenres"
         Me.lblGenres.Size = New System.Drawing.Size(46, 13)
-        Me.lblGenres.TabIndex = 54
+        Me.lblGenres.TabIndex = 21
         Me.lblGenres.Text = "Genres:"
         '
         'lblTags
@@ -1370,10 +1376,10 @@ Partial Class dlgEdit_Movie
         Me.lblTags.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblTags.AutoSize = True
         Me.lblTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTags.Location = New System.Drawing.Point(564, 300)
+        Me.lblTags.Location = New System.Drawing.Point(564, 429)
         Me.lblTags.Name = "lblTags"
         Me.lblTags.Size = New System.Drawing.Size(33, 13)
-        Me.lblTags.TabIndex = 56
+        Me.lblTags.TabIndex = 28
         Me.lblTags.Text = "Tags:"
         '
         'dtpDateAdded_Time
@@ -1384,7 +1390,7 @@ Partial Class dlgEdit_Movie
         Me.dtpDateAdded_Time.Name = "dtpDateAdded_Time"
         Me.dtpDateAdded_Time.ShowUpDown = True
         Me.dtpDateAdded_Time.Size = New System.Drawing.Size(97, 22)
-        Me.dtpDateAdded_Time.TabIndex = 31
+        Me.dtpDateAdded_Time.TabIndex = 2
         Me.dtpDateAdded_Time.Value = New Date(2021, 2, 2, 20, 0, 0, 0)
         '
         'dtpLastPlayed_Time
@@ -1396,7 +1402,7 @@ Partial Class dlgEdit_Movie
         Me.dtpLastPlayed_Time.Name = "dtpLastPlayed_Time"
         Me.dtpLastPlayed_Time.ShowUpDown = True
         Me.dtpLastPlayed_Time.Size = New System.Drawing.Size(97, 22)
-        Me.dtpLastPlayed_Time.TabIndex = 31
+        Me.dtpLastPlayed_Time.TabIndex = 5
         Me.dtpLastPlayed_Time.Value = New Date(2021, 2, 2, 20, 0, 0, 0)
         '
         'lblUniqueIds
@@ -1404,10 +1410,10 @@ Partial Class dlgEdit_Movie
         Me.lblUniqueIds.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.lblUniqueIds.AutoSize = True
         Me.lblUniqueIds.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblUniqueIds.Location = New System.Drawing.Point(14, 480)
+        Me.lblUniqueIds.Location = New System.Drawing.Point(14, 609)
         Me.lblUniqueIds.Name = "lblUniqueIds"
         Me.lblUniqueIds.Size = New System.Drawing.Size(67, 13)
-        Me.lblUniqueIds.TabIndex = 54
+        Me.lblUniqueIds.TabIndex = 35
         Me.lblUniqueIds.Text = "Unique IDs:"
         '
         'dgvUniqueIds
@@ -1420,12 +1426,12 @@ Partial Class dlgEdit_Movie
         Me.dgvUniqueIds.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colUniqueIdsDefault, Me.colUniqueIdsType, Me.colUniqueIdsValue})
         Me.tblDetails2.SetColumnSpan(Me.dgvUniqueIds, 2)
         Me.dgvUniqueIds.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvUniqueIds.Location = New System.Drawing.Point(87, 476)
+        Me.dgvUniqueIds.Location = New System.Drawing.Point(87, 605)
         Me.dgvUniqueIds.Name = "dgvUniqueIds"
         Me.dgvUniqueIds.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         Me.tblDetails2.SetRowSpan(Me.dgvUniqueIds, 2)
         Me.dgvUniqueIds.Size = New System.Drawing.Size(400, 140)
-        Me.dgvUniqueIds.TabIndex = 60
+        Me.dgvUniqueIds.TabIndex = 0
         '
         'colUniqueIdsDefault
         '
@@ -1456,7 +1462,7 @@ Partial Class dlgEdit_Movie
         Me.lblEdition.Location = New System.Drawing.Point(34, 90)
         Me.lblEdition.Name = "lblEdition"
         Me.lblEdition.Size = New System.Drawing.Size(47, 13)
-        Me.lblEdition.TabIndex = 48
+        Me.lblEdition.TabIndex = 9
         Me.lblEdition.Text = "Edition:"
         '
         'cbEdition
@@ -1466,123 +1472,145 @@ Partial Class dlgEdit_Movie
         Me.cbEdition.Location = New System.Drawing.Point(87, 86)
         Me.cbEdition.Name = "cbEdition"
         Me.cbEdition.Size = New System.Drawing.Size(200, 21)
-        Me.cbEdition.TabIndex = 49
+        Me.cbEdition.TabIndex = 10
         '
         'btnGenres_Add
         '
         Me.btnGenres_Add.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGenres_Add.Image = CType(resources.GetObject("btnGenres_Add.Image"), System.Drawing.Image)
-        Me.btnGenres_Add.Location = New System.Drawing.Point(58, 324)
+        Me.btnGenres_Add.Location = New System.Drawing.Point(58, 453)
         Me.btnGenres_Add.Name = "btnGenres_Add"
         Me.btnGenres_Add.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Add.TabIndex = 64
+        Me.btnGenres_Add.TabIndex = 23
         Me.btnGenres_Add.UseVisualStyleBackColor = True
         '
         'btnGenres_Remove
         '
         Me.btnGenres_Remove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGenres_Remove.Image = CType(resources.GetObject("btnGenres_Remove.Image"), System.Drawing.Image)
-        Me.btnGenres_Remove.Location = New System.Drawing.Point(58, 353)
+        Me.btnGenres_Remove.Location = New System.Drawing.Point(58, 482)
         Me.btnGenres_Remove.Name = "btnGenres_Remove"
         Me.btnGenres_Remove.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Remove.TabIndex = 65
+        Me.btnGenres_Remove.TabIndex = 24
         Me.btnGenres_Remove.UseVisualStyleBackColor = True
         '
         'btnGenres_Up
         '
         Me.btnGenres_Up.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGenres_Up.Image = CType(resources.GetObject("btnGenres_Up.Image"), System.Drawing.Image)
-        Me.btnGenres_Up.Location = New System.Drawing.Point(58, 382)
+        Me.btnGenres_Up.Location = New System.Drawing.Point(58, 511)
         Me.btnGenres_Up.Name = "btnGenres_Up"
         Me.btnGenres_Up.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Up.TabIndex = 66
+        Me.btnGenres_Up.TabIndex = 25
         Me.btnGenres_Up.UseVisualStyleBackColor = True
         '
         'btnGenres_Down
         '
         Me.btnGenres_Down.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnGenres_Down.Image = CType(resources.GetObject("btnGenres_Down.Image"), System.Drawing.Image)
-        Me.btnGenres_Down.Location = New System.Drawing.Point(58, 411)
+        Me.btnGenres_Down.Location = New System.Drawing.Point(58, 540)
         Me.btnGenres_Down.Name = "btnGenres_Down"
         Me.btnGenres_Down.Size = New System.Drawing.Size(23, 23)
-        Me.btnGenres_Down.TabIndex = 67
+        Me.btnGenres_Down.TabIndex = 26
         Me.btnGenres_Down.UseVisualStyleBackColor = True
         '
         'cbGenres
         '
         Me.tblDetails2.SetColumnSpan(Me.cbGenres, 2)
         Me.cbGenres.FormattingEnabled = True
-        Me.cbGenres.Location = New System.Drawing.Point(87, 449)
+        Me.cbGenres.Location = New System.Drawing.Point(87, 578)
         Me.cbGenres.Name = "cbGenres"
         Me.cbGenres.Size = New System.Drawing.Size(400, 21)
-        Me.cbGenres.TabIndex = 63
+        Me.cbGenres.TabIndex = 27
         '
         'btnTags_Add
         '
         Me.btnTags_Add.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTags_Add.Image = CType(resources.GetObject("btnTags_Add.Image"), System.Drawing.Image)
-        Me.btnTags_Add.Location = New System.Drawing.Point(574, 324)
+        Me.btnTags_Add.Location = New System.Drawing.Point(574, 453)
         Me.btnTags_Add.Name = "btnTags_Add"
         Me.btnTags_Add.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Add.TabIndex = 64
+        Me.btnTags_Add.TabIndex = 30
         Me.btnTags_Add.UseVisualStyleBackColor = True
         '
         'btnTags_Remove
         '
         Me.btnTags_Remove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTags_Remove.Image = CType(resources.GetObject("btnTags_Remove.Image"), System.Drawing.Image)
-        Me.btnTags_Remove.Location = New System.Drawing.Point(574, 353)
+        Me.btnTags_Remove.Location = New System.Drawing.Point(574, 482)
         Me.btnTags_Remove.Name = "btnTags_Remove"
         Me.btnTags_Remove.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Remove.TabIndex = 65
+        Me.btnTags_Remove.TabIndex = 31
         Me.btnTags_Remove.UseVisualStyleBackColor = True
         '
         'btnTags_Up
         '
         Me.btnTags_Up.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTags_Up.Image = CType(resources.GetObject("btnTags_Up.Image"), System.Drawing.Image)
-        Me.btnTags_Up.Location = New System.Drawing.Point(574, 382)
+        Me.btnTags_Up.Location = New System.Drawing.Point(574, 511)
         Me.btnTags_Up.Name = "btnTags_Up"
         Me.btnTags_Up.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Up.TabIndex = 66
+        Me.btnTags_Up.TabIndex = 32
         Me.btnTags_Up.UseVisualStyleBackColor = True
         '
         'btnTags_Down
         '
         Me.btnTags_Down.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTags_Down.Image = CType(resources.GetObject("btnTags_Down.Image"), System.Drawing.Image)
-        Me.btnTags_Down.Location = New System.Drawing.Point(574, 411)
+        Me.btnTags_Down.Location = New System.Drawing.Point(574, 540)
         Me.btnTags_Down.Name = "btnTags_Down"
         Me.btnTags_Down.Size = New System.Drawing.Size(23, 23)
-        Me.btnTags_Down.TabIndex = 67
+        Me.btnTags_Down.TabIndex = 33
         Me.btnTags_Down.UseVisualStyleBackColor = True
         '
         'cbTags
         '
         Me.cbTags.FormattingEnabled = True
-        Me.cbTags.Location = New System.Drawing.Point(603, 449)
+        Me.cbTags.Location = New System.Drawing.Point(603, 578)
         Me.cbTags.Name = "cbTags"
         Me.cbTags.Size = New System.Drawing.Size(400, 21)
-        Me.cbTags.TabIndex = 63
+        Me.cbTags.TabIndex = 34
         '
         'lbGenres
         '
         Me.tblDetails2.SetColumnSpan(Me.lbGenres, 2)
         Me.lbGenres.FormattingEnabled = True
-        Me.lbGenres.Location = New System.Drawing.Point(87, 296)
+        Me.lbGenres.Location = New System.Drawing.Point(87, 425)
         Me.lbGenres.Name = "lbGenres"
         Me.tblDetails2.SetRowSpan(Me.lbGenres, 5)
         Me.lbGenres.Size = New System.Drawing.Size(400, 147)
-        Me.lbGenres.TabIndex = 68
+        Me.lbGenres.TabIndex = 22
         '
         'lbTags
         '
         Me.lbTags.FormattingEnabled = True
-        Me.lbTags.Location = New System.Drawing.Point(603, 296)
+        Me.lbTags.Location = New System.Drawing.Point(603, 425)
         Me.lbTags.Name = "lbTags"
         Me.tblDetails2.SetRowSpan(Me.lbTags, 5)
         Me.lbTags.Size = New System.Drawing.Size(400, 147)
-        Me.lbTags.TabIndex = 68
+        Me.lbTags.TabIndex = 29
+        '
+        'lblMoviesetAdditional
+        '
+        Me.lblMoviesetAdditional.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblMoviesetAdditional.AutoSize = True
+        Me.lblMoviesetAdditional.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMoviesetAdditional.Location = New System.Drawing.Point(20, 140)
+        Me.lblMoviesetAdditional.Margin = New System.Windows.Forms.Padding(3, 3, 3, 0)
+        Me.lblMoviesetAdditional.Name = "lblMoviesetAdditional"
+        Me.lblMoviesetAdditional.Size = New System.Drawing.Size(61, 26)
+        Me.lblMoviesetAdditional.TabIndex = 13
+        Me.lblMoviesetAdditional.Text = "Additional" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Moviesets:"
+        '
+        'clbMoviesets
+        '
+        Me.tblDetails2.SetColumnSpan(Me.clbMoviesets, 2)
+        Me.clbMoviesets.FormattingEnabled = True
+        Me.clbMoviesets.Location = New System.Drawing.Point(87, 140)
+        Me.clbMoviesets.Name = "clbMoviesets"
+        Me.tblDetails2.SetRowSpan(Me.clbMoviesets, 2)
+        Me.clbMoviesets.Size = New System.Drawing.Size(400, 123)
+        Me.clbMoviesets.TabIndex = 14
         '
         'tpCastCrew
         '
@@ -2236,13 +2264,13 @@ Partial Class dlgEdit_Movie
         Me.lvSubtitles.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup2.Header = "Local Subtitles"
-        ListViewGroup2.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.lvSubtitles.HideSelection = False
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(3, 3)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -4278,7 +4306,7 @@ Partial Class dlgEdit_Movie
     Friend WithEvents clbTVShowLinks As CheckedListBox
     Friend WithEvents lblTVShowLinks As Label
     Friend WithEvents cbMovieset As ComboBox
-    Friend WithEvents lblMovieSet As Label
+    Friend WithEvents lblMovieset As Label
     Friend WithEvents lblVideoSource As Label
     Friend WithEvents tpCastCrew As TabPage
     Friend WithEvents dgvDirectors As DataGridView
@@ -4345,4 +4373,6 @@ Partial Class dlgEdit_Movie
     Friend WithEvents lbGenres As ListBox
     Friend WithEvents lbTags As ListBox
     Friend WithEvents colCertificationsName As DataGridViewTextBoxColumn
+    Friend WithEvents lblMoviesetAdditional As Label
+    Friend WithEvents clbMoviesets As CheckedListBox
 End Class

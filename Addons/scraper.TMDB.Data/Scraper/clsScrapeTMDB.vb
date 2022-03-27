@@ -386,13 +386,11 @@ Public Class Scraper
                                                          New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
                                                          False)
                 If nFullMovieSetInfo IsNot Nothing Then
-                    nMovie.AddSet(New MediaContainers.SetDetails With {
-                                  .ID = -1,
-                                  .Order = -1,
-                                  .Plot = nFullMovieSetInfo.Plot,
-                                  .Title = nFullMovieSetInfo.Title,
-                                  .UniqueIDs = nFullMovieSetInfo.UniqueIDs
-                                  })
+                    nMovie.Sets.Add(New MediaContainers.MoviesetDetails With {
+                                    .Plot = nFullMovieSetInfo.Plot,
+                                    .Title = nFullMovieSetInfo.Title,
+                                    .UniqueIDs = nFullMovieSetInfo.UniqueIDs
+                                    })
                     nMovie.UniqueIDs.TMDbCollectionId = nFullMovieSetInfo.UniqueIDs.TMDbId
                 End If
             End If

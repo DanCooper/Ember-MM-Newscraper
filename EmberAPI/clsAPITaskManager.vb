@@ -211,7 +211,7 @@ Public Class TaskManager
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.MovieSet.Title})
 
-                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False, True)
+                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False, True, True)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,
@@ -559,7 +559,7 @@ Public Class TaskManager
                                                          .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                          .Message = tmpDBElement.MovieSet.Title})
 
-                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
+                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                          .ContentType = tTaskItem.ContentType,
@@ -651,7 +651,7 @@ Public Class TaskManager
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.MovieSet.Title})
 
-                        Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
+                        Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = tTaskItem.ContentType,

@@ -144,8 +144,8 @@ Public Class NFO
             'Collections
             If (Not DBMovie.Movie.SetsSpecified OrElse Not Master.eSettings.MovieLockCollections) AndAlso
                 scrapedmovie.SetsSpecified AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
-                DBMovie.Movie.Sets.Clear()
-                For Each movieset In scrapedmovie.Sets
+                DBMovie.Movie.Sets.Items.Clear()
+                For Each movieset In scrapedmovie.Sets.Items
                     If Not String.IsNullOrEmpty(movieset.Title) Then
                         For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
                             movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
@@ -1191,9 +1191,9 @@ Public Class NFO
                 End If
             End If
             If mNFO.SetsSpecified Then
-                For i = mNFO.Sets.Count - 1 To 0 Step -1
-                    If Not mNFO.Sets(i).TitleSpecified Then
-                        mNFO.Sets.RemoveAt(i)
+                For i = mNFO.Sets.Items.Count - 1 To 0 Step -1
+                    If Not mNFO.Sets.Items(i).TitleSpecified Then
+                        mNFO.Sets.Items.RemoveAt(i)
                     End If
                 Next
             End If

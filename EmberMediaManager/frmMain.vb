@@ -306,8 +306,6 @@ Public Class frmMain
                 Master.DB.Close_MyVideos()
             End If
 
-            Master.eSettings.Version = Master.Version
-
             If Not Master.isCL Then
                 Application.DoEvents()
                 Master.eSettings.GeneralFilterPanelIsRaisedMovie = FilterPanelIsRaised_Movie
@@ -3410,7 +3408,7 @@ Public Class frmMain
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
-                tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False, False)
+                tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False, False, False)
                 Dim iNewRowIndex = DataGridView_Row_Add_Movieset(tmpDBMovieSet.ID)
                 If Not iNewRowIndex = -1 Then
                     dgvMovieSets.Rows(iNewRowIndex).Selected = True
@@ -8751,7 +8749,7 @@ Public Class frmMain
 
     Private Sub Edit_MovieSet(ByRef DBMovieSet As Database.DBElement)
         SetControlsEnabled(False)
-        'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
+        'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movieset(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEdit_Movieset
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
@@ -8760,7 +8758,7 @@ Public Class frmMain
                     DBMovieSet = dEditMovieSet.Result
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
                     tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                    Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True)
+                    Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True, True)
                     DataGridView_Row_Update_Movieset(DBMovieSet.ID)
                 Case DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
@@ -11537,7 +11535,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -11728,7 +11726,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -11833,7 +11831,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -11938,7 +11936,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -12029,7 +12027,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -12184,7 +12182,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Keyart = dlgImgS.Result.ImagesContainer.Keyart
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -12289,7 +12287,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -12421,7 +12419,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True, False)
                                     DataGridView_Row_Update_Movieset(ID)
                                 End If
                             Else
@@ -12588,7 +12586,7 @@ Public Class frmMain
         End If
 
         lblCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
-        lblCollections.Text = String.Join(" / ", From sets In currMovie.Movie.Sets Select sets.Title)
+        lblCollections.Text = String.Join(" / ", From sets In currMovie.Movie.Sets.Items Select sets.Title)
         lblCountries.Text = String.Join(" / ", currMovie.Movie.Countries.ToArray)
         lblCredits.Text = String.Join(" / ", currMovie.Movie.Credits.ToArray)
         lblDirectors.Text = String.Join(" / ", currMovie.Movie.Directors.ToArray)
@@ -14293,7 +14291,7 @@ Public Class frmMain
         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movieset(id)
 
         If tmpDBElement.IsOnline Then
-            Master.DB.Save_MovieSet(tmpDBElement, batchMode, True, bRewriteAll, True)
+            Master.DB.Save_MovieSet(tmpDBElement, batchMode, True, bRewriteAll, True, True)
             Return True
         Else
             Return False
@@ -15381,7 +15379,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True, True)
+                    Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True, True, True)
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
                 End If
@@ -18492,7 +18490,7 @@ Public Class frmMain
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_Movieset(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
-                Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False, False)
+                Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False, False, False)
                 DataGridView_Row_Update_Movieset(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()

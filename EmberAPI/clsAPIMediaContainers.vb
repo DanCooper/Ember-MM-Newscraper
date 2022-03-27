@@ -1159,7 +1159,6 @@ Namespace MediaContainers
         Private _certifications As New List(Of String)
         Private _lastplayed As String = String.Empty
         Private _rating As Double = 0
-        Private _sets As New List(Of SetDetails)
         Private _tags As New List(Of String)
         Private _votes As Integer = 0
         Private _year As String = String.Empty
@@ -1708,40 +1707,41 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()>
-        Public Property Sets() As List(Of SetDetails)
-            Get
-                Return _sets
-            End Get
-            Set(value As List(Of SetDetails))
-                AddSet(value)
-            End Set
-        End Property
+        Public Property Sets() As New MoviesetContainer
 
         <XmlIgnore()>
         Public ReadOnly Property SetsSpecified() As Boolean
             Get
-                Return Sets.Count > 0
+                Return Sets.Items.Count > 0
             End Get
         End Property
 
         <XmlAnyElement("set")>
         Public Property Set_Kodi() As Object
             Get
-                Return CreateSetNode()
+                Return Sets.Create_SetNode_Kodi()
             End Get
             Set(ByVal value As Object)
-                AddSet(value)
+                Sets.Read_SetNode_Kodi(value)
             End Set
         End Property
 
-        <XmlElement("sets")>
-        Public Property Sets_YAMJ() As SetContainer
+        <XmlArray("sets")>
+        <XmlArrayItem("set")>
+        Public Property Sets_YAMJ() As MoviesetContainer.MoviesetDetails_YAMJ()
             Get
-                Return CreateSetYAMJ()
+                Return Sets.Create_SetNode_YAMJ.ToArray
             End Get
-            Set(ByVal value As SetContainer)
-                AddSet(value)
+            Set(ByVal value As MoviesetContainer.MoviesetDetails_YAMJ())
+                Sets.AddRange(value.ToList)
             End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property Sets_YAMJSpecified() As Boolean
+            Get
+                Return Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets AndAlso Sets_YAMJ.Count > 0
+            End Get
         End Property
 
         <XmlElement("showlink")>
@@ -1816,73 +1816,6 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddSet(ByVal tSetDetails As SetDetails)
-            If tSetDetails IsNot Nothing AndAlso tSetDetails.TitleSpecified Then
-                Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = tSetDetails.ID
-                Dim iSet = From bset As SetDetails In Sets Where bset.UniqueIDs.TMDbId = tSetDetails.UniqueIDs.TMDbId
-
-                If tSet.Count > 0 Then
-                    _sets.Remove(tSet(0))
-                End If
-
-                If iSet.Count > 0 Then
-                    _sets.Remove(iSet(0))
-                End If
-
-                _sets.Add(tSetDetails)
-            End If
-        End Sub
-        ''' <summary>
-        ''' converts both versions of moviesets declaration in movie.nfo to a proper Sets object
-        ''' </summary>
-        ''' <remarks>      
-        ''' <set>title</set>        
-        ''' 
-        ''' <set>
-        '''     <name>title</name>
-        '''     <overview>plot</overview>
-        ''' </set>       
-        ''' </remarks>
-        ''' <param name="xmlObject"></param>
-        Public Sub AddSet(ByVal xmlObject As Object)
-            Try
-                If xmlObject IsNot Nothing AndAlso TryCast(xmlObject, XmlElement) IsNot Nothing Then
-                    Dim nSetInfo As New SetDetails
-                    Dim xElement As XmlElement = CType(xmlObject, XmlElement)
-                    For Each xChild In xElement.ChildNodes
-                        Dim xNode = CType(xChild, XmlNode)
-                        Select Case xNode.NodeType
-                            Case XmlNodeType.Element
-                                Select Case xNode.Name
-                                    Case "name"
-                                        nSetInfo.Title = xNode.InnerText
-                                    Case "overview"
-                                        nSetInfo.Plot = xNode.InnerText
-                                    Case "tmdb"
-                                        Dim intTmdbId As Integer = -1
-                                        If Integer.TryParse(xNode.InnerText, intTmdbId) Then
-                                            nSetInfo.UniqueIDs.TMDbId = intTmdbId
-                                        End If
-                                End Select
-                            Case XmlNodeType.Text
-                                nSetInfo.Title = xNode.InnerText
-                        End Select
-                    Next
-                    If nSetInfo.TitleSpecified Then AddSet(nSetInfo)
-                End If
-            Catch ex As Exception
-                _Logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
-
-        Public Sub AddSet(ByVal tSetContainer As SetContainer)
-            If tSetContainer IsNot Nothing AndAlso tSetContainer.SetsSpecified Then
-                For Each xSetDetail As SetDetails In tSetContainer.Sets.Where(Function(f) f.TitleSpecified)
-                    AddSet(xSetDetail)
-                Next
-            End If
-        End Sub
-
         Public Sub AddTag(ByVal value As String)
             If String.IsNullOrEmpty(value) Then Return
             If Not _tags.Contains(value) Then
@@ -1913,82 +1846,6 @@ Namespace MediaContainers
             Next
         End Sub
 
-        Public Function CreateSetNode() As XmlDocument
-            If _sets.Count > 0 AndAlso _sets.Item(0).TitleSpecified Then
-                Dim firstSet As SetDetails = _sets.Item(0)
-
-                If Master.eSettings.MovieScraperCollectionsExtendedInfo Then
-                    'creates a set node like:
-                    '<set> 
-                    '  <name>Die Hard Collection</name>
-                    '  <overview>Hardest cop ever!</overview>
-                    '  <tmdb>1570</tmdb>
-                    '</set>
-
-                    Dim XmlDoc As New XmlDocument
-
-                    'Write down the XML declaration
-                    Dim XmlDeclaration As XmlDeclaration = XmlDoc.CreateXmlDeclaration("1.0", "UTF-8", Nothing)
-
-                    'Create the root element
-                    Dim RootNode As XmlElement = XmlDoc.CreateElement("set")
-                    XmlDoc.InsertBefore(XmlDeclaration, XmlDoc.DocumentElement)
-                    XmlDoc.AppendChild(RootNode)
-
-                    'Create a new <name> element and add it to the root node
-                    Dim NodeName As XmlElement = XmlDoc.CreateElement("name")
-                    RootNode.AppendChild(NodeName)
-                    Dim NodeName_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Title)
-                    NodeName.AppendChild(NodeName_Text)
-
-                    If firstSet.PlotSpecified Then
-                        'Create a new <overview> element and add it to the root node
-                        Dim NodeOverview As XmlElement = XmlDoc.CreateElement("overview")
-                        RootNode.AppendChild(NodeOverview)
-                        Dim NodeOverview_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Plot)
-                        NodeOverview.AppendChild(NodeOverview_Text)
-                    End If
-
-                    If firstSet.UniqueIDs.TMDbIdSpecified Then
-                        'Create a new <tmdb> element and add it to the root node
-                        Dim NodeTMDB As XmlElement = XmlDoc.CreateElement("tmdb")
-                        RootNode.AppendChild(NodeTMDB)
-                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(firstSet.UniqueIDs.TMDbId.ToString)
-                        NodeTMDB.AppendChild(NodeTMDB_Text)
-                    End If
-
-                    Return XmlDoc
-                Else
-                    'creates a set node like:
-                    '<set>Die Hard Collection</set>
-
-                    Dim XmlDoc As New XmlDocument
-
-                    'Write down the XML declaration
-                    Dim XmlDeclaration As XmlDeclaration = XmlDoc.CreateXmlDeclaration("1.0", "UTF-8", Nothing)
-
-                    'Create the root element
-                    Dim RootNode As XmlElement = XmlDoc.CreateElement("set")
-                    XmlDoc.InsertBefore(XmlDeclaration, XmlDoc.DocumentElement)
-                    XmlDoc.AppendChild(RootNode)
-                    Dim RootNode_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Title)
-                    RootNode.AppendChild(RootNode_Text)
-
-                    Return XmlDoc
-                End If
-            Else
-                Return Nothing
-            End If
-        End Function
-
-        Public Function CreateSetYAMJ() As SetContainer
-            If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets AndAlso Sets.Count > 0 Then
-                Return New SetContainer With {.Sets = Sets}
-            Else
-                Return Nothing
-            End If
-        End Function
-
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
             Dim retVal As Integer = (Lev).CompareTo(other.Lev)
             If retVal = 0 Then
@@ -1996,20 +1853,6 @@ Namespace MediaContainers
             End If
             Return retVal
         End Function
-
-        Public Sub RemoveSet(ByVal title As String)
-            Dim tSet = From bSet As SetDetails In Sets Where bSet.Title = title
-            If tSet.Count > 0 Then
-                Sets.Remove(tSet(0))
-            End If
-        End Sub
-
-        Public Sub RemoveSet(ByVal id As Long)
-            Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = id
-            If tSet.Count > 0 Then
-                Sets.Remove(tSet(0))
-            End If
-        End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
             If ActorsSpecified AndAlso Master.eSettings.MovieActorThumbsAnyEnabled Then
@@ -2151,6 +1994,307 @@ Namespace MediaContainers
 
     End Class
 
+
+    <Serializable()>
+    Public Class MoviesetContainer
+
+#Region "Fields"
+
+        Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        <XmlIgnore>
+        Public ReadOnly Property AnyMoviesetSpecified As Boolean
+            Get
+                Return Items.Count > 0
+            End Get
+        End Property
+
+        Public Property Items() As New List(Of MoviesetDetails)
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Add(ByVal movieset As MoviesetDetails, Optional rejectIfExists As Boolean = False)
+            If movieset IsNot Nothing AndAlso movieset.TitleSpecified Then
+                'search for already containing movisets with the same database ID
+                Dim lstDbIds As IEnumerable(Of MoviesetDetails) = Nothing
+                If movieset.IDSpecified Then
+                    lstDbIds = From bSet As MoviesetDetails In Items Where bSet.ID = movieset.ID
+                End If
+                'search for already containing moviesets with the same TMDb ID
+                Dim lstTMDbId As IEnumerable(Of MoviesetDetails) = Nothing
+                If movieset.UniqueIDs.TMDbIdSpecified Then
+                    lstTMDbId = From bset As MoviesetDetails In Items Where bset.UniqueIDs.TMDbId = movieset.UniqueIDs.TMDbId
+                End If
+                'search for already containing moviesets with the same title
+                Dim lstTitle As IEnumerable(Of MoviesetDetails) = Nothing
+                lstTitle = From bset As MoviesetDetails In Items Where bset.Title = movieset.Title
+
+                If lstDbIds IsNot Nothing AndAlso lstDbIds.Count > 0 AndAlso Not rejectIfExists Then
+                    Items.Remove(lstDbIds(0))
+                End If
+
+                If lstTMDbId IsNot Nothing AndAlso lstTMDbId.Count > 0 AndAlso Not rejectIfExists Then
+                    Items.Remove(lstTMDbId(0))
+                End If
+
+                If lstTitle.Count > 0 AndAlso Not rejectIfExists Then
+                    Items.Remove(lstTitle(0))
+                End If
+
+                If lstDbIds IsNot Nothing AndAlso lstDbIds.Count > 0 OrElse lstTMDbId IsNot Nothing AndAlso lstTMDbId.Count > 0 OrElse lstTitle.Count > 0 AndAlso rejectIfExists Then
+                    Return
+                Else
+                    movieset.Order = Items.Count
+                    Items.Add(movieset)
+                End If
+            End If
+        End Sub
+
+        Public Sub Add(ByVal movieset As MoviesetDetails_YAMJ)
+            Add(New MoviesetDetails With {
+                .Order = movieset.Order,
+                .Title = movieset.Title
+                }, True)
+        End Sub
+
+        Public Sub AddRange(ByVal moviesetList As List(Of MoviesetDetails))
+            For Each entry In moviesetList
+                Add(entry)
+            Next
+        End Sub
+
+        Public Sub AddRange(ByVal moviesetList As MoviesetContainer)
+            For Each entry In moviesetList.Items
+                Add(entry)
+            Next
+        End Sub
+
+        Public Sub AddRange(ByVal moviesetList As List(Of MoviesetDetails_YAMJ))
+            For Each entry In moviesetList
+                Add(entry)
+            Next
+        End Sub
+
+        Public Function Create_SetNode_Kodi() As XmlDocument
+            If Items.Count > 0 AndAlso Items.Item(0).TitleSpecified Then
+                Dim firstSet As MoviesetDetails = Items.Item(0)
+
+                If Master.eSettings.MovieScraperCollectionsExtendedInfo Then
+                    'creates a set node like:
+                    '<set> 
+                    '  <name>Die Hard Collection</name>
+                    '  <overview>Hardest cop ever!</overview>
+                    '  <tmdb>1570</tmdb>
+                    '</set>
+
+                    Dim XmlDoc As New XmlDocument
+
+                    'Write down the XML declaration
+                    Dim XmlDeclaration As XmlDeclaration = XmlDoc.CreateXmlDeclaration("1.0", "UTF-8", Nothing)
+
+                    'Create the root element
+                    Dim RootNode As XmlElement = XmlDoc.CreateElement("set")
+                    XmlDoc.InsertBefore(XmlDeclaration, XmlDoc.DocumentElement)
+                    XmlDoc.AppendChild(RootNode)
+
+                    'Create a new <name> element and add it to the root node
+                    Dim NodeName As XmlElement = XmlDoc.CreateElement("name")
+                    RootNode.AppendChild(NodeName)
+                    Dim NodeName_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Title)
+                    NodeName.AppendChild(NodeName_Text)
+
+                    If firstSet.PlotSpecified Then
+                        'Create a new <overview> element and add it to the root node
+                        Dim NodeOverview As XmlElement = XmlDoc.CreateElement("overview")
+                        RootNode.AppendChild(NodeOverview)
+                        Dim NodeOverview_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Plot)
+                        NodeOverview.AppendChild(NodeOverview_Text)
+                    End If
+
+                    If firstSet.UniqueIDs.TMDbIdSpecified Then
+                        'Create a new <tmdb> element and add it to the root node
+                        Dim NodeTMDB As XmlElement = XmlDoc.CreateElement("tmdb")
+                        RootNode.AppendChild(NodeTMDB)
+                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(firstSet.UniqueIDs.TMDbId.ToString)
+                        NodeTMDB.AppendChild(NodeTMDB_Text)
+                    End If
+
+                    Return XmlDoc
+                Else
+                    'creates a set node like:
+                    '<set>Die Hard Collection</set>
+
+                    Dim XmlDoc As New XmlDocument
+
+                    'Write down the XML declaration
+                    Dim XmlDeclaration As XmlDeclaration = XmlDoc.CreateXmlDeclaration("1.0", "UTF-8", Nothing)
+
+                    'Create the root element
+                    Dim RootNode As XmlElement = XmlDoc.CreateElement("set")
+                    XmlDoc.InsertBefore(XmlDeclaration, XmlDoc.DocumentElement)
+                    XmlDoc.AppendChild(RootNode)
+                    Dim RootNode_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Title)
+                    RootNode.AppendChild(RootNode_Text)
+
+                    Return XmlDoc
+                End If
+            Else
+                Return Nothing
+            End If
+        End Function
+
+        Public Function Create_SetNode_YAMJ() As List(Of MoviesetDetails_YAMJ)
+            Dim nSetDetails As New List(Of MoviesetDetails_YAMJ)
+            For Each s In Items
+                nSetDetails.Add(New MoviesetDetails_YAMJ With {
+                                .Order = s.Order,
+                                .Title = s.Title
+                                })
+            Next
+            Return nSetDetails
+        End Function
+        ''' <summary>
+        ''' converts both versions of moviesets declaration in movie.nfo to a proper "MoviesetDetails" object
+        ''' </summary>
+        ''' <remarks>      
+        ''' <set>title</set>        
+        ''' 
+        ''' <set>
+        '''     <name>title</name>
+        '''     <overview>plot</overview>
+        ''' </set>       
+        ''' </remarks>
+        ''' <param name="xmlObject"></param>
+        Public Sub Read_SetNode_Kodi(ByVal xmlObject As Object)
+            Try
+                If xmlObject IsNot Nothing AndAlso TryCast(xmlObject, XmlElement) IsNot Nothing Then
+                    Dim nSetInfo As New MoviesetDetails
+                    Dim xElement As XmlElement = CType(xmlObject, XmlElement)
+                    For Each xChild In xElement.ChildNodes
+                        Dim xNode = CType(xChild, XmlNode)
+                        Select Case xNode.NodeType
+                            Case XmlNodeType.Element
+                                Select Case xNode.Name
+                                    Case "name"
+                                        nSetInfo.Title = xNode.InnerText
+                                    Case "overview"
+                                        nSetInfo.Plot = xNode.InnerText
+                                    Case "tmdb"
+                                        Dim intTmdbId As Integer = -1
+                                        If Integer.TryParse(xNode.InnerText, intTmdbId) Then
+                                            nSetInfo.UniqueIDs.TMDbId = intTmdbId
+                                        End If
+                                End Select
+                            Case XmlNodeType.Text
+                                nSetInfo.Title = xNode.InnerText
+                        End Select
+                    Next
+                    If nSetInfo.TitleSpecified Then Add(nSetInfo)
+                End If
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+        End Sub
+
+        Public Sub RemoveSet(ByVal title As String)
+            Dim tSet = From bSet As MoviesetDetails In Items Where bSet.Title = title
+            If tSet.Count > 0 Then
+                Items.Remove(tSet(0))
+            End If
+        End Sub
+
+        Public Sub RemoveSet(ByVal id As Long)
+            Dim tSet = From bSet As MoviesetDetails In Items Where bSet.ID = id
+            If tSet.Count > 0 Then
+                Items.Remove(tSet(0))
+            End If
+        End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+        <Serializable()>
+        Public Class MoviesetDetails_YAMJ
+
+#Region "Properties"
+
+            <XmlAttribute("order")>
+            Public Property Order() As Integer = -1
+
+            <XmlIgnore()>
+            Public ReadOnly Property OrderSpecified() As Boolean
+                Get
+                    Return Not Order = -1
+                End Get
+            End Property
+
+            <XmlText()>
+            Public Property Title As String = String.Empty
+
+            <XmlIgnore()>
+            Public ReadOnly Property TitleSpecified As Boolean
+                Get
+                    Return Not String.IsNullOrEmpty(Title)
+                End Get
+            End Property
+
+#End Region 'Properties 
+
+        End Class
+
+#End Region 'Nested Types
+
+    End Class
+
+    <Serializable()>
+    Public Class MoviesetDetails
+        Inherits Movieset
+        Implements IComparable(Of MoviesetDetails)
+
+#Region "Properties"
+        ''' <summary>
+        ''' Database Id
+        ''' </summary>
+        ''' <returns></returns>
+        <XmlIgnore()>
+        Public Property ID() As Long = -1
+
+        <XmlIgnore()>
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not ID = -1
+            End Get
+        End Property
+
+        <XmlAttribute("order")>
+        Public Property Order() As Integer = -1
+
+        <XmlIgnore()>
+        Public ReadOnly Property OrderSpecified() As Boolean
+            Get
+                Return Not Order = -1
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Function CompareTo(ByVal other As MoviesetDetails) As Integer Implements IComparable(Of MoviesetDetails).CompareTo
+            Return Order.CompareTo(other.Order)
+        End Function
+
+#End Region 'Methods
+
+    End Class
+
     <Serializable()>
     Public Class Person
 
@@ -2260,93 +2404,6 @@ Namespace MediaContainers
 
     End Class
 
-    <Serializable()>
-    Public Class RatingDetails
-        Implements IComparable(Of RatingDetails)
-
-#Region "Properties"
-
-        <XmlIgnore()>
-        Public Property ID() As Long = -1
-
-        <XmlAttribute("name")>
-        Public Property Type() As String = String.Empty
-
-        <XmlIgnore()>
-        Public ReadOnly Property TypeSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Type)
-            End Get
-        End Property
-
-        <XmlAttribute("max")>
-        Public Property Max() As Integer = -1
-
-        <XmlIgnore()>
-        Public ReadOnly Property MaxSpecified() As Boolean
-            Get
-                Return Not Max = -1
-            End Get
-        End Property
-
-        <XmlAttribute("default")>
-        Public Property IsDefault() As Boolean = False
-
-        <XmlElement("value")>
-        Public Property Value() As Double = -1
-
-        <XmlIgnore()>
-        Public ReadOnly Property ValueSpecified() As Boolean
-            Get
-                Return Not Value = -1
-            End Get
-        End Property
-
-        <XmlIgnore>
-        Public ReadOnly Property ValueNormalized() As Double
-            Get
-                If ValueSpecified AndAlso MaxSpecified Then
-                    Return Value / Max * 10
-                Else
-                    Return 0
-                End If
-            End Get
-        End Property
-
-        <XmlIgnore>
-        Public ReadOnly Property ValueNormalizedSpezified() As Boolean
-            Get
-                Return Not ValueNormalized = 0
-            End Get
-        End Property
-
-        <XmlElement("votes")>
-        Public Property Votes() As Integer = 0
-
-        <XmlIgnore()>
-        Public ReadOnly Property VotesSpecified() As Boolean
-            Get
-                Return Not Votes = 0
-            End Get
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Function CompareTo(ByVal other As RatingDetails) As Integer Implements IComparable(Of RatingDetails).CompareTo
-            Try
-                Dim retVal As Integer = If(IsDefault, -1, Type.CompareTo(other.Type))
-                Return retVal
-            Catch ex As Exception
-                Return 0
-            End Try
-        End Function
-
-#End Region 'Methods
-
-    End Class
-
 
     <Serializable()>
     Public Class RatingContainer
@@ -2434,6 +2491,93 @@ Namespace MediaContainers
         Private Sub RemoveAll(ByVal type As String)
             Items.RemoveAll(Function(f) f.Type = type)
         End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()>
+    Public Class RatingDetails
+        Implements IComparable(Of RatingDetails)
+
+#Region "Properties"
+
+        <XmlIgnore()>
+        Public Property ID() As Long = -1
+
+        <XmlAttribute("name")>
+        Public Property Type() As String = String.Empty
+
+        <XmlIgnore()>
+        Public ReadOnly Property TypeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Type)
+            End Get
+        End Property
+
+        <XmlAttribute("max")>
+        Public Property Max() As Integer = -1
+
+        <XmlIgnore()>
+        Public ReadOnly Property MaxSpecified() As Boolean
+            Get
+                Return Not Max = -1
+            End Get
+        End Property
+
+        <XmlAttribute("default")>
+        Public Property IsDefault() As Boolean = False
+
+        <XmlElement("value")>
+        Public Property Value() As Double = -1
+
+        <XmlIgnore()>
+        Public ReadOnly Property ValueSpecified() As Boolean
+            Get
+                Return Not Value = -1
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property ValueNormalized() As Double
+            Get
+                If ValueSpecified AndAlso MaxSpecified Then
+                    Return Value / Max * 10
+                Else
+                    Return 0
+                End If
+            End Get
+        End Property
+
+        <XmlIgnore>
+        Public ReadOnly Property ValueNormalizedSpezified() As Boolean
+            Get
+                Return Not ValueNormalized = 0
+            End Get
+        End Property
+
+        <XmlElement("votes")>
+        Public Property Votes() As Integer = 0
+
+        <XmlIgnore()>
+        Public ReadOnly Property VotesSpecified() As Boolean
+            Get
+                Return Not Votes = 0
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Function CompareTo(ByVal other As RatingDetails) As Integer Implements IComparable(Of RatingDetails).CompareTo
+            Try
+                Dim retVal As Integer = If(IsDefault, -1, Type.CompareTo(other.Type))
+                Return retVal
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Function
 
 #End Region 'Methods
 
@@ -3868,10 +4012,6 @@ Namespace MediaContainers
 
 #End Region 'Methods
 
-#Region "Nested Types"
-
-#End Region 'Nested Types
-
     End Class
 
     <Serializable()>
@@ -4347,60 +4487,6 @@ Namespace MediaContainers
         End Structure
 
 #End Region 'Nested Types
-
-    End Class
-    ''' <summary>
-    ''' Container for YAMJ sets
-    ''' </summary>
-    <Serializable()>
-    Public Class SetContainer
-
-#Region "Properties"
-
-        <XmlElement("set")>
-        Public Property Sets() As New List(Of SetDetails)
-
-        <XmlIgnore()>
-        Public ReadOnly Property SetsSpecified() As Boolean
-            Get
-                Return Sets.Count > 0
-            End Get
-        End Property
-
-#End Region 'Properties 
-
-    End Class
-
-    <Serializable()>
-    Public Class SetDetails
-        Inherits Movieset
-
-#Region "Properties"
-        ''' <summary>
-        ''' Database Id
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Public Property ID() As Long = -1
-
-        <XmlIgnore()>
-        Public ReadOnly Property IDSpecified() As Boolean
-            Get
-                Return Not ID = -1
-            End Get
-        End Property
-
-        <XmlAttribute("order")>
-        Public Property Order() As Integer = -1
-
-        <XmlIgnore()>
-        Public ReadOnly Property OrderSpecified() As Boolean
-            Get
-                Return Not Order = -1
-            End Get
-        End Property
-
-#End Region 'Properties 
 
     End Class
 
