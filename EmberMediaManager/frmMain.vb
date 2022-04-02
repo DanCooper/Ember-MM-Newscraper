@@ -16465,6 +16465,82 @@ Public Class frmMain
         pnlInfoPanel.ResumeLayout()
     End Sub
 
+    Private Sub UpdateDb_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuUpdate.ButtonClick
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_Closing(sender As Object, e As ToolStripDropDownClosingEventArgs)
+        If e.CloseReason = ToolStripDropDownCloseReason.ItemClicked Then
+            e.Cancel = True
+        Else
+            For Each item In DirectCast(sender, ToolStripDropDownMenu).Items
+                If TypeOf item Is ToolStripMenuItem Then
+                    DirectCast(item, ToolStripMenuItem).Checked = False
+                End If
+            Next
+        End If
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_All_Click_Movie(ByVal sender As Object, ByVal e As EventArgs)
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.Movies = True}, Nothing)
+        mnuUpdate.DropDown.Close()
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_All_Click_TVShow(ByVal sender As Object, ByVal e As EventArgs)
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.TV = True}, Nothing)
+        mnuUpdate.DropDown.Close()
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_Selected_Click_Movie(ByVal sender As Object, ByVal e As EventArgs)
+        Dim SourceIDs As New List(Of Long)
+        Dim MenuItem = DirectCast(sender, ToolStripMenuItem)
+
+        For Each item In MenuItem.GetCurrentParent.Items
+            If TypeOf item Is ToolStripMenuItem Then
+                If DirectCast(item, ToolStripMenuItem).Checked Then SourceIDs.Add(Convert.ToInt64(DirectCast(item, ToolStripMenuItem).Tag))
+            End If
+        Next
+
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.Movies = True}, If(SourceIDs.Count > 0, SourceIDs, Nothing))
+        mnuUpdate.DropDown.Close()
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_Selected_Click_TVShow(ByVal sender As Object, ByVal e As EventArgs)
+        Dim SourceIDs As New List(Of Long)
+        Dim MenuItem = DirectCast(sender, ToolStripMenuItem)
+
+        For Each item In MenuItem.GetCurrentParent.Items
+            If TypeOf item Is ToolStripMenuItem Then
+                If DirectCast(item, ToolStripMenuItem).Checked Then SourceIDs.Add(Convert.ToInt64(DirectCast(item, ToolStripMenuItem).Tag))
+            End If
+        Next
+
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.TV = True}, If(SourceIDs.Count > 0, SourceIDs, Nothing))
+        mnuUpdate.DropDown.Close()
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_Single_DoubleClick_Movie(ByVal sender As Object, ByVal e As EventArgs)
+        Dim SourceIDs As New List(Of Long)
+
+        If DirectCast(sender, ToolStripMenuItem).Tag IsNot Nothing Then
+            SourceIDs.Add(Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag))
+        End If
+
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.Movies = True}, If(SourceIDs.Count > 0, SourceIDs, Nothing))
+        mnuUpdate.DropDown.Close()
+    End Sub
+
+    Private Sub UpdateDb_SourceSub_Single_DoubleClick_TVShow(ByVal sender As Object, ByVal e As EventArgs)
+        Dim SourceIDs As New List(Of Long)
+
+        If DirectCast(sender, ToolStripMenuItem).Tag IsNot Nothing Then
+            SourceIDs.Add(Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag))
+        End If
+
+        Scanner_LoadMedia(New Structures.ScanOrClean With {.TV = True}, If(SourceIDs.Count > 0, SourceIDs, Nothing))
+        mnuUpdate.DropDown.Close()
+    End Sub
+
     Private Sub DoTitleCheck()
         fTaskManager.AddTask(New TaskManager.TaskItem With {
                              .ContentType = Enums.ContentType.Movie,
@@ -18502,7 +18578,7 @@ Public Class frmMain
     ''' <param name="reloadFilters"></param>
     ''' <remarks></remarks>
     Private Sub SetMenus(ByVal reloadFilters As Boolean)
-        Dim mnuItem As ToolStripItem
+        Dim mnuItem As ToolStripMenuItem
         Dim currMainTabTag = MainTab_GetCurrentTag()
 
         With Master.eSettings
@@ -18512,43 +18588,71 @@ Public Class frmMain
             mnuMainToolsClearCache.Enabled = False
 
             'Load source list for movies
+            AddHandler mnuUpdateMovies.DropDown.Closing, AddressOf UpdateDb_SourceSub_Closing
+            AddHandler mnuUpdateShows.DropDown.Closing, AddressOf UpdateDb_SourceSub_Closing
+            AddHandler cmnuTrayUpdateMovies.DropDown.Closing, AddressOf UpdateDb_SourceSub_Closing
+            AddHandler cmnuTrayUpdateShows.DropDown.Closing, AddressOf UpdateDb_SourceSub_Closing
+
+            Dim multipleMovieSources As Boolean = Master.DB.LoadAll_Sources_Movie.Count > 1
             mnuUpdateMovies.DropDownItems.Clear()
             cmnuTrayUpdateMovies.DropDownItems.Clear()
-            If Master.DB.LoadAll_Sources_Movie.Count > 1 Then
-                mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
+            If multipleMovieSources Then
+                mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_All_Click_Movie))
+                mnuUpdateMovies.DropDownItems.Add(New ToolStripSeparator)
+                cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_All_Click_Movie))
+                cmnuTrayUpdateMovies.DropDownItems.Add(New ToolStripSeparator)
             End If
             For Each nSource In Master.DB.LoadAll_Sources_Movie
-                Dim test As New ToolStripMenuItem With {.CheckOnClick = True, .Text = "fasdfdkas"}
-                'AddHandler test.Click, AddressOf SourceSubClick_Movie
-                mnuUpdateMovies.DropDownItems.Add(test)
-                mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
-                mnuItem.Tag = nSource.ID
-                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
-                mnuItem.Tag = nSource.ID
+                mnuItem = New ToolStripMenuItem With {.CheckOnClick = True, .DoubleClickEnabled = True, .ForeColor = If(nSource.Exclude, Color.Gray, Color.Black), .Tag = nSource.ID, .Text = nSource.Name}
+                If multipleMovieSources Then
+                    AddHandler mnuItem.DoubleClick, AddressOf UpdateDb_SourceSub_Single_DoubleClick_Movie
+                Else
+                    AddHandler mnuItem.Click, AddressOf UpdateDb_SourceSub_Single_DoubleClick_Movie
+                End If
+                mnuUpdateMovies.DropDownItems.Add(mnuItem)
+                mnuItem = New ToolStripMenuItem With {.CheckOnClick = True, .DoubleClickEnabled = True, .ForeColor = If(nSource.Exclude, Color.Gray, Color.Black), .Tag = nSource.ID, .Text = nSource.Name}
+                If multipleMovieSources Then
+                    AddHandler mnuItem.DoubleClick, AddressOf UpdateDb_SourceSub_Single_DoubleClick_Movie
+                Else
+                    AddHandler mnuItem.Click, AddressOf UpdateDb_SourceSub_Single_DoubleClick_Movie
+                End If
+                cmnuTrayUpdateMovies.DropDownItems.Add(mnuItem)
             Next
-            If Master.DB.LoadAll_Sources_Movie.Count > 1 Then
-                mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(9999999, "Update selected"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
-                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(9999999, "Update selected"), Nothing, New EventHandler(AddressOf SourceSubClick_Movie))
+            If multipleMovieSources Then
+                mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(934, "Update selected"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_Selected_Click_Movie))
+                cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(934, "Update selected"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_Selected_Click_Movie))
             End If
 
             'Load source list for tv shows
+            Dim multipleTVShowSources As Boolean = Master.DB.LoadAll_Sources_TVShow.Count > 1
             mnuUpdateShows.DropDownItems.Clear()
             cmnuTrayUpdateShows.DropDownItems.Clear()
-            If Master.DB.LoadAll_Sources_TVShow.Count > 1 Then
-                mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
-                mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
+            If multipleTVShowSources Then
+                mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_All_Click_TVShow))
+                mnuUpdateShows.DropDownItems.Add(New ToolStripSeparator)
+                cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_All_Click_TVShow))
+                cmnuTrayUpdateShows.DropDownItems.Add(New ToolStripSeparator)
             End If
             For Each nSource In Master.DB.LoadAll_Sources_TVShow
-                mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
-                mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
-                mnuItem.Tag = nSource.ID
-                mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), nSource.Name), Nothing, New EventHandler(AddressOf SourceSubClick_TV))
-                mnuItem.ForeColor = If(nSource.Exclude, Color.Gray, Color.Black)
-                mnuItem.Tag = nSource.ID
+                mnuItem = New ToolStripMenuItem With {.CheckOnClick = True, .DoubleClickEnabled = True, .ForeColor = If(nSource.Exclude, Color.Gray, Color.Black), .Tag = nSource.ID, .Text = nSource.Name}
+                If multipleTVShowSources Then
+                    AddHandler mnuItem.DoubleClick, AddressOf UpdateDb_SourceSub_Single_DoubleClick_TVShow
+                Else
+                    AddHandler mnuItem.Click, AddressOf UpdateDb_SourceSub_Single_DoubleClick_TVShow
+                End If
+                mnuUpdateShows.DropDownItems.Add(mnuItem)
+                mnuItem = New ToolStripMenuItem With {.CheckOnClick = True, .DoubleClickEnabled = True, .ForeColor = If(nSource.Exclude, Color.Gray, Color.Black), .Tag = nSource.ID, .Text = nSource.Name}
+                If multipleTVShowSources Then
+                    AddHandler mnuItem.DoubleClick, AddressOf UpdateDb_SourceSub_Single_DoubleClick_TVShow
+                Else
+                    AddHandler mnuItem.Click, AddressOf UpdateDb_SourceSub_Single_DoubleClick_TVShow
+                End If
+                cmnuTrayUpdateShows.DropDownItems.Add(mnuItem)
             Next
+            If multipleTVShowSources Then
+                mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(934, "Update selected"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_Selected_Click_TVShow))
+                cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(934, "Update selected"), Nothing, New EventHandler(AddressOf UpdateDb_SourceSub_Selected_Click_TVShow))
+            End If
 
             'Load filter list DataFields for movies
             clbFilterDataFields_Movies.Items.Clear()
@@ -18697,30 +18801,6 @@ Public Class frmMain
             mnuMainEditSettings.Enabled = True
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-    End Sub
-
-    Private Sub SourceSubClick_Movie(ByVal sender As Object, ByVal e As EventArgs)
-        Dim SourceID As Long = -1
-
-        If DirectCast(sender, ToolStripItem).Tag IsNot Nothing Then
-            SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
-        End If
-
-        Scanner_LoadMedia(New Structures.ScanOrClean With {.Movies = True}, If(Not SourceID = -1, New List(Of Long) From {SourceID}, Nothing))
-    End Sub
-
-    Private Sub SourceSubClick_TV(ByVal sender As Object, ByVal e As EventArgs)
-        Dim SourceID As Long = -1
-
-        If DirectCast(sender, ToolStripItem).Tag IsNot Nothing Then
-            SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
-        End If
-
-        Scanner_LoadMedia(New Structures.ScanOrClean With {.TV = True}, If(Not SourceID = -1, New List(Of Long) From {SourceID}, Nothing))
-    End Sub
-
-    Private Sub mnuUpdate_ButtonClick(ByVal sender As Object, ByVal e As EventArgs) Handles mnuUpdate.ButtonClick
-        Scanner_LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
     End Sub
 
     Private Sub VersionsToolStripMenuItem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainHelpVersions.Click

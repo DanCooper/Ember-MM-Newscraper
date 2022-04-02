@@ -932,7 +932,7 @@
   <string name="931">Open In Browser</string>
   <string name="932">TVDB API Key</string>
   <string name="933">TMDB ID</string>
-  <string name="934"></string>
+  <string name="934">Update selected</string>
   <string name="935">Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again.</string>
   <string name="936">Get your API Key from www.themoviedb.org</string>
   <string name="937">Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again.</string>
