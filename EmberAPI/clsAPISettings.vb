@@ -1115,46 +1115,43 @@ Public Class Settings
 
     Public Sub Load()
         Dim configpath As String = Path.Combine(Master.SettingsPath, "Settings.xml")
+        Dim xmlReader As New StreamReader(configpath)
 
         Try
             If File.Exists(configpath) Then
-                Dim objStreamReader As New StreamReader(configpath)
                 Dim xXMLSettings As New XmlSerializer(GetType(Settings))
-
-                Master.eSettings = CType(xXMLSettings.Deserialize(objStreamReader), Settings)
-                objStreamReader.Close()
+                Master.eSettings = CType(xXMLSettings.Deserialize(xmlReader), Settings)
             End If
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
             _Logger.Info("An attempt is made to repair the Settings.xml")
             Try
-                Using srSettings As New StreamReader(configpath)
-                    Dim sSettings As String = srSettings.ReadToEnd
-                    'old Fanart/Poster sizes
-                    sSettings = Regex.Replace(sSettings, "PrefSize>Xlrg<", "PrefSize>Any<")
-                    sSettings = Regex.Replace(sSettings, "PrefSize>Lrg<", "PrefSize>Any<")
-                    sSettings = Regex.Replace(sSettings, "PrefSize>Mid<", "PrefSize>Any<")
-                    sSettings = Regex.Replace(sSettings, "PrefSize>Small<", "PrefSize>Any<")
-                    'old Trailer Audio/Video quality
-                    sSettings = Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
-                    'old allseasons/season/tvshow banner type
-                    sSettings = Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
-                    'old seasonposter size HD1000
-                    sSettings = Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>",
-                                                                             "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
+                Dim sSettings As String = xmlReader.ReadToEnd
+                'old Fanart/Poster sizes
+                sSettings = Regex.Replace(sSettings, "PrefSize>Xlrg<", "PrefSize>Any<")
+                sSettings = Regex.Replace(sSettings, "PrefSize>Lrg<", "PrefSize>Any<")
+                sSettings = Regex.Replace(sSettings, "PrefSize>Mid<", "PrefSize>Any<")
+                sSettings = Regex.Replace(sSettings, "PrefSize>Small<", "PrefSize>Any<")
+                'old Trailer Audio/Video quality
+                sSettings = Regex.Replace(sSettings, "Qual>All<", "Qual>Any<")
+                'old allseasons/season/tvshow banner type
+                sSettings = Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
+                'old seasonposter size HD1000
+                sSettings = Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>", "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
 
-                    Dim xXMLSettings As New XmlSerializer(GetType(Settings))
-                    Using reader As TextReader = New StringReader(sSettings)
-                        Master.eSettings = CType(xXMLSettings.Deserialize(reader), Settings)
-                    End Using
-                    _Logger.Info("Settings.xml successfully repaired")
+                Dim xXMLSettings As New XmlSerializer(GetType(Settings))
+                Using reader As TextReader = New StringReader(sSettings)
+                    Master.eSettings = CType(xXMLSettings.Deserialize(reader), Settings)
                 End Using
+                _Logger.Info("Settings.xml successfully repaired")
             Catch ex2 As Exception
                 _Logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(configpath, String.Concat(configpath, "_backup"), True)
                 Master.eSettings = New Settings
+                _Logger.Warn("Attempt to repair the Settings.xml has failed. The file has been backed up and the default settings has been loaded.")
             End Try
         End Try
+        xmlReader.Close()
 
         SetDefaultsForLists(Enums.DefaultType.All, False)
 
@@ -1232,14 +1229,15 @@ Public Class Settings
     Public Sub Save()
         'set database version
         Version = _settingsversion
+        Dim xmlWriter As StreamWriter = Nothing
         Try
-            Dim xmlSerial As New XmlSerializer(GetType(Settings))
-            Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Settings.xml"))
-            xmlSerial.Serialize(xmlWriter, Master.eSettings)
-            xmlWriter.Close()
+            xmlWriter = New StreamWriter(Path.Combine(Master.SettingsPath, "Settings.xml"))
+            Dim xmlSerializer As New XmlSerializer(GetType(Settings))
+            xmlSerializer.Serialize(xmlWriter, Master.eSettings)
         Catch ex As Exception
             _Logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
+        If xmlWriter IsNot Nothing Then xmlWriter.Close()
     End Sub
 
     Public Sub SetDefaultsForLists(ByVal type As Enums.DefaultType, ByVal force As Boolean)
