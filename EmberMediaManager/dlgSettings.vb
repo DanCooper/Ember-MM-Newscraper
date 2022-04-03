@@ -2938,7 +2938,7 @@ Public Class dlgSettings
             chkGeneralDisplayPoster.Checked = .GeneralDisplayPoster
             chkGeneralImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
             chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
-            'chkGeneralDisplayGenresText.Checked = .GeneralShowGenresText
+            chkGeneralDisplayGenresText.Checked = .GeneralShowGenresText
             chkGeneralDisplayLangFlags.Checked = .GeneralShowLangFlags
             chkGeneralDisplayImgDims.Checked = .GeneralShowImgDims
             chkGeneralDisplayImgNames.Checked = .GeneralShowImgNames
@@ -4928,7 +4928,7 @@ Public Class dlgSettings
             .GeneralNotificationWarning = chkGeneralNotificationWarning.Checked
             .GeneralTheme = cbGeneralTheme.Text
             .GeneralOverwriteNfo = chkGeneralOverwriteNfo.Checked
-            '.GeneralShowGenresText = chkGeneralDisplayGenresText.Checked
+            .GeneralShowGenresText = chkGeneralDisplayGenresText.Checked
             .GeneralShowLangFlags = chkGeneralDisplayLangFlags.Checked
             .GeneralShowImgDims = chkGeneralDisplayImgDims.Checked
             .GeneralShowImgNames = chkGeneralDisplayImgNames.Checked

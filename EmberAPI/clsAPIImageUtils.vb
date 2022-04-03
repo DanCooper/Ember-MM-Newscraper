@@ -351,7 +351,6 @@ Public Class ImageUtils
             logger.Error("Invalid image parameter", New StackTrace().ToString())
             Return Nothing
         End If
-
         Dim bmGenre As New Bitmap(image)
         Try
             Using grGenre As Graphics = Graphics.FromImage(bmGenre),
@@ -370,7 +369,6 @@ Public Class ImageUtils
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return bmGenre
-
     End Function
 
 #End Region 'Methods

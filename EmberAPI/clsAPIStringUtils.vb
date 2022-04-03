@@ -540,7 +540,7 @@ Public Class StringUtils
         Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim
     End Function
 
-    Public Shared Function FormatDuration(ByVal tDur As String, ByVal contentType As Enums.ContentType) As String
+    Public Shared Function FormatDuration(ByVal duration As String, ByVal contentType As Enums.ContentType) As String
         Dim strMask As String = String.Empty
         Select Case contentType
             Case Enums.ContentType.Movie
@@ -550,14 +550,14 @@ Public Class StringUtils
             Case Else
                 Return String.Empty
         End Select
-        Dim rmDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)min)?\s?(([0-9]+)s)?")
+        Dim rmDuration As Match = Regex.Match(duration, "(([0-9]+)h)?\s?(([0-9]+)min)?\s?(([0-9]+)s)?")
         Dim iHours As Integer = If(Not String.IsNullOrEmpty(rmDuration.Groups(2).Value), (Convert.ToInt32(rmDuration.Groups(2).Value)), 0)
         Dim iMinutes As Integer = If(Not String.IsNullOrEmpty(rmDuration.Groups(4).Value), (Convert.ToInt32(rmDuration.Groups(4).Value)), 0)
         Dim iSeconds As Integer = If(Not String.IsNullOrEmpty(rmDuration.Groups(6).Value), (Convert.ToInt32(rmDuration.Groups(6).Value)), 0)
 
         'new handling: only seconds as tdur
-        If Integer.TryParse(tDur, 0) Then
-            Dim ts As New TimeSpan(0, 0, Convert.ToInt32(tDur))
+        If Integer.TryParse(duration, 0) Then
+            Dim ts As New TimeSpan(0, 0, Convert.ToInt32(duration))
             iHours = ts.Hours
             iMinutes = ts.Minutes
             iSeconds = ts.Seconds

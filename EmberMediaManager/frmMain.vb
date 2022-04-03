@@ -3865,52 +3865,6 @@ Public Class frmMain
     Private Sub mnuMainToolsBackdrops_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsBackdrops.Click, cmnuTrayToolsBackdrops.Click
         fTaskManager.AddTask(New TaskManager.TaskItem With {.ContentType = Enums.ContentType.Movie, .TaskType = Enums.TaskManagerType.CopyBackdrops})
     End Sub
-    ''' <summary>
-    ''' Populate the form's Genre panel and picture box arrays with the 
-    ''' appropriate genre images and (conditionally) labels 
-    ''' </summary>
-    ''' <param name="genres"><c>List (Of String)</c> holding genre names</param>
-    ''' <remarks>If any individual genre is invalid or generates an error, 
-    ''' the remaining genres are still processed, however the placement/spacing
-    ''' of the remaining genres may show gaps where the erronious genres should have been</remarks>
-    Private Sub createGenreThumbs(ByVal genres As List(Of String))
-        If genres Is Nothing OrElse genres.Count = 0 Then Return
-
-        genres.Sort()
-        genres.Reverse()
-
-        For i As Integer = 0 To genres.Count - 1
-            Try
-                ReDim Preserve pnlGenre(i)
-                ReDim Preserve pbGenre(i)
-                pnlGenre(i) = New Panel()
-                pnlGenre(i).Visible = False
-                pbGenre(i) = New PictureBox()
-                pbGenre(i).Name = genres(i).Trim.ToUpper
-                pnlGenre(i).Size = New Size(68, 100)
-                pbGenre(i).Size = New Size(62, 94)
-                pnlGenre(i).BackColor = GenrePanelColor
-                pbGenre(i).BackColor = GenrePanelColor
-                pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
-                pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
-                pbGenre(i).Image = APIXML.GetGenreImage(genres(i).Trim)
-                pnlGenre(i).Left = ((pnlInfoPanel.Right) - (i * 73)) - 73
-                pbGenre(i).Left = 2
-                pnlGenre(i).Top = pnlInfoPanel.Top - 105
-                pbGenre(i).Top = 2
-                scMain.Panel2.Controls.Add(pnlGenre(i))
-                pnlGenre(i).Controls.Add(pbGenre(i))
-                pnlGenre(i).BringToFront()
-                'AddHandler pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
-                'AddHandler pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
-                'If Master.eSettings.GeneralShowGenresText Then
-                '    pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
-                'End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-    End Sub
 
     Private Sub cmnuMovieRemoveFromDisk_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuMovieRemoveFromDisk.Click
         Dim lstMovieID As New List(Of Long)
@@ -10915,7 +10869,7 @@ Public Class frmMain
         lblOriginalTitle.Text = String.Empty
         lblPosterSize.Text = String.Empty
         lblPremiered.Text = String.Empty
-        'lblRuntime.Text = String.Empty
+        lblRuntime.Text = String.Empty
         lblStatus.Text = String.Empty
         lblStudio.Text = String.Empty
         lblTagline.Text = String.Empty
@@ -11001,6 +10955,65 @@ Public Class frmMain
         InfoCleared = True
 
         Application.DoEvents()
+    End Sub
+    ''' <summary>
+    ''' Populate the form's Genre panel and picture box arrays with the 
+    ''' appropriate genre images and (conditionally) labels 
+    ''' </summary>
+    ''' <param name="genres"><c>List (Of String)</c> holding genre names</param>
+    ''' <remarks>If any individual genre is invalid or generates an error, 
+    ''' the remaining genres are still processed, however the placement/spacing
+    ''' of the remaining genres may show gaps where the erronious genres should have been</remarks>
+    Private Sub InfoScreen_GenreIcons_Load(ByVal genres As List(Of String))
+        If genres Is Nothing OrElse genres.Count = 0 Then Return
+
+        genres.Sort()
+        genres.Reverse()
+
+        For i As Integer = 0 To genres.Count - 1
+            Try
+                ReDim Preserve pnlGenre(i)
+                ReDim Preserve pbGenre(i)
+                pnlGenre(i) = New Panel With {
+                    .BackColor = GenrePanelColor,
+                    .BorderStyle = BorderStyle.FixedSingle,
+                    .Left = ((pnlInfoPanel.Right) - (i * 73)) - 73,
+                    .Size = New Size(68, 100),
+                    .Top = pnlInfoPanel.Top - 105,
+                    .Visible = False
+                }
+                pbGenre(i) = New PictureBox With {
+                    .Name = genres(i).Trim.ToUpper,
+                    .Size = New Size(62, 94),
+                    .BackColor = GenrePanelColor,
+                    .SizeMode = PictureBoxSizeMode.StretchImage,
+                    .Image = APIXML.GetGenreImage(genres(i).Trim),
+                    .Left = 2,
+                    .Top = 2
+                }
+                scMain.Panel2.Controls.Add(pnlGenre(i))
+                pnlGenre(i).Controls.Add(pbGenre(i))
+                pnlGenre(i).BringToFront()
+                AddHandler pbGenre(i).MouseEnter, AddressOf InfoScreen_GenreIcons_MouseEnter
+                AddHandler pbGenre(i).MouseLeave, AddressOf InfoScreen_GenreIcons_MouseLeave
+                If Master.eSettings.GeneralShowGenresText Then
+                    pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+        Next
+    End Sub
+
+    Private Sub InfoScreen_GenreIcons_MouseEnter(sender As Object, e As EventArgs)
+        If Master.eSettings.GeneralShowGenresText Then Return 'Because Image already has genre text displayed
+        GenreImage = DirectCast(sender, PictureBox).Image    'Store the image for later retrieval
+        DirectCast(sender, PictureBox).Image = ImageUtils.AddGenreString(DirectCast(sender, PictureBox).Image, DirectCast(sender, PictureBox).Name.ToString)
+    End Sub
+
+    Private Sub InfoScreen_GenreIcons_MouseLeave(sender As Object, e As EventArgs)
+        If Master.eSettings.GeneralShowGenresText Then Return
+        DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
     Private Sub InfoScreen_Images_Load_DoWork_Movie(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadImages_Movie.DoWork
@@ -12612,7 +12625,7 @@ Public Class frmMain
 
         'Runtime
         If currMovie.Movie.RuntimeSpecified Then
-            'lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Left(currMovie.Movie.Runtime, currMovie.Movie.Runtime.IndexOf("|")), currMovie.Movie.Runtime)).Trim
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currMovie.Movie.Runtime.Contains("|"), currMovie.Movie.Runtime.Substring(0, currMovie.Movie.Runtime.IndexOf("|")), currMovie.Movie.Runtime)).Trim
         End If
 
         'Actors
@@ -12652,11 +12665,15 @@ Public Class frmMain
                 pbMPAA.Image = tmpRatingImg
                 InfoScreen_Move_MPAAIcon()
             End If
+            If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
         End If
 
         'Genres
         If currMovie.Movie.GenresSpecified Then
-            createGenreThumbs(currMovie.Movie.Genres)
+            InfoScreen_GenreIcons_Load(currMovie.Movie.Genres)
+            For i As Integer = 0 To pnlGenre.Count - 1
+                pnlGenre(i).Visible = True
+            Next
         End If
 
         'Studios
@@ -12689,11 +12706,6 @@ Public Class frmMain
         Else
             dgvMovies.Focus()
         End If
-
-        If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
-        For i As Integer = 0 To pnlGenre.Count - 1
-            pnlGenre(i).Visible = True
-        Next
 
         ResumeLayout()
     End Sub
@@ -12737,11 +12749,6 @@ Public Class frmMain
             dgvMovieSets.Focus()
         End If
 
-        If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
-        For i As Integer = 0 To pnlGenre.Count - 1
-            pnlGenre(i).Visible = True
-        Next
-
         ResumeLayout()
     End Sub
 
@@ -12776,6 +12783,13 @@ Public Class frmMain
         'Ratings & UserRating
         If currTV.TVEpisode.RatingsSpecified OrElse currTV.TVEpisode.UserRatingSpecified Then
             InfoScreen_Show_Ratings(currTV.TVEpisode.Ratings.Items, currTV.TVEpisode.UserRating)
+        End If
+
+        'Runtime
+        If currTV.TVEpisode.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currTV.TVEpisode.Runtime.Contains("|"), currTV.TVEpisode.Runtime.Substring(0, currTV.TVEpisode.Runtime.IndexOf("|")), currTV.TVEpisode.Runtime)).Trim
+        ElseIf currTV.TVShow.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currTV.TVShow.Runtime.Contains("|"), currTV.TVShow.Runtime.Substring(0, currTV.TVShow.Runtime.IndexOf("|")), currTV.TVShow.Runtime)).Trim
         End If
 
         'Season / Episode Number
@@ -12850,11 +12864,15 @@ Public Class frmMain
                 pbMPAA.Image = tmpRatingImg
                 InfoScreen_Move_MPAAIcon()
             End If
+            If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
         End If
 
         'Genres
         If currTV.TVShow.GenresSpecified Then
-            createGenreThumbs(currTV.TVShow.Genres)
+            InfoScreen_GenreIcons_Load(currTV.TVShow.Genres)
+            For i As Integer = 0 To pnlGenre.Count - 1
+                pnlGenre(i).Visible = True
+            Next
         End If
 
         'Studios
@@ -12881,11 +12899,6 @@ Public Class frmMain
 
         InfoCleared = False
 
-        If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
-        For i As Integer = 0 To pnlGenre.Count - 1
-            pnlGenre(i).Visible = True
-        Next
-
         ResumeLayout()
     End Sub
 
@@ -12896,7 +12909,6 @@ Public Class frmMain
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
         lblPremiered.Text = currTV.TVSeason.Aired
         lblPremieredHeader.Text = Master.eLang.GetString(728, "Aired")
-        'lblRuntime.Text = currTV.TVShow.Runtime
         lblTMDBHeader.Tag = StringUtils.GetURL_TMDb(currTV)
         lblTVDBHeader.Tag = StringUtils.GetURL_TVDb(currTV)
         lblTitle.Text = currTV.TVSeason.Title
@@ -12915,6 +12927,11 @@ Public Class frmMain
         'Ratings & UserRating
         If currTV.TVShow.RatingsSpecified OrElse currTV.TVShow.UserRatingSpecified Then
             InfoScreen_Show_Ratings(currTV.TVShow.Ratings.Items, currTV.TVShow.UserRating)
+        End If
+
+        'Runtime
+        If currTV.TVShow.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currTV.TVShow.Runtime.Contains("|"), currTV.TVShow.Runtime.Substring(0, currTV.TVShow.Runtime.IndexOf("|")), currTV.TVShow.Runtime)).Trim
         End If
 
         'Actors
@@ -12954,11 +12971,15 @@ Public Class frmMain
                 pbMPAA.Image = tmpRatingImg
                 InfoScreen_Move_MPAAIcon()
             End If
+            If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
         End If
 
         'Genres
         If currTV.TVShow.Genres.Count > 0 Then
-            createGenreThumbs(currTV.TVShow.Genres)
+            InfoScreen_GenreIcons_Load(currTV.TVShow.Genres)
+            For i As Integer = 0 To pnlGenre.Count - 1
+                pnlGenre(i).Visible = True
+            Next
         End If
 
         'Studios
@@ -12973,11 +12994,6 @@ Public Class frmMain
         pbStudio.Left = 0
 
         InfoCleared = False
-
-        If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
-        For i As Integer = 0 To pnlGenre.Count - 1
-            pnlGenre(i).Visible = True
-        Next
 
         ResumeLayout()
     End Sub
@@ -13004,7 +13020,6 @@ Public Class frmMain
         lblIMDBHeader.Tag = StringUtils.GetURL_IMDb(currTV)
         lblPremiered.Text = currTV.TVShow.Premiered
         lblPremieredHeader.Text = Master.eLang.GetString(724, "Premiered")
-        'lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
         lblStatus.Text = currTV.TVShow.Status
         lblTagline.Text = currTV.TVShow.Tagline
         lblTags.Text = String.Join(" / ", currTV.TVShow.Tags.ToArray)
@@ -13020,8 +13035,13 @@ Public Class frmMain
             InfoScreen_Show_Ratings(currTV.TVShow.Ratings.Items, currTV.TVShow.UserRating)
         End If
 
-        alActors = New List(Of String)
+        'Runtime
+        If currTV.TVShow.RuntimeSpecified Then
+            lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(currTV.TVShow.Runtime.Contains("|"), currTV.TVShow.Runtime.Substring(0, currTV.TVShow.Runtime.IndexOf("|")), currTV.TVShow.Runtime)).Trim
+        End If
 
+        'Actors
+        alActors = New List(Of String)
         If currTV.TVShow.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
             For Each imdbAct As MediaContainers.Person In currTV.TVShow.Actors
@@ -13050,18 +13070,25 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
+        'MPAA
         If currTV.TVShow.MPAASpecified Then
             Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShow.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 InfoScreen_Move_MPAAIcon()
             End If
+            If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
         End If
 
+        'Genres
         If currTV.TVShow.Genres.Count > 0 Then
-            createGenreThumbs(currTV.TVShow.Genres)
+            InfoScreen_GenreIcons_Load(currTV.TVShow.Genres)
+            For i As Integer = 0 To pnlGenre.Count - 1
+                pnlGenre(i).Visible = True
+            Next
         End If
 
+        'Studios
         If currTV.TVShow.StudiosSpecified Then
             pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all image files are lower case
             pbStudio.Tag = currTV.TVShow.Studios.Item(0)
@@ -13081,11 +13108,6 @@ Public Class frmMain
         Else
             dgvTVShows.Focus()
         End If
-
-        If pbMPAA.Image IsNot Nothing Then pnlMPAA.Visible = True
-        For i As Integer = 0 To pnlGenre.Count - 1
-            pnlGenre(i).Visible = True
-        Next
 
         ResumeLayout()
     End Sub

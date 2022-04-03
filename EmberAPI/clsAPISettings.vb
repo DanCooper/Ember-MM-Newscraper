@@ -177,6 +177,7 @@ Public Class Settings
     Public Property GeneralNotificationScrapedTVShow As Boolean = True
     Public Property GeneralNotificationWarning As Boolean = True
     Public Property GeneralOverwriteNfo() As Boolean = False
+    Public Property GeneralShowGenresText() As Boolean = True
     Public Property GeneralShowImgDims() As Boolean = True
     Public Property GeneralShowImgNames() As Boolean = True
     Public Property GeneralShowLangFlags() As Boolean = True
