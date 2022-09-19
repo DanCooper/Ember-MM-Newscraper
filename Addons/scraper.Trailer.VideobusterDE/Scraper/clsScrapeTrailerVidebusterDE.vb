@@ -96,12 +96,12 @@ Public Class Scraper
             Dim webParsing As New HtmlWeb
             Dim htmldocSearchResults As HtmlDocument = webParsing.Load(strSearchUrl)
 
-            'target is to get all <li> nodes of the <ul class="list movietip_no"> node (all search results)
-            Dim dnSearchResults = htmldocSearchResults.DocumentNode.SelectNodes("//ul[@class=""list movietip_no""]")
+            'target is to get all <div class="row result"> nodes of the <div id="movies" class="titles-list right-navi-filter"> node (all search results)
+            Dim dnSearchResults = htmldocSearchResults.DocumentNode.SelectNodes("//div[@class=""row result""]")
 
             If dnSearchResults IsNot Nothing Then
                 'take first search result and search the movie page in the attributes
-                Dim strMovieUrl = dnSearchResults(0).SelectSingleNode("//a[@class=""title""]").GetAttributeValue("href", String.Empty)
+                Dim strMovieUrl = dnSearchResults(0).SelectSingleNode(".//a[@title]").GetAttributeValue("href", String.Empty)
                 If Not String.IsNullOrEmpty(strMovieUrl) Then
                     '-----------------------------------------------------------------------------------------
                     ' load the movie page
@@ -117,14 +117,15 @@ Public Class Scraper
                     Dim htmldocMoviePage As New HtmlDocument
                     If Not String.IsNullOrEmpty(MoviePage) Then htmldocMoviePage.LoadHtml(MoviePage)
                     If htmldocMoviePage IsNot Nothing Then
-                        Dim dnTrailers = htmldocMoviePage.DocumentNode.SelectNodes("//div[@id=""trailer""]//div[@class=""playlist""]//div[@class=""item active""]")
+                        Dim dnTrailers = htmldocMoviePage.DocumentNode.SelectNodes("//div[@class=""item-outer""]//div[@class=""item-top""]")
                         If dnTrailers IsNot Nothing Then
                             For Each tTrailer In dnTrailers
                                 'get trailer main information from first stream
-                                Dim strTitle = tTrailer.ChildNodes(1).ChildNodes(1).SelectSingleNode("meta[@itemprop=""name""]").Attributes(1).Value
-                                Dim strDuration = tTrailer.ChildNodes(1).ChildNodes(1).SelectSingleNode("meta[@itemprop=""duration""]").Attributes(1).Value
-                                Dim strLanguage = tTrailer.ChildNodes(1).ChildNodes(1).SelectSingleNode("meta[@itemprop=""inLanguage""]").Attributes(1).Value
+                                Dim strTitle = tTrailer.ChildNodes(1).SelectSingleNode("meta[@itemprop=""name""]").Attributes(1).Value
+                                Dim strDuration = tTrailer.ChildNodes(1).SelectSingleNode("meta[@itemprop=""duration""]").Attributes(1).Value
+                                Dim strLanguage = tTrailer.ChildNodes(1).SelectSingleNode("meta[@itemprop=""inLanguage""]").Attributes(1).Value
                                 If strLanguage = "ger" Then strLanguage = "deu"
+                                Dim strUrlWebsite = tTrailer.ChildNodes(1).SelectSingleNode("meta[@itemprop=""contentUrl""]").Attributes(1).Value
 
                                 Dim nTrailer As New MediaContainers.MediaFile With {
                                     .Duration = StringUtils.SecondsToDuration(Regex.Match(strDuration, "\d+").Value),
@@ -133,12 +134,12 @@ Public Class Scraper
                                     .Scraper = "Videobuster.de",
                                     .Source = "Videobuster.de",
                                     .Title = strTitle,
-                                    .UrlWebsite = String.Concat(strMainUrl, strMovieUrl, "#trailer"),
+                                    .UrlWebsite = strUrlWebsite,
                                     .VideoType = GetVideoType(strTitle)
                                 }
 
                                 'get all streams
-                                For Each tStream In tTrailer.ChildNodes(1).SelectNodes("span")
+                                For Each tStream In tTrailer.SelectNodes("span")
                                     Dim strUrl = tStream.SelectSingleNode("meta[@itemprop=""contentUrl""]").Attributes(1).Value
                                     Dim strExtension = tStream.SelectSingleNode("meta[@itemprop=""contentUrl""]").Attributes(1).Value
                                     Dim strWidth = tStream.SelectSingleNode("meta[@itemprop=""width""]").Attributes(1).Value
