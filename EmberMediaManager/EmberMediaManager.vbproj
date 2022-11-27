@@ -307,6 +307,12 @@
     <Compile Include="dlgImageViewer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgTagManager.Designer.vb">
+      <DependentUpon>dlgTagManager.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTagManager.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgProfileSelect.Designer.vb">
       <DependentUpon>dlgProfileSelect.vb</DependentUpon>
     </Compile>
@@ -347,12 +353,6 @@
       <DependentUpon>dlgSortFiles.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgSortFiles.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgStudioSelect.Designer.vb">
-      <DependentUpon>dlgStudioSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgStudioSelect.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgMediaFileSelect.Designer.vb">
@@ -461,6 +461,9 @@
     <EmbeddedResource Include="dlgImageViewer.resx">
       <DependentUpon>dlgImageViewer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="dlgTagManager.resx">
+      <DependentUpon>dlgTagManager.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgProfileSelect.resx">
       <DependentUpon>dlgProfileSelect.vb</DependentUpon>
     </EmbeddedResource>
@@ -482,9 +485,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSortFiles.resx">
       <DependentUpon>dlgSortFiles.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgStudioSelect.resx">
-      <DependentUpon>dlgStudioSelect.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgMediaFileSelect.resx">
       <DependentUpon>dlgMediaFileSelect.vb</DependentUpon>

@@ -1357,72 +1357,6 @@ Public Class Database
         End Try
         Return True
     End Function
-
-    ''' <summary>
-    ''' Remove all information related to a tag from the database.
-    ''' </summary>
-    ''' <param name="id">Internal TagID of the tag to remove, as stored in the database.</param>
-    ''' <param name="mode">1=tag of a movie, 2=tag of a show</param>
-    ''' <param name="batchMode">Is this function already part of a transaction?</param>
-    ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function Delete_Tag(ByVal id As Long, ByVal mode As Integer, ByVal batchMode As Boolean) As Boolean
-        Try
-            'first get a list of all movies in the tag to remove the tag information from NFO
-            Dim moviesToSave As New List(Of DBElement)
-            Dim SQLtransaction As SQLiteTransaction = Nothing
-            Dim tagName As String = String.Empty
-            If Not batchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
-
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT strTag FROM tag ",
-                                                       "WHERE idTag = ", id, ";")
-                Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("strTag")) Then tagName = CStr(SQLreader("strTag"))
-                    End While
-                End Using
-            End Using
-
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idMedia FROM taglinks ",
-                                                       "WHERE idTag = ", id, ";")
-                Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        If mode = 1 Then
-                            'tag is for movie
-                            If Not DBNull.Value.Equals(SQLreader("idMedia")) Then
-                                moviesToSave.Add(Load_Movie(Convert.ToInt64(SQLreader("idMedia"))))
-                            End If
-                        End If
-                    End While
-                End Using
-            End Using
-
-            'remove the tag from movie and write new movie NFOs
-            If moviesToSave.Count > 0 Then
-                For Each movie In moviesToSave
-                    movie.Movie.Tags.Remove(tagName)
-                    Save_Movie(movie, batchMode, True, False, True, False)
-                Next
-            End If
-
-            'remove the tag entry
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("DELETE FROM tag WHERE idTag = ", id, ";")
-                SQLcommand.ExecuteNonQuery()
-            End Using
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("DELETE FROM taglinks WHERE idTag = ", id, ";")
-                SQLcommand.ExecuteNonQuery()
-            End Using
-            If Not batchMode Then SQLtransaction.Commit()
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            Return False
-        End Try
-        Return True
-    End Function
-
     ''' <summary>
     ''' Remove all information related to a TV episode from the database.
     ''' </summary>
@@ -1625,7 +1559,6 @@ Public Class Database
         For i As Integer = 0 To table.Rows.Count - 1
             table.Rows(i).Item("ListTitle") = StringUtils.SortTokens(table.Rows(i).Item("Title").ToString)
             table.Rows(i).Item("SortedTitle") = StringUtils.SortTokens(table.Rows(i).Item("SortedTitle").ToString)
-            'table.Rows(i).Item("Year") = StringUtils.GetYearFromString(table.Rows(i).Item(Helpers.GetColumnName(ColumnName.Premiered)).ToString)
         Next
     End Sub
 
@@ -2187,6 +2120,31 @@ Public Class Database
             End If
         Next
     End Sub
+
+    Public Function LoadAll_Tags() As List(Of TagContainer)
+        Dim lstTags As New List(Of TagContainer)
+        'Load all tags
+        Using SQLcommand_Tags As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_Tags.CommandText = "SELECT idTag, strTag FROM tag ORDER BY strTag;"
+            Using SQLreader_Tags As SQLiteDataReader = SQLcommand_Tags.ExecuteReader()
+                If SQLreader_Tags.HasRows Then
+                    While SQLreader_Tags.Read()
+                        Dim nTagContainer As New TagContainer With {
+                            .Id = Convert.ToInt64(SQLreader_Tags("idTag")),
+                            .Name = SQLreader_Tags("strTag").ToString
+                        }
+                        'search for movies
+                        FillDataTable(nTagContainer.Movies, String.Format("SELECT movie.idMovie AS id, movie.Title FROM taglinks LEFT OUTER JOIN movie ON (taglinks.idMedia = movie.idMovie) WHERE taglinks.media_type = ""movie"" and taglinks.idTag = {0};", SQLreader_Tags("idTag").ToString))
+                        'search for tv shows
+                        FillDataTable(nTagContainer.TVShows, String.Format("SELECT tvshow.idShow AS id, tvshow.Title FROM taglinks LEFT OUTER JOIN tvshow ON (taglinks.idMedia = tvshow.idShow) WHERE taglinks.media_type = ""tvshow"" and taglinks.idTag = {0};", SQLreader_Tags("idTag").ToString))
+                        'add container to the list
+                        lstTags.Add(nTagContainer)
+                    End While
+                End If
+            End Using
+        End Using
+        Return lstTags
+    End Function
 
     Public Function LoadAll_TVEpisodes(ByVal showID As Long, ByVal withShow As Boolean, Optional ByVal onlySeasonNumber As Integer = -1, Optional ByVal withMissingEpisodes As Boolean = False) As List(Of DBElement)
         If showID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & showID)
@@ -4003,111 +3961,6 @@ Public Class Database
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, Nothing, False, dbElement)
 
         Return dbElement
-    End Function
-
-    ''' <summary>
-    ''' Saves all information from a Database.DBElement object to the database
-    ''' </summary>
-    ''' <param name="tag">Media.Movie object to save to the database</param>
-    ''' <param name="isNew">Is this a new movieset (not already present in database)?</param>
-    ''' <param name="batchMode">Is the function already part of a transaction?</param>
-    ''' <param name="toNfo">Save the information to an nfo file?</param>
-    ''' <param name="withMovies">Save the information also to all linked movies?</param>
-    ''' <returns>Database.DBElement object</returns>
-    Public Function Save_Tag_Movie(ByVal tag As Structures.DBMovieTag, ByVal isNew As Boolean, ByVal batchMode As Boolean, ByVal toNfo As Boolean, ByVal withMovies As Boolean) As Structures.DBMovieTag
-        If tag.ID = -1 Then isNew = True
-
-        Dim SQLtransaction As SQLiteTransaction = Nothing
-        If Not batchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
-        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            If isNew Then
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (strTag) VALUES (?); SELECT LAST_INSERT_ROWID() FROM tag;")
-            Else
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (",
-                          "idTag, strTag) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM tag;")
-                Dim parTagID As SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.Int64, 0, "idTag")
-                parTagID.Value = tag.ID
-            End If
-            Dim parTitle As SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "strTag")
-
-            parTitle.Value = tag.Title
-
-            If isNew Then
-                Using rdrMovieTag As SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If rdrMovieTag.Read Then
-                        tag.ID = CInt(Convert.ToInt64(rdrMovieTag(0)))
-                    Else
-                        logger.Error("Something very wrong here: SaveMovieSetToDB", tag.ToString, "Error")
-                        tag.Title = "SETERROR"
-                        Return tag
-                    End If
-                End Using
-            Else
-                SQLcommand.ExecuteNonQuery()
-            End If
-        End Using
-
-
-        If withMovies Then
-            'Update all movies for this tag: if there are movies in linktag-table which aren't in current tag.movies object then remove movie-tag link from linktable and nfo for those movies
-
-            'old state of tag in database
-            Dim MoviesInTagOld As New List(Of DBElement)
-            'new/updatend state of tag
-            Dim MoviesInTagNew As New List(Of DBElement)
-            MoviesInTagNew.AddRange(tag.Movies.ToArray)
-
-
-
-
-
-            'get all movies linked to this tag from database (old state)
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idMedia, idTag FROM taglinks ",
-                   "WHERE idTag = ", tag.ID, " AND media_type = 'movie';")
-
-                Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("idMedia")) Then
-                            MoviesInTagOld.Add(Load_Movie(Convert.ToInt64(SQLreader("idMedia"))))
-                        End If
-                    End While
-                End Using
-            End Using
-
-            'check if there are movies in linktable which aren't in current tag - those are old entries which meed to be removed from linktag table and nfo of movies
-            For i = MoviesInTagOld.Count - 1 To 0 Step -1
-                For Each movienew In MoviesInTagNew
-                    If MoviesInTagOld(i).Movie.UniqueIDs.IMDbId = movienew.Movie.UniqueIDs.IMDbId Then
-                        MoviesInTagOld.RemoveAt(i)
-                        Exit For
-                    End If
-                Next
-            Next
-
-            'write tag information into nfo (add tag)
-            If MoviesInTagNew.Count > 0 Then
-                For Each tMovie In MoviesInTagNew
-                    Dim mMovie As DBElement = Load_Movie(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
-                    tMovie = mMovie
-                    mMovie.Movie.AddTag(tag.Title)
-                    Master.DB.Save_Movie(mMovie, batchMode, True, False, True, False)
-                Next
-            End If
-            'clean nfo of movies who aren't part of tag anymore (remove tag)
-            If MoviesInTagOld.Count > 0 Then
-                For Each tMovie In MoviesInTagOld
-                    Dim mMovie As DBElement = Load_Movie(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
-                    tMovie = mMovie
-                    mMovie.Movie.Tags.Remove(tag.Title)
-                    Master.DB.Save_Movie(mMovie, batchMode, True, False, True, False)
-                Next
-            End If
-        End If
-
-        If Not batchMode Then SQLtransaction.Commit()
-
-        Return tag
     End Function
     ''' <summary>
     ''' Saves all episode information from a Database.DBElement object to the database
@@ -6435,6 +6288,40 @@ Public Class Database
         Public Property UseFolderName() As Boolean = False
 
 #End Region 'Properties 
+
+    End Class
+
+    <Serializable>
+    Public Class TagContainer
+
+#Region "Constructors"
+
+        Public Sub New()
+            Movies.Columns.Add("id", GetType(Long))
+            Movies.Columns.Add("Title", GetType(String))
+            Movies.Columns.Add("State", GetType(String))
+            Movies.Columns("State").DefaultValue = "Unchanged"
+            Movies.PrimaryKey = {Movies.Columns("id")}
+            TVShows.Columns.Add("id", GetType(Long))
+            TVShows.Columns.Add("Title", GetType(String))
+            TVShows.Columns.Add("State", GetType(String))
+            TVShows.Columns("State").DefaultValue = "Unchanged"
+            TVShows.PrimaryKey = {TVShows.Columns("id")}
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Id As Long = -1
+
+        Public Property Name As String = String.Empty
+
+        Public Property Movies As DataTable = New DataTable
+
+        Public Property TVShows As DataTable = New DataTable
+
+#End Region 'Properties
 
     End Class
 

@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -62,6 +62,7 @@ Partial Class frmMain
         Me.mnuMainToolsBackdrops = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsSeparator0 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsOfflineHolder = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMainToolsTagManager = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsClearCache = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsCleanDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -449,12 +450,15 @@ Partial Class frmMain
         Me.pnlSearchMovies = New System.Windows.Forms.Panel()
         Me.cbSearchMovies = New System.Windows.Forms.ComboBox()
         Me.picSearchMovies = New System.Windows.Forms.PictureBox()
+        Me.txtSearchMovies = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.pnlSearchMovieSets = New System.Windows.Forms.Panel()
         Me.cbSearchMovieSets = New System.Windows.Forms.ComboBox()
         Me.picSearchMovieSets = New System.Windows.Forms.PictureBox()
+        Me.txtSearchMovieSets = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.pnlSearchTVShows = New System.Windows.Forms.Panel()
         Me.cbSearchShows = New System.Windows.Forms.ComboBox()
         Me.picSearchTVShows = New System.Windows.Forms.PictureBox()
+        Me.txtSearchShows = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.pnlFilter_Movies = New System.Windows.Forms.Panel()
         Me.tblFilter_Movies = New System.Windows.Forms.TableLayoutPanel()
         Me.gbFilterGeneral_Movies = New System.Windows.Forms.GroupBox()
@@ -747,6 +751,7 @@ Partial Class frmMain
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.pnlRating = New System.Windows.Forms.Panel()
         Me.lblTagline = New System.Windows.Forms.Label()
+        Me.lblRuntime = New System.Windows.Forms.Label()
         Me.pnlInfoIcons = New System.Windows.Forms.Panel()
         Me.tblInfoIcons = New System.Windows.Forms.TableLayoutPanel()
         Me.tblSubtitleLang = New System.Windows.Forms.TableLayoutPanel()
@@ -795,8 +800,8 @@ Partial Class frmMain
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -848,10 +853,6 @@ Partial Class frmMain
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
-        Me.lblRuntime = New System.Windows.Forms.Label()
-        Me.txtSearchMovies = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtSearchMovieSets = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtSearchShows = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.StatusStrip.SuspendLayout
         Me.mnuMain.SuspendLayout
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit
@@ -1324,7 +1325,7 @@ Partial Class frmMain
         '
         'mnuMainTools
         '
-        Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.mnuMainToolsSeparator0, Me.mnuMainToolsOfflineHolder, Me.mnuMainToolsSeparator1, Me.mnuMainToolsClearCache, Me.mnuMainToolsCleanDB, Me.ToolStripSeparator2, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsReloadMovieSets, Me.mnuMainToolsReloadTVShows, Me.ToolStripSeparator3, Me.mnuMainToolsRewriteContentMovie, Me.mnuMainToolsRewriteContentMovieSet, Me.mnuMainToolsRewriteContentTVShow, Me.mnuMainToolsSeparator2, Me.mnuMainToolsExport})
+        Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.mnuMainToolsSeparator0, Me.mnuMainToolsOfflineHolder, Me.mnuMainToolsTagManager, Me.mnuMainToolsSeparator1, Me.mnuMainToolsClearCache, Me.mnuMainToolsCleanDB, Me.ToolStripSeparator2, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsReloadMovieSets, Me.mnuMainToolsReloadTVShows, Me.ToolStripSeparator3, Me.mnuMainToolsRewriteContentMovie, Me.mnuMainToolsRewriteContentMovieSet, Me.mnuMainToolsRewriteContentTVShow, Me.mnuMainToolsSeparator2, Me.mnuMainToolsExport})
         Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.mnuMainTools.Name = "mnuMainTools"
         Me.mnuMainTools.Size = New System.Drawing.Size(46, 20)
@@ -1372,6 +1373,13 @@ Partial Class frmMain
         Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(286, 22)
         Me.mnuMainToolsOfflineHolder.Text = "&Offline Media Manager"
         Me.mnuMainToolsOfflineHolder.Visible = False
+        '
+        'mnuMainToolsTagManager
+        '
+        Me.mnuMainToolsTagManager.Image = Global.Ember_Media_Manager.My.Resources.Resources.MovieSet
+        Me.mnuMainToolsTagManager.Name = "mnuMainToolsTagManager"
+        Me.mnuMainToolsTagManager.Size = New System.Drawing.Size(286, 22)
+        Me.mnuMainToolsTagManager.Text = "Tag Manager"
         '
         'mnuMainToolsSeparator1
         '
@@ -3136,8 +3144,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3239,7 +3247,7 @@ Partial Class frmMain
         '
         'cmnuMovieWatched
         '
-        Me.cmnuMovieWatched.Image = Global.Ember_Media_Manager.My.Resources.Resources.haswatched
+        Me.cmnuMovieWatched.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasWatched
         Me.cmnuMovieWatched.Name = "cmnuMovieWatched"
         Me.cmnuMovieWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
         Me.cmnuMovieWatched.Size = New System.Drawing.Size(248, 22)
@@ -3247,7 +3255,7 @@ Partial Class frmMain
         '
         'cmnuMovieUnwatched
         '
-        Me.cmnuMovieUnwatched.Image = Global.Ember_Media_Manager.My.Resources.Resources.haswatched
+        Me.cmnuMovieUnwatched.Image = Global.Ember_Media_Manager.My.Resources.Resources.hasWatched
         Me.cmnuMovieUnwatched.Name = "cmnuMovieUnwatched"
         Me.cmnuMovieUnwatched.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
@@ -3305,7 +3313,7 @@ Partial Class frmMain
         '
         Me.mnuGenres.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGenresTitleSelect, Me.mnuGenresGenre, Me.mnuGenresSep1, Me.mnuGenresTitleNew, Me.mnuGenresNew, Me.mnuGenresSep2, Me.mnuGenresAdd, Me.mnuGenresSet, Me.mnuGenresRemove})
         Me.mnuGenres.Name = "mnuGenres"
-        Me.mnuGenres.OwnerItem = Me.cmnuShowEditGenres
+        Me.mnuGenres.OwnerItem = Me.cmnuMovieEditGenres
         Me.mnuGenres.Size = New System.Drawing.Size(196, 178)
         '
         'mnuGenresTitleSelect
@@ -3384,7 +3392,7 @@ Partial Class frmMain
         '
         Me.mnuTags.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTagsTitleSelect, Me.mnuTagsTag, Me.mnuTagsSep1, Me.mnuTagsTitleNew, Me.mnuTagsNew, Me.mnuTagsSep2, Me.mnuTagsAdd, Me.mnuTagsSet, Me.mnuTagsRemove})
         Me.mnuTags.Name = "mnuTags"
-        Me.mnuTags.OwnerItem = Me.cmnuShowEditTags
+        Me.mnuTags.OwnerItem = Me.cmnuMovieEditTags
         Me.mnuTags.Size = New System.Drawing.Size(196, 178)
         '
         'mnuTagsTitleSelect
@@ -3484,7 +3492,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
         Me.mnuScrapeType.Name = "mnuScrapeType"
-        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuMarked
+        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuFilter
         Me.mnuScrapeType.Size = New System.Drawing.Size(273, 70)
         '
         'mnuScrapeTypeAuto
@@ -3499,7 +3507,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeModifier.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeModifierAll, Me.mnuScrapeModifierActorthumbs, Me.mnuScrapeModifierBanner, Me.mnuScrapeModifierCharacterArt, Me.mnuScrapeModifierClearArt, Me.mnuScrapeModifierClearLogo, Me.mnuScrapeModifierDiscArt, Me.mnuScrapeModifierExtrafanarts, Me.mnuScrapeModifierExtrathumbs, Me.mnuScrapeModifierFanart, Me.mnuScrapeModifierKeyart, Me.mnuScrapeModifierLandscape, Me.mnuScrapeModifierMetaData, Me.mnuScrapeModifierNFO, Me.mnuScrapeModifierPoster, Me.mnuScrapeModifierTheme, Me.mnuScrapeModifierTrailer})
         Me.mnuScrapeModifier.Name = "mnuScrapeModifier"
-        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeSkip
+        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeAsk
         Me.mnuScrapeModifier.Size = New System.Drawing.Size(178, 378)
         '
         'mnuScrapeModifierAll
@@ -3673,7 +3681,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeOption.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeOptionActors, Me.mnuScrapeOptionAired, Me.mnuScrapeOptionCertifications, Me.mnuScrapeOptionCollectionID, Me.mnuScrapeOptionCreators, Me.mnuScrapeOptionCountries, Me.mnuScrapeOptionDirectors, Me.mnuScrapeOptionEpiGuideURL, Me.mnuScrapeOptionGenres, Me.mnuScrapeOptionGuestStars, Me.mnuScrapeOptionMPAA, Me.mnuScrapeOptionOriginalTitle, Me.mnuScrapeOptionPlot, Me.mnuScrapeOptionOutline, Me.mnuScrapeOptionPremiered, Me.mnuScrapeOptionRating, Me.mnuScrapeOptionRuntime, Me.mnuScrapeOptionStatus, Me.mnuScrapeOptionStudios, Me.mnuScrapeOptionTagline, Me.mnuScrapeOptionTitle, Me.mnuScrapeOptionTop250, Me.mnuScrapeOptionTrailer, Me.mnuScrapeOptionUserRating, Me.mnuScrapeOptionWriters})
         Me.mnuScrapeOption.Name = "mnuScrapeOption"
-        Me.mnuScrapeOption.OwnerItem = Me.cmnuEpisodeScrapeSingleDataField
+        Me.mnuScrapeOption.OwnerItem = Me.cmnuSeasonScrapeSingleDataField
         Me.mnuScrapeOption.Size = New System.Drawing.Size(174, 554)
         '
         'mnuScrapeOptionActors
@@ -3886,7 +3894,7 @@ Partial Class frmMain
         '
         Me.mnuLanguages.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLanguagesTitleSelect, Me.mnuLanguagesLanguage, Me.mnuLanguagesSep1, Me.mnuLanguagesSet})
         Me.mnuLanguages.Name = "mnuLanguages"
-        Me.mnuLanguages.OwnerItem = Me.cmnuMovieSetLanguage
+        Me.mnuLanguages.OwnerItem = Me.cmnuShowLanguage
         Me.mnuLanguages.Size = New System.Drawing.Size(199, 81)
         '
         'mnuLanguagesTitleSelect
@@ -3983,8 +3991,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4199,8 +4207,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4216,7 +4224,7 @@ Partial Class frmMain
         Me.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvTVShows.ShowCellErrors = False
         Me.dgvTVShows.ShowRowErrors = False
-        Me.dgvTVShows.Size = New System.Drawing.Size(567, 0)
+        Me.dgvTVShows.Size = New System.Drawing.Size(567, 23)
         Me.dgvTVShows.StandardTab = True
         Me.dgvTVShows.TabIndex = 0
         '
@@ -4488,7 +4496,7 @@ Partial Class frmMain
         'scTVSeasonsEpisodes.Panel2
         '
         Me.scTVSeasonsEpisodes.Panel2.Controls.Add(Me.dgvTVEpisodes)
-        Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 54)
+        Me.scTVSeasonsEpisodes.Size = New System.Drawing.Size(567, 25)
         Me.scTVSeasonsEpisodes.SplitterDistance = 25
         Me.scTVSeasonsEpisodes.TabIndex = 0
         Me.scTVSeasonsEpisodes.TabStop = False
@@ -4498,8 +4506,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4718,8 +4726,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -5073,6 +5081,19 @@ Partial Class frmMain
         Me.picSearchMovies.TabIndex = 1
         Me.picSearchMovies.TabStop = False
         '
+        'txtSearchMovies
+        '
+        Me.txtSearchMovies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearchMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSearchMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtSearchMovies.Location = New System.Drawing.Point(7, 4)
+        Me.txtSearchMovies.Name = "txtSearchMovies"
+        Me.txtSearchMovies.Size = New System.Drawing.Size(424, 22)
+        Me.txtSearchMovies.TabIndex = 0
+        Me.txtSearchMovies.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtSearchMovies.WatermarkText = "Ctrl+F"
+        '
         'pnlSearchMovieSets
         '
         Me.pnlSearchMovieSets.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -5108,6 +5129,19 @@ Partial Class frmMain
         Me.picSearchMovieSets.TabIndex = 1
         Me.picSearchMovieSets.TabStop = False
         '
+        'txtSearchMovieSets
+        '
+        Me.txtSearchMovieSets.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearchMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSearchMovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtSearchMovieSets.Location = New System.Drawing.Point(7, 4)
+        Me.txtSearchMovieSets.Name = "txtSearchMovieSets"
+        Me.txtSearchMovieSets.Size = New System.Drawing.Size(424, 22)
+        Me.txtSearchMovieSets.TabIndex = 0
+        Me.txtSearchMovieSets.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtSearchMovieSets.WatermarkText = "Ctrl+F"
+        '
         'pnlSearchTVShows
         '
         Me.pnlSearchTVShows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -5142,6 +5176,19 @@ Partial Class frmMain
         Me.picSearchTVShows.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.picSearchTVShows.TabIndex = 1
         Me.picSearchTVShows.TabStop = False
+        '
+        'txtSearchShows
+        '
+        Me.txtSearchShows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearchShows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSearchShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtSearchShows.Location = New System.Drawing.Point(7, 4)
+        Me.txtSearchShows.Name = "txtSearchShows"
+        Me.txtSearchShows.Size = New System.Drawing.Size(424, 22)
+        Me.txtSearchShows.TabIndex = 0
+        Me.txtSearchShows.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtSearchShows.WatermarkText = "Ctrl+F"
         '
         'pnlFilter_Movies
         '
@@ -9193,6 +9240,21 @@ Partial Class frmMain
         Me.lblTagline.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblTagline.UseMnemonic = False
         '
+        'lblRuntime
+        '
+        Me.lblRuntime.AutoSize = True
+        Me.lblRuntime.BackColor = System.Drawing.Color.Transparent
+        Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRuntime.ForeColor = System.Drawing.Color.Black
+        Me.lblRuntime.Location = New System.Drawing.Point(3, 74)
+        Me.lblRuntime.Name = "lblRuntime"
+        Me.lblRuntime.Padding = New System.Windows.Forms.Padding(3, 3, 0, 0)
+        Me.lblRuntime.Size = New System.Drawing.Size(49, 16)
+        Me.lblRuntime.TabIndex = 26
+        Me.lblRuntime.Text = "Runtime"
+        Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblRuntime.UseMnemonic = False
+        '
         'pnlInfoIcons
         '
         Me.pnlInfoIcons.AutoSize = True
@@ -9625,7 +9687,6 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovieSets
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -9722,15 +9783,6 @@ Partial Class frmMain
         Me.mnuUpdateShows.Size = New System.Drawing.Size(124, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
-        'cmnuTrayScrapeMovieSets
-        '
-        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
-        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
-        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
-        '
         'cmnuTrayScrapeTVShows
         '
         Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
@@ -9739,6 +9791,15 @@ Partial Class frmMain
         Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
         Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
+        '
+        'cmnuTrayScrapeMovieSets
+        '
+        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
+        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
+        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
         '
         'ilColumnIcons
         '
@@ -9839,13 +9900,13 @@ Partial Class frmMain
         'cmnuTrayUpdateMovies
         '
         Me.cmnuTrayUpdateMovies.Name = "cmnuTrayUpdateMovies"
-        Me.cmnuTrayUpdateMovies.Size = New System.Drawing.Size(124, 22)
+        Me.cmnuTrayUpdateMovies.Size = New System.Drawing.Size(180, 22)
         Me.cmnuTrayUpdateMovies.Text = "Movies"
         '
         'cmnuTrayUpdateShows
         '
         Me.cmnuTrayUpdateShows.Name = "cmnuTrayUpdateShows"
-        Me.cmnuTrayUpdateShows.Size = New System.Drawing.Size(124, 22)
+        Me.cmnuTrayUpdateShows.Size = New System.Drawing.Size(180, 22)
         Me.cmnuTrayUpdateShows.Text = "TV Shows"
         '
         'ToolStripSeparator23
@@ -10053,60 +10114,6 @@ Partial Class frmMain
         '
         'tmrRunTasks
         '
-        '
-        'lblRuntime
-        '
-        Me.lblRuntime.AutoSize = True
-        Me.lblRuntime.BackColor = System.Drawing.Color.Transparent
-        Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRuntime.ForeColor = System.Drawing.Color.Black
-        Me.lblRuntime.Location = New System.Drawing.Point(3, 74)
-        Me.lblRuntime.Name = "lblRuntime"
-        Me.lblRuntime.Padding = New System.Windows.Forms.Padding(3, 3, 0, 0)
-        Me.lblRuntime.Size = New System.Drawing.Size(49, 16)
-        Me.lblRuntime.TabIndex = 26
-        Me.lblRuntime.Text = "Runtime"
-        Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.lblRuntime.UseMnemonic = False
-        '
-        'txtSearchMovies
-        '
-        Me.txtSearchMovies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSearchMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSearchMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSearchMovies.Location = New System.Drawing.Point(7, 4)
-        Me.txtSearchMovies.Name = "txtSearchMovies"
-        Me.txtSearchMovies.Size = New System.Drawing.Size(424, 22)
-        Me.txtSearchMovies.TabIndex = 0
-        Me.txtSearchMovies.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtSearchMovies.WatermarkText = "Ctrl+F"
-        '
-        'txtSearchMovieSets
-        '
-        Me.txtSearchMovieSets.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSearchMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSearchMovieSets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSearchMovieSets.Location = New System.Drawing.Point(7, 4)
-        Me.txtSearchMovieSets.Name = "txtSearchMovieSets"
-        Me.txtSearchMovieSets.Size = New System.Drawing.Size(424, 22)
-        Me.txtSearchMovieSets.TabIndex = 0
-        Me.txtSearchMovieSets.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtSearchMovieSets.WatermarkText = "Ctrl+F"
-        '
-        'txtSearchShows
-        '
-        Me.txtSearchShows.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSearchShows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSearchShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSearchShows.Location = New System.Drawing.Point(7, 4)
-        Me.txtSearchShows.Name = "txtSearchShows"
-        Me.txtSearchShows.Size = New System.Drawing.Size(424, 22)
-        Me.txtSearchShows.TabIndex = 0
-        Me.txtSearchShows.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtSearchShows.WatermarkText = "Ctrl+F"
         '
         'frmMain
         '
@@ -11384,4 +11391,5 @@ Partial Class frmMain
     Friend WithEvents tblTopPanelRating As TableLayoutPanel
     Friend WithEvents pnlTopPanelRating As Panel
     Friend WithEvents lblRuntime As Label
+    Friend WithEvents mnuMainToolsTagManager As ToolStripMenuItem
 End Class
