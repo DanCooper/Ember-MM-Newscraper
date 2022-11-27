@@ -2594,25 +2594,26 @@ Namespace FileUtils
             Try
                 If Directory.Exists(sourcePath) Then
                     'Get information about files in the directory
-                    Dim di As New DirectoryInfo(sourcePath)
-                    Dim lFi As New List(Of FileInfo)
-                    Dim lMediaList As IOrderedEnumerable(Of FileInfo)
+                    Dim diSourcePath As New DirectoryInfo(sourcePath)
+                    Dim lstFilesInDir As New List(Of FileInfo)
+                    Dim lstVideosInDir As New List(Of FileInfo)
 
-                    'Create a List of files in the directory
+                    'Create a list of all media files with a valid extension in the directory
+                    lstVideosInDir = diSourcePath.GetFiles.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
+                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
+                             ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso Common.isStacked(f.FullName)) OrElse
+                             (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderByDescending(Function(f) Path.GetFileNameWithoutExtension(f.FullName)).ToList
+
+                    'Create a list of all other files in the directory
                     Try
-                        lFi.AddRange(di.GetFiles())
+                        lstFilesInDir.AddRange(diSourcePath.GetFiles.Where(Function(f) Not lstVideosInDir.Select(Function(t) t.FullName).Contains(f.FullName)))
                     Catch
                     End Try
 
-                    'Create a list of all media files with a valid extension in the directory
-                    lMediaList = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
-                            Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderByDescending(Function(f) Path.GetFileNameWithoutExtension(f.FullName))
-
                     'For each valid file in the directory...
-                    For Each sFile As FileInfo In lMediaList
+                    For Each sFile As FileInfo In lstVideosInDir
                         Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.Filename = sFile.FullName, .IsSingle = False}
-                        RaiseEvent ProgressUpdated((iCount \ lMediaList.Count * 100), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
+                        RaiseEvent ProgressUpdated((iCount \ lstVideosInDir.Count * 100), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
 
                         'create a new directory for the movie
                         Dim strNewPath As String = Path.Combine(sourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.Filename)))
@@ -2663,7 +2664,7 @@ Namespace FileUtils
                         Next
 
                         'search for files that starts with the same name like the file name
-                        For Each aFile In lFi.Where(Function(f) Not lMediaList.Contains(f) AndAlso File.Exists(f.FullName) AndAlso f.FullName.ToLower.StartsWith(Common.RemoveExtFromPath(nMovie.Filename).ToLower))
+                        For Each aFile In lstFilesInDir.Where(Function(f) File.Exists(f.FullName) AndAlso f.FullName.ToLower.StartsWith(Common.RemoveExtFromPath(nMovie.Filename).ToLower))
                             aFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(aFile.Name)))
                         Next
                         iCount += 1
