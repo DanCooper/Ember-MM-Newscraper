@@ -30,15 +30,15 @@ Public Class APIXML
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared CertificationMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Certifications.xml"))
-    Public Shared CountryMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Countries.xml"))
-    Public Shared EditionMapping As New clsXMLRegexMapping("Core.Mapping.Editions.xml")
-    Public Shared GenreMapping As New clsXMLGenreMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Genres.xml"))
+    Public Shared CertificationMapping As New clsXmlSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Certifications.xml"))
+    Public Shared CountryMapping As New clsXmlSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Countries.xml"))
+    Public Shared EditionMapping As New clsXmlRegexMapping("Core.Mapping.Editions.xml")
+    Public Shared GenreMapping As New clsXmlGenreMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Genres.xml"))
     Public Shared LanguageIcons As New Dictionary(Of String, String)
-    Public Shared RatingXML As New clsXMLRatings
-    Public Shared ScraperLanguages As New clsXMLScraperLanguages
-    Public Shared StatusMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Status.xml"))
-    Public Shared StudioMapping As New clsXMLSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Studios.xml"))
+    Public Shared RatingXml As New clsXmlRatings
+    Public Shared ScraperLanguages As New clsXmlScraperLanguages
+    Public Shared StatusMapping As New clsXmlSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Status.xml"))
+    Public Shared StudioMapping As New clsXmlSimpleMapping(Path.Combine(Master.SettingsPath, "Core.Mapping.Studios.xml"))
     Public Shared StudioIcons As New Dictionary(Of String, String)
     Public Shared alGenres As New List(Of String)
     Public Shared Flags As New List(Of Flag)
@@ -47,7 +47,7 @@ Public Class APIXML
 
 #Region "Methods"
 
-    Public Shared Sub CacheXMLs()
+    Public Shared Sub CacheAllXml()
         Dim objStreamReader As StreamReader
         Try
             Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
@@ -146,16 +146,16 @@ Public Class APIXML
             Dim rPath As String = Path.Combine(Master.SettingsPath, "Ratings.xml")
             If File.Exists(rPath) Then
                 objStreamReader = New StreamReader(rPath)
-                Dim xRatings As New XmlSerializer(RatingXML.GetType)
+                Dim xRatings As New XmlSerializer(RatingXml.GetType)
 
-                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                RatingXml = CType(xRatings.Deserialize(objStreamReader), clsXmlRatings)
                 objStreamReader.Close()
             Else
                 Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultRatings.xml")
                 objStreamReader = New StreamReader(rPathD)
-                Dim xRatings As New XmlSerializer(RatingXML.GetType)
+                Dim xRatings As New XmlSerializer(RatingXml.GetType)
 
-                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                RatingXml = CType(xRatings.Deserialize(objStreamReader), clsXmlRatings)
                 objStreamReader.Close()
 
                 Try
@@ -371,11 +371,11 @@ Public Class APIXML
         Return iReturn
     End Function
 
-    Public Shared Function GetLanguageImage(ByVal strLanguage As String) As Image
+    Public Shared Function GetLanguageImage(ByVal language As String) As Image
         Dim imgLanguage As Image = Nothing
         Dim sLang As String = String.Empty
 
-        sLang = Localization.Languages.Get_Alpha2_By_Alpha3(strLanguage)
+        sLang = Localization.Languages.Get_Alpha2_By_Alpha3(language)
 
         If Not String.IsNullOrEmpty(sLang) Then
             If LanguageIcons.ContainsKey(sLang.ToLower) Then
@@ -390,23 +390,23 @@ Public Class APIXML
         Return imgLanguage
     End Function
 
-    Public Shared Function GetVideoSource(ByVal sPath As String, ByVal isTV As Boolean) As String
+    Public Shared Function GetVideoSource(ByVal filenamePath As String, ByVal isTV As Boolean) As String
         Dim sourceCheck As String = String.Empty
 
         Try
-            If FileUtils.Common.isVideoTS(sPath) Then
+            If FileUtils.Common.isVideoTS(filenamePath) Then
                 Return "dvd"
-            ElseIf FileUtils.Common.isBDRip(sPath) Then
+            ElseIf FileUtils.Common.isBDRip(filenamePath) Then
                 Return "bluray"
-            ElseIf Path.GetFileName(sPath).ToLower = "video_ts.ifo" Then
+            ElseIf Path.GetFileName(filenamePath).ToLower = "video_ts.ifo" Then
                 Return "dvd"
             Else
                 If isTV Then
-                    sourceCheck = Path.GetFileName(sPath).ToLower
+                    sourceCheck = Path.GetFileName(filenamePath).ToLower
                 Else
-                    sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
+                    sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(filenamePath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(filenamePath).ToLower), Path.GetFileName(filenamePath).ToLower)
                 End If
-                Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
+                Dim mySources As New List(Of TableItem)
                 mySources = AdvancedSettings.GetComplexSetting("VideoSourceMapping")
                 If Not mySources Is Nothing Then
                     For Each k In mySources
@@ -424,13 +424,13 @@ Public Class APIXML
         Return String.Empty
     End Function
 
-    Public Shared Function GetGenreImage(ByVal strGenre As String) As Image
+    Public Shared Function GetGenreImage(ByVal genre As String) As Image
         Dim imgGenre As Image = Nothing
         Dim imgGenreStr As String = String.Empty
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres")
         imgGenreStr = Path.Combine(mePath, GenreMapping.DefaultImage)
 
-        Dim v = From e In GenreMapping.Genres.Where(Function(f) f.Name = strGenre)
+        Dim v = From e In GenreMapping.Genres.Where(Function(f) f.Name = genre)
         If v.Count > 0 Then
             imgGenreStr = Path.Combine(mePath, v(0).Image)
         End If
@@ -458,9 +458,9 @@ Public Class APIXML
         Return retGenre.ToArray
     End Function
 
-    Public Shared Function GetRatingFlag(ByVal ratingprovider As String) As Image
+    Public Shared Function GetRatingFlag(ByVal ratingProvider As String) As Image
         Dim imgRating As Image = Nothing
-        Dim ratingFlag = Flags.FirstOrDefault(Function(f) f.Name = ratingprovider AndAlso f.Type = FlagType.Rating)
+        Dim ratingFlag = Flags.FirstOrDefault(Function(f) f.Name = ratingProvider AndAlso f.Type = FlagType.Rating)
         If ratingFlag IsNot Nothing Then
             Return ratingFlag.Image
         Else
@@ -468,16 +468,16 @@ Public Class APIXML
         End If
     End Function
 
-    Public Shared Function GetRatingImage(ByVal strRating As String) As Image
+    Public Shared Function GetRatingImage(ByVal rating As String) As Image
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-        If Not strRating = Master.eSettings.MovieScraperMPAANotRated Then
-            Dim v = From e In RatingXML.Movies.Where(Function(f) f.Searchstring = strRating)
+        If Not rating = Master.eSettings.MovieScraperMPAANotRated Then
+            Dim v = From e In RatingXml.Movies.Where(Function(f) f.Searchstring = rating)
             If v.Count > 0 Then
                 imgRatingStr = Path.Combine(mePath, v(0).Icon)
             Else
-                v = From e In RatingXML.Movies Where strRating.ToLower.StartsWith(e.Searchstring.ToLower)
+                v = From e In RatingXml.Movies Where rating.ToLower.StartsWith(e.Searchstring.ToLower)
                 If v.Count > 0 Then
                     imgRatingStr = Path.Combine(mePath, v(0).Icon)
                 End If
@@ -504,12 +504,12 @@ Public Class APIXML
         If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertCountry = Master.eLang.All Then
             Dim tCountry = Localization.Countries.Items.FirstOrDefault(Function(l) l.Alpha2 = Master.eSettings.MovieScraperCertCountry)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
-                For Each r In RatingXML.Movies.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
+                For Each r In RatingXml.Movies.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
                     retRatings.Add(r.Searchstring)
                 Next
             End If
         Else
-            For Each r In RatingXML.Movies.FindAll(Function(f) f.Country.ToLower = "usa")
+            For Each r In RatingXml.Movies.FindAll(Function(f) f.Country.ToLower = "usa")
                 retRatings.Add(r.Searchstring)
             Next
         End If
@@ -522,12 +522,12 @@ Public Class APIXML
         If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertCountry = Master.eLang.All Then
             Dim tCountry = Localization.Countries.Items.FirstOrDefault(Function(l) l.Alpha2 = Master.eSettings.TVScraperShowCertCountry)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.Name) Then
-                For Each r In RatingXML.TV.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
+                For Each r In RatingXml.TV.FindAll(Function(f) f.Country.ToLower = tCountry.Name.ToLower)
                     retRatings.Add(r.Searchstring)
                 Next
             End If
         Else
-            For Each r In RatingXML.TV.FindAll(Function(f) f.Country.ToLower = "usa")
+            For Each r In RatingXml.TV.FindAll(Function(f) f.Country.ToLower = "usa")
                 retRatings.Add(r.Searchstring)
             Next
         End If
@@ -535,11 +535,11 @@ Public Class APIXML
         Return retRatings.ToArray
     End Function
 
-    Public Shared Function GetStudioImage(ByVal strStudio As String) As Image
+    Public Shared Function GetStudioImage(ByVal studio As String) As Image
         Dim imgStudio As Image = Nothing
 
-        If StudioIcons.ContainsKey(strStudio.ToLower) Then
-            Using fsImage As New FileStream(StudioIcons.Item(strStudio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
+        If StudioIcons.ContainsKey(studio.ToLower) Then
+            Using fsImage As New FileStream(StudioIcons.Item(studio.ToLower).Replace(Convert.ToChar("\"), Path.DirectorySeparatorChar), FileMode.Open, FileAccess.Read)
                 imgStudio = Image.FromStream(fsImage)
             End Using
         End If
@@ -549,16 +549,16 @@ Public Class APIXML
         Return imgStudio
     End Function
 
-    Public Shared Function GetTVRatingImage(ByVal strRating As String) As Image
+    Public Shared Function GetTVRatingImage(ByVal rating As String) As Image
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-        If Not strRating = Master.eSettings.TVScraperShowMPAANotRated Then
-            Dim v = From e In RatingXML.TV.Where(Function(f) f.Searchstring = strRating)
+        If Not rating = Master.eSettings.TVScraperShowMPAANotRated Then
+            Dim v = From e In RatingXml.TV.Where(Function(f) f.Searchstring = rating)
             If v.Count > 0 Then
                 imgRatingStr = Path.Combine(mePath, v(0).Icon)
             Else
-                v = From e In RatingXML.TV Where strRating.ToLower.StartsWith(e.Searchstring.ToLower)
+                v = From e In RatingXml.TV Where rating.ToLower.StartsWith(e.Searchstring.ToLower)
                 If v.Count > 0 Then
                     imgRatingStr = Path.Combine(mePath, v(0).Icon)
                 End If
@@ -580,16 +580,16 @@ Public Class APIXML
         Return imgRating
     End Function
 
-    Public Shared Function XMLToLowerCase(ByVal sXML As String) As String
-        Dim sMatches As MatchCollection = Regex.Matches(sXML, "\<(.*?)\>", RegexOptions.IgnoreCase)
+    Public Shared Function XmlToLowerCase(ByVal xml As String) As String
+        Dim sMatches As MatchCollection = Regex.Matches(xml, "\<(.*?)\>", RegexOptions.IgnoreCase)
         For Each sMatch As Match In sMatches
-            sXML = sXML.Replace(sMatch.Groups(1).Value, sMatch.Groups(1).Value.ToLower)
+            xml = xml.Replace(sMatch.Groups(1).Value, sMatch.Groups(1).Value.ToLower)
         Next
-        Return sXML
+        Return xml
     End Function
 
-    Public Shared Function GetFlagTypeFromString(ByVal sType As String) As FlagType
-        Select Case sType
+    Public Shared Function GetFlagTypeFromString(ByVal type As String) As FlagType
+        Select Case type
             Case "acodec"
                 Return FlagType.AudioCodec
             Case "achan"
