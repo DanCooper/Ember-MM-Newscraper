@@ -24,7 +24,7 @@ Public Class dlgClearOrReplace
 
 #Region "Fields"
 
-    Private _Result As New TaskManager.TaskItem
+    Private _Result As New TaskManager.TaskItem(TaskManager.TaskItem.TaskType.DataFields_ClearOrReplace)
 
 #End Region 'Fields
 
@@ -52,7 +52,6 @@ Public Class dlgClearOrReplace
         Setup()
 
         _Result.ContentType = tContentType
-        _Result.TaskType = Enums.TaskManagerType.DataFields_ClearOrReplace
         Select Case tContentType
             Case Enums.ContentType.Movie
                 chkAired.Visible = False
@@ -207,104 +206,104 @@ Public Class dlgClearOrReplace
         With _Result.ScrapeOptions
             Select Case _Result.ContentType
                 Case Enums.ContentType.Movie
-                    Dim nInfo = New MediaContainers.Movie
-                    .bMainActors = chkActors.Checked
-                    .bMainCertifications = chkCertifications.Checked
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Actors = chkActors.Checked
+                    .Certifications = chkCertifications.Checked
                     nInfo.Certifications = DoSplit(txtCertifications)
-                    .bMainCountries = chkCountries.Checked
+                    .Countries = chkCountries.Checked
                     nInfo.Countries = DoSplit(txtCountries)
-                    .bMainDirectors = chkDirectors.Checked
+                    .Credits = chkWriters.Checked
+                    nInfo.Credits = DoSplit(txtWriters)
+                    .Directors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
-                    .bMainEdition = chkEdition.Checked
+                    .Edition = chkEdition.Checked
                     nInfo.Edition = txtEdition.Text.Trim
-                    .bMainGenres = chkGenres.Checked
+                    .Genres = chkGenres.Checked
                     nInfo.Genres = DoSplit(txtGenres)
-                    .bMainMPAA = chkMPAA.Checked
+                    .MPAA = chkMPAA.Checked
                     nInfo.MPAA = txtMPAA.Text.Trim
-                    .bMainOriginalTitle = chkOriginalTitle.Checked
-                    .bMainOutline = chkOutline.Checked
-                    .bMainPlot = chkPlot.Checked
-                    .bMainPremiered = chkPremiered.Checked
+                    .OriginalTitle = chkOriginalTitle.Checked
+                    .Outline = chkOutline.Checked
+                    .Plot = chkPlot.Checked
+                    .Premiered = chkPremiered.Checked
                     nInfo.Premiered = txtPremiered.Text.Trim
-                    .bMainRating = chkRating.Checked
-                    .bMainRuntime = chkRuntime.Checked
-                    .bMainStudios = chkStudios.Checked
+                    .Ratings = chkRating.Checked
+                    .Runtime = chkRuntime.Checked
+                    .Studios = chkStudios.Checked
                     nInfo.Studios = DoSplit(txtStudios)
-                    .bMainTagline = chkTagline.Checked
+                    .Tagline = chkTagline.Checked
                     nInfo.Tagline = txtTagline.Text.Trim
-                    .bMainTags = chkTags.Checked
+                    .Tags = chkTags.Checked
                     nInfo.Tags = DoSplit(txtTags)
-                    .bMainTop250 = chkTop250.Checked
-                    .bMainTrailer = chkTrailer.Checked
-                    .bMainUserRating = chkUserRating.Checked
+                    .Top250 = chkTop250.Checked
+                    .TrailerLink = chkTrailer.Checked
+                    .UserRating = chkUserRating.Checked
                     Dim uiUserRating As UInteger = 0
                     UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
                     nInfo.UserRating = CInt(uiUserRating)
-                    .bMainVideoSource = chkVideoSource.Checked
+                    .VideoSource = chkVideoSource.Checked
                     nInfo.VideoSource = txtVideoSource.Text.Trim
-                    .bMainWriters = chkWriters.Checked
-                    nInfo.Credits = DoSplit(txtWriters)
                     _Result.GenericObject = nInfo
                 Case Enums.ContentType.MovieSet
-                    .bMainPlot = chkPlot.Checked
+                    .Plot = chkPlot.Checked
                 Case Enums.ContentType.TVEpisode
-                    Dim nInfo = New MediaContainers.EpisodeDetails
-                    .bEpisodeActors = chkActors.Checked
-                    .bEpisodeAired = chkAired.Checked
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Episodes.Actors = chkActors.Checked
+                    .Episodes.Aired = chkAired.Checked
                     nInfo.Aired = txtAired.Text.Trim
-                    .bEpisodeCredits = chkWriters.Checked
+                    .Episodes.Credits = chkWriters.Checked
                     nInfo.Credits = DoSplit(txtWriters)
-                    .bEpisodeDirectors = chkDirectors.Checked
+                    .Episodes.Directors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
-                    .bEpisodeGuestStars = chkGuestStars.Checked
-                    .bEpisodeOriginalTitle = chkOriginalTitle.Checked
-                    .bEpisodePlot = chkPlot.Checked
-                    .bEpisodeRating = chkRating.Checked
-                    .bEpisodeRuntime = chkRuntime.Checked
-                    .bEpisodeUserRating = chkUserRating.Checked
+                    .Episodes.GuestStars = chkGuestStars.Checked
+                    .Episodes.OriginalTitle = chkOriginalTitle.Checked
+                    .Episodes.Plot = chkPlot.Checked
+                    .Episodes.Ratings = chkRating.Checked
+                    .Episodes.Runtime = chkRuntime.Checked
+                    .Episodes.UserRating = chkUserRating.Checked
                     Dim uiUserRating As UInteger = 0
                     UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
                     nInfo.UserRating = CInt(uiUserRating)
-                    .bEpisodeVideoSource = chkVideoSource.Checked
+                    .Episodes.VideoSource = chkVideoSource.Checked
                     nInfo.VideoSource = txtVideoSource.Text.Trim
                     _Result.GenericObject = nInfo
                 Case Enums.ContentType.TVSeason
-                    Dim nInfo = New MediaContainers.SeasonDetails
-                    .bSeasonAired = chkAired.Checked
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Seasons.Aired = chkAired.Checked
                     nInfo.Aired = txtAired.Text.Trim
-                    .bSeasonPlot = chkPlot.Checked
-                    .bSeasonTitle = chkTitle.Checked
+                    .Seasons.Plot = chkPlot.Checked
+                    .Seasons.Title = chkTitle.Checked
                     _Result.GenericObject = nInfo
                 Case Enums.ContentType.TVShow
-                    Dim nInfo = New MediaContainers.TVShow
-                    .bMainActors = chkActors.Checked
-                    .bMainCertifications = chkCertifications.Checked
+                    Dim nInfo = New MediaContainers.MainDetails
+                    .Actors = chkActors.Checked
+                    .Certifications = chkCertifications.Checked
                     nInfo.Certifications = DoSplit(txtCertifications)
-                    .bMainCountries = chkCountries.Checked
+                    .Countries = chkCountries.Checked
                     nInfo.Countries = DoSplit(txtCountries)
-                    .bMainCreators = chkCreators.Checked
+                    .Creators = chkCreators.Checked
                     nInfo.Creators = DoSplit(txtCreators)
-                    .bMainDirectors = chkDirectors.Checked
+                    .Directors = chkDirectors.Checked
                     nInfo.Directors = DoSplit(txtDirectors)
-                    .bMainGenres = chkGenres.Checked
+                    .Genres = chkGenres.Checked
                     nInfo.Genres = DoSplit(txtGenres)
-                    .bMainMPAA = chkMPAA.Checked
+                    .MPAA = chkMPAA.Checked
                     nInfo.MPAA = txtMPAA.Text.Trim
-                    .bMainOriginalTitle = chkOriginalTitle.Checked
-                    .bMainPlot = chkPlot.Checked
-                    .bMainPremiered = chkPremiered.Checked
+                    .OriginalTitle = chkOriginalTitle.Checked
+                    .Plot = chkPlot.Checked
+                    .Premiered = chkPremiered.Checked
                     nInfo.Premiered = txtPremiered.Text.Trim
-                    .bMainRating = chkRating.Checked
-                    .bMainRuntime = chkRuntime.Checked
-                    .bMainStatus = chkStatus.Checked
+                    .Ratings = chkRating.Checked
+                    .Runtime = chkRuntime.Checked
+                    .Status = chkStatus.Checked
                     nInfo.Status = txtStatus.Text.Trim
-                    .bMainStudios = chkStudios.Checked
+                    .Studios = chkStudios.Checked
                     nInfo.Studios = DoSplit(txtStudios)
-                    .bMainTagline = chkTagline.Checked
+                    .Tagline = chkTagline.Checked
                     nInfo.Tagline = txtTagline.Text.Trim
-                    .bMainTags = chkTags.Checked
+                    .Tags = chkTags.Checked
                     nInfo.Tags = DoSplit(txtTags)
-                    .bMainUserRating = chkUserRating.Checked
+                    .UserRating = chkUserRating.Checked
                     Dim uiUserRating As UInteger = 0
                     UInteger.TryParse(txtUserRating.Text.Trim, uiUserRating)
                     nInfo.UserRating = CInt(uiUserRating)
@@ -447,7 +446,7 @@ Public Class dlgClearOrReplace
         chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         chkPlot.Text = Master.eLang.GetString(65, "Plot")
         chkPremiered.Text = Master.eLang.GetString(724, "Premiered")
-        chkRating.Text = String.Format("{0} / {1}", Master.eLang.GetString(400, "Rating"), Master.eLang.GetString(244, "Votes"))
+        chkRating.Text = String.Format("{0} / {1}", Master.eLang.GetString(245, "Rating"), Master.eLang.GetString(244, "Votes"))
         chkRuntime.Text = Master.eLang.GetString(238, "Runtime")
         chkStatus.Text = Master.eLang.GetString(215, "Status")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")

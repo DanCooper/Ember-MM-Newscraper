@@ -51,11 +51,11 @@ Public Class dlgEdit_TVEpisode
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        FormUtils.Forms.ResizeAndMoveDialog(Me, Me)
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tmpDBElement, True) Then
+        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
             pbFanart.AllowDrop = True
             pbPoster.AllowDrop = True
 
@@ -71,7 +71,7 @@ Public Class dlgEdit_TVEpisode
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.TVEpisode.FileInfo) With {
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.MainDetails.FileInfo) With {
                 .BackColor = Color.White,
                 .Dock = DockStyle.Fill,
                 .FormBorderStyle = FormBorderStyle.None,
@@ -111,14 +111,14 @@ Public Class dlgEdit_TVEpisode
     Private Sub Setup()
         With Master.eLang
             Dim mTitle As String = String.Empty
-            mTitle = tmpDBElement.TVEpisode.Title
+            mTitle = tmpDBElement.MainDetails.Title
             Text = String.Concat(.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-            btnCancel.Text = .Cancel
+            btnCancel.Text = .CommonWordsList.Cancel
             btnChange.Text = .GetString(772, "Change Episode")
             btnFrameLoadVideo.Text = .GetString(307, "Load Video")
             btnFrameSaveAsFanart.Text = .GetString(1049, "Save as Fanart")
             btnFrameSaveAsPoster.Text = .GetString(309, "Save as Poster")
-            btnOK.Text = .OK
+            btnOK.Text = .CommonWordsList.OK
             btnRescrape.Text = .GetString(716, "Re-Scrape")
             chkLocked.Text = .GetString(43, "Locked")
             chkMarked.Text = .GetString(48, "Marked")
@@ -147,7 +147,7 @@ Public Class dlgEdit_TVEpisode
             lblGuestStars.Text = String.Concat(.GetString(508, "Guest Stars"), ":")
             lblPlot.Text = String.Concat(.GetString(65, "Plot"), ":")
             lblPoster.Text = .GetString(148, "Poster")
-            lblRatings.Text = String.Concat(.GetString(245, "Ratings"), ":")
+            lblRatings.Text = String.Concat(.GetString(1145, "Ratings"), ":")
             lblRuntime.Text = String.Concat(.GetString(238, "Runtime"), ":")
             lblSeason.Text = String.Concat(.GetString(659, "Season #"), ":")
             lblSubtitlesPreview.Text = String.Concat(.GetString(180, "Preview"), ":")
@@ -284,12 +284,12 @@ Public Class dlgEdit_TVEpisode
     Private Sub Data_Fill(Optional ByVal DoAll As Boolean = True)
         'Database related part
         With tmpDBElement
-            chkLocked.Checked = .IsLock
-            chkMarked.Checked = .IsMark
+            chkLocked.Checked = .IsLocked
+            chkMarked.Checked = .IsMarked
         End With
 
         'Information part
-        With tmpDBElement.TVEpisode
+        With tmpDBElement.MainDetails
             'Actors
             Dim lvActorsItem As ListViewItem
             lvActors.Items.Clear()
@@ -391,7 +391,7 @@ Public Class dlgEdit_TVEpisode
 
                 'Fanart
                 If Master.eSettings.TVEpisodeFanartAnyEnabled Then
-                    btnScrapeFanart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    btnScrapeFanart.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.EpisodeFanart)
                     End If
@@ -404,7 +404,7 @@ Public Class dlgEdit_TVEpisode
 
                 'Poster
                 If Master.eSettings.TVEpisodePosterAnyEnabled Then
-                    btnScrapePoster.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    btnScrapePoster.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.EpisodePoster)
                     End If
@@ -458,15 +458,15 @@ Public Class dlgEdit_TVEpisode
         'Database related part
         With tmpDBElement
             'States
-            .IsLock = chkLocked.Checked
-            .IsMark = chkMarked.Checked
+            .IsLocked = chkLocked.Checked
+            .IsMarked = chkMarked.Checked
             'Videosource
             .VideoSource = cbVideosource.Text.Trim
-            .TVEpisode.VideoSource = .VideoSource
+            .MainDetails.VideoSource = .VideoSource
         End With
 
         'Information part
-        With tmpDBElement.TVEpisode
+        With tmpDBElement.MainDetails
             'Actors
             .Actors.Clear()
             If lvActors.Items.Count > 0 Then
@@ -506,7 +506,7 @@ Public Class dlgEdit_TVEpisode
             Dim cIndex = pnlFileInfo.Controls.IndexOfKey("dlgFileInfo")
             If Not cIndex = -1 Then
                 Dim nResult = DirectCast(pnlFileInfo.Controls.Item(cIndex), dlgFileInfo)
-                tmpDBElement.TVEpisode.FileInfo = nResult.Result
+                tmpDBElement.MainDetails.FileInfo = nResult.Result
             End If
             'GuestStars
             .GuestStars.Clear()
@@ -539,7 +539,7 @@ Public Class dlgEdit_TVEpisode
             'if watched-checkbox is checked -> save Playcount=1 in nfo
             If chkWatched.Checked Then
                 'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                If Not .PlaycountSpecified Then .Playcount = 1
+                If Not .PlayCountSpecified Then .PlayCount = 1
                 Dim nLastPlayed As New Date(dtpLastPlayed_Date.Value.Year,
                                             dtpLastPlayed_Date.Value.Month,
                                             dtpLastPlayed_Date.Value.Day,
@@ -549,8 +549,8 @@ Public Class dlgEdit_TVEpisode
                 .LastPlayed = nLastPlayed.ToString("yyyy-MM-dd HH:mm:ss")
             Else
                 'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                If .PlaycountSpecified Then
-                    .Playcount = 0
+                If .PlayCountSpecified Then
+                    .PlayCount = 0
                     .LastPlayed = String.Empty
                 End If
             End If
@@ -917,36 +917,33 @@ Public Class dlgEdit_TVEpisode
         btnScrapePoster.Click
 
         Cursor = Cursors.WaitCursor
-        Dim nContainer As New MediaContainers.SearchResultsContainer
-        Dim nScrapeModifiers As New Structures.ScrapeModifiers
 
         Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
-        Functions.SetScrapeModifiers(nScrapeModifiers, eImageType, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, nContainer, nScrapeModifiers, True) Then
-            Dim iImageCount = 0
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, eImageType, True)
+        Dim ScrapeResults = Scraper.Run(tmpDBElement)
+        Dim iImageCount = 0
             Dim strNoImagesFound As String = String.Empty
             Select Case eImageType
                 Case Enums.ModifierType.EpisodeFanart
-                    iImageCount = nContainer.EpisodeFanarts.Count + nContainer.MainFanarts.Count
-                    strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
+                iImageCount = ScrapeResults.Images.EpisodeFanarts.Count + ScrapeResults.Images.MainFanarts.Count
+                strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
                 Case Enums.ModifierType.EpisodePoster
-                    iImageCount = nContainer.EpisodePosters.Count
-                    strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
+                iImageCount = ScrapeResults.Images.EpisodePosters.Count
+                strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
             End Select
-            If iImageCount > 0 Then
-                Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, nContainer, nScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
-                    If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
+        If iImageCount > 0 Then
+            Dim dlgImgS = New dlgImgSelect()
+            If dlgImgS.ShowDialog(tmpDBElement, ScrapeResults.Images) = DialogResult.OK Then
+                tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
+                If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
                         tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then
-                        Image_LoadPictureBox(eImageType)
-                    Else
-                        Image_Remove_Click(sender, e)
-                    End If
+                    Image_LoadPictureBox(eImageType)
+                Else
+                    Image_Remove_Click(sender, e)
                 End If
-            Else
-                MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
+        Else
+            MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
         Cursor = Cursors.Default
     End Sub
@@ -954,7 +951,7 @@ Public Class dlgEdit_TVEpisode
     Private Sub Ratings_Fill()
         dgvRatings.SuspendLayout()
 
-        For Each tRating In tmpDBElement.TVEpisode.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
+        For Each tRating In tmpDBElement.MainDetails.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvRatings.Rows.Add
             dgvRatings.Rows(i).Tag = tRating
             dgvRatings.Rows(i).Cells(colRatingsDefault.Name).Value = tRating.IsDefault
@@ -1153,7 +1150,7 @@ Public Class dlgEdit_TVEpisode
     Private Sub UniqueIds_Fill()
         dgvUniqueIds.SuspendLayout()
 
-        For Each tId In tmpDBElement.TVEpisode.UniqueIDs.Items.OrderBy(Function(f) Not f.IsDefault)
+        For Each tId In tmpDBElement.MainDetails.UniqueIDs.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvUniqueIds.Rows.Add
             dgvUniqueIds.Rows(i).Tag = tId
             dgvUniqueIds.Rows(i).Cells(colUniqueIdsDefault.Name).Value = tId.IsDefault
@@ -1184,9 +1181,9 @@ Public Class dlgEdit_TVEpisode
     End Function
 
     Private Sub Videosources_Fill()
-        If tmpDBElement.TVEpisode.VideoSourceSpecified Then
-            cbVideosource.Items.Add(tmpDBElement.TVEpisode.VideoSource)
-            cbVideosource.SelectedItem = tmpDBElement.TVEpisode.VideoSource
+        If tmpDBElement.MainDetails.VideoSourceSpecified Then
+            cbVideosource.Items.Add(tmpDBElement.MainDetails.VideoSource)
+            cbVideosource.SelectedItem = tmpDBElement.MainDetails.VideoSource
         End If
         cbVideosource.Items.AddRange(Master.DB.GetAll_VideoSources_TVEpisode.Where(Function(f) Not cbVideosource.Items.Contains(f)).ToArray)
     End Sub

@@ -22,7 +22,7 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("ratings")>
-Public Class clsXMLRatings
+Public Class XmlRatings
 
 #Region "Properties"
 

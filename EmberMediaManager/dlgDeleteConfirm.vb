@@ -56,7 +56,7 @@ Public Class dlgDeleteConfirm
         NewNode.SelectedImageKey = If(bIsVideoFile, "VIDEO", "FILE")
     End Sub
 
-    Private Sub AddFolderNode(ByVal tParentNode As TreeNode, ByVal tDirectoryInfo As DirectoryInfo)
+    Private Sub AddFolderNode(ByVal tParentNode As TreeNode, ByVal tDirectoryInfo As DirectoryInfo, ByVal mainVideoFileName As String)
         Dim NewNode As TreeNode = tParentNode.Nodes.Add(tDirectoryInfo.FullName, tDirectoryInfo.Name)
         NewNode.Tag = tDirectoryInfo.FullName
         NewNode.ImageKey = "FOLDER"
@@ -65,13 +65,13 @@ Public Class dlgDeleteConfirm
         If Master.DB.LoadAll_Sources_Movie.FirstOrDefault(Function(f) f.Path = tDirectoryInfo.FullName) Is Nothing Then
             'populate all the sub-folders in the folder
             For Each nDirectoryInfo As DirectoryInfo In tDirectoryInfo.GetDirectories
-                AddFolderNode(NewNode, nDirectoryInfo)
+                AddFolderNode(NewNode, nDirectoryInfo, mainVideoFileName)
             Next
         End If
 
         'populate all the files in the folder
         For Each nFileItem As FileInfo In tDirectoryInfo.GetFiles()
-            AddFileNode(NewNode, nFileItem, False)
+            AddFileNode(NewNode, nFileItem, If(nFileItem.FullName = mainVideoFileName, True, False))
         Next
     End Sub
 
@@ -194,7 +194,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nMovie As Database.DBElement = Master.DB.Load_Movie(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nMovie.ID.ToString, nMovie.Movie.Title)
+                        ItemParentNode = .Nodes.Add(nMovie.ID.ToString, nMovie.MainDetails.Title)
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovie.ID
@@ -206,7 +206,7 @@ Public Class dlgDeleteConfirm
                             If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
                                 If TypeOf nItem Is DirectoryInfo Then
                                     Try
-                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
+                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo), nMovie.Filename)
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -232,7 +232,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nMovieSet As Database.DBElement = Master.DB.Load_Movieset(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, nMovieSet.MovieSet.Title)
+                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, nMovieSet.MainDetails.Title)
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovieSet.ID
@@ -244,7 +244,7 @@ Public Class dlgDeleteConfirm
                             If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
                                 If TypeOf nItem Is DirectoryInfo Then
                                     Try
-                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
+                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo), String.Empty)
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -272,7 +272,7 @@ Public Class dlgDeleteConfirm
 
                             Dim nTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(lngTVEpisodeID, True)
 
-                            ItemParentNode = .Nodes.Add(nTVEpisode.ID.ToString, String.Format("{0} - {1}", nTVEpisode.TVShow.Title, nTVEpisode.TVEpisode.Title))
+                            ItemParentNode = .Nodes.Add(nTVEpisode.ID.ToString, String.Format("{0} - {1}", nTVEpisode.TVShowDetails.Title, nTVEpisode.MainDetails.Title))
                             ItemParentNode.ImageKey = "DBE"
                             ItemParentNode.SelectedImageKey = "DBE"
                             ItemParentNode.Tag = lngTVEpisodeID
@@ -284,7 +284,7 @@ Public Class dlgDeleteConfirm
                                 If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
                                     If TypeOf nItem Is DirectoryInfo Then
                                         Try
-                                            AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
+                                            AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo), nTVEpisode.Filename)
                                         Catch
                                             bHadError = True
                                             Exit For
@@ -310,8 +310,8 @@ Public Class dlgDeleteConfirm
                         Dim nTVSeason As Database.DBElement = Master.DB.Load_TVSeason(lngTVSeasonID, True, True)
 
                         ItemParentNode = .Nodes.Add(nTVSeason.ID.ToString, String.Format("{0} - {1}",
-                                                                                         nTVSeason.TVShow.Title,
-                                                                                         StringUtils.FormatSeasonTitle(nTVSeason.TVSeason.Season)))
+                                                                                         nTVSeason.TVShowDetails.Title,
+                                                                                         StringUtils.FormatSeasonTitle(nTVSeason.MainDetails.Season)))
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVSeason.ID
@@ -323,7 +323,7 @@ Public Class dlgDeleteConfirm
                             If Not ItemParentNode.Nodes.ContainsKey(fileItem.FullName) Then
                                 If TypeOf fileItem Is DirectoryInfo Then
                                     Try
-                                        AddFolderNode(ItemParentNode, DirectCast(fileItem, DirectoryInfo))
+                                        AddFolderNode(ItemParentNode, DirectCast(fileItem, DirectoryInfo), String.Empty)
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -398,7 +398,7 @@ Public Class dlgDeleteConfirm
 
                         Dim nTVShow As Database.DBElement = Master.DB.Load_TVShow(lngTVShowID, False, False)
 
-                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, nTVShow.TVShow.Title)
+                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, nTVShow.MainDetails.Title)
                         ItemParentNode.ImageKey = "DBE"
                         ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVShow.ID
@@ -410,7 +410,7 @@ Public Class dlgDeleteConfirm
                             If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
                                 If TypeOf nItem Is DirectoryInfo Then
                                     Try
-                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
+                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo), String.Empty)
                                     Catch
                                         bHadError = True
                                         Exit For

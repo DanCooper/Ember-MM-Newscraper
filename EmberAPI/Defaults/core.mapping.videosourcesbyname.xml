@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<regexmapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <mapping regexp="(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]">bluray</mapping>
+  <mapping regexp="(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]">dvd</mapping>
+  <mapping regexp="(?i)[\W_]hd[-\s]?tv[\W_]">hdtv</mapping>
+  <mapping regexp="(?i)[\W_]sd[-\s]?tv[\W_]">sdtv</mapping>
+  <mapping regexp="(?i)[\W_]hd[-\s]?dvd[\W_]">hddvd</mapping>
+  <mapping regexp="(?i)[\W_]vhs[\W_]">vhs</mapping>
+  <mapping regexp="(?i)[\W_]bd25[\W_]">bluray</mapping>
+  <mapping regexp="(?i)[\W_]bd50[\W_]">bluray</mapping>
+  <mapping regexp="(?i)[\W_]pdtv[\W_]">sdtv</mapping>
+  <mapping regexp="(?i)[\W_]dsr[\W_]">sdtv</mapping>
+  <mapping regexp="(?i)[\W_]tvrip[\W_]">sdtv</mapping>
+  <mapping regexp="(?i)[\W_]ntsc[\W_]">sdtv</mapping>
+  <mapping regexp="(?i)[\W_]dvd5[\W_]">dvd</mapping>
+  <mapping regexp="(?i)[\W_]dvd9[\W_]">dvd</mapping>
+  <mapping regexp="(?i)[\W_]web-dl[\W_]">webdl</mapping>
+  <mapping regexp="(?i)[\W_]webrip[\W_]">webdl</mapping>
+  <mapping regexp="(?i)[\W_]3dbd[\W_]">3dbd</mapping>
+  <mapping regexp="(?i)[\W_]azhd[\W_]">amazon</mapping>
+  <mapping regexp="(?i)[\W_]ithd[\W_]">itunes</mapping>
+  <mapping regexp="(?i)[\W_]nfu?hd[\W_]">netflix</mapping>
+  <mapping regexp="(?i)[\W_]hddl[\W_]">webdl</mapping>
+</regexmapping>

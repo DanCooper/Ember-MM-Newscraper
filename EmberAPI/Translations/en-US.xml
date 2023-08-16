@@ -197,8 +197,8 @@
   <string name="196">Do you want to save changes?</string>
   <string name="197">Save?</string>
   <string name="198">Movie Source</string>
-  <string name="199">Source Name:</string>
-  <string name="200">Source Path:</string>
+  <string name="199">Source Name</string>
+  <string name="200">Source Path</string>
   <string name="201">Source Options</string>
   <string name="202">Movies are in separate folders *</string>
   <string name="203">Use Folder Name for Initial Listing</string>
@@ -221,7 +221,7 @@
   <string name="220">WARNING: If you continue, all files will be sorted into separate folders.</string>
   <string name="221">The folder you entered does not exist. Please enter a valid path.</string>
   <string name="222">Folder Not Found</string>
-  <string name="223">Select Studio</string>
+  <string name="223"></string>
   <string name="224">Edit the details for the selected movie.</string>
   <string name="225">No Trailers found</string>
   <string name="226">Studios</string>
@@ -243,13 +243,13 @@
   <string name="242">Plot Outline:</string>
   <string name="243">Tags</string>
   <string name="244">Votes</string>
-  <string name="245">Rating:</string>
+  <string name="245">Rating</string>
   <string name="246">Video Sources</string>
   <string name="247">Season Scraped</string>
   <string name="248">Show Scraped</string>
   <string name="249">Enable Image Caching</string>
   <string name="250">Reload All TV Shows</string>
-  <string name="251">All Tasks Done</string>
+  <string name="251"></string>
   <string name="252">Defaults for new Sources</string>
   <string name="253">Scraping Data</string>
   <string name="254">Scraping Images</string>
@@ -333,7 +333,7 @@
   <string name="332">Use TeraCopy to copy/move files</string>
   <string name="333">Path to TeraCopy:</string>
   <string name="334">Template</string>
-  <string name="335">Movie List Exporter</string>
+  <string name="335"></string>
   <string name="336">Export Movie List</string>
   <string name="337">Please Choose/Install a Template First</string>
   <string name="338">Select path</string>
@@ -398,7 +398,7 @@
   <string name="397">Tagline</string>
   <string name="398">TeraCopy.exe not found</string>
   <string name="399">Downloading and Saving Contents into Database</string>
-  <string name="400">Rating</string>
+  <string name="400"></string>
   <string name="401">MPAA</string>
   <string name="402">Ember Startup Wizard</string>
   <string name="403">&lt; Back</string>
@@ -423,8 +423,8 @@
   <string name="422">Version</string>
   <string name="423">Author</string>
   <string name="424">Collections</string>
-  <string name="425">Username:</string>
-  <string name="426">Password:</string>
+  <string name="425">Username</string>
+  <string name="426">Password</string>
   <string name="427">Install</string>
   <string name="428">Removes</string>
   <string name="429">Miscellaneous</string>
@@ -496,7 +496,7 @@
   <string name="495">Show Folders Pattern</string>
   <string name="496">Season Folders Pattern</string>
   <string name="497">Images</string>
-  <string name="498">Do not save URLs to NFO</string>
+  <string name="498"></string>
   <string name="499">Display "Image Select" dialog while single scraping</string>
   <string name="500">Insert DVD</string>
   <string name="501">Preparing Data</string>
@@ -799,8 +799,8 @@
   <string name="798">Additional Moviesets</string>
   <string name="799">The ID you entered is not a valid IMDB ID.</string>
   <string name="800">Preferred Quality:</string>
-  <string name="801">TVDB Mirror</string>
-  <string name="802">Modules</string>
+  <string name="801"></string>
+  <string name="802">Addons</string>
   <string name="803">Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.</string>
   <string name="804">And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</string>
   <string name="805">Send to PasteBin.com</string>
@@ -823,7 +823,7 @@
   <string name="822">Extended Images</string>
   <string name="823">Continue without verification?</string>
   <string name="824">Video Source</string>
-  <string name="825">Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.</string>
+  <string name="825">Unable to retrieve details for the entered unique ID. Please check your entry and try again.</string>
   <string name="826">Verification Failed</string>
   <string name="827">Partial Matches ({0})</string>
   <string name="828">Enable Actor Thumbs</string>
@@ -846,7 +846,7 @@
   <string name="845">&gt;&gt; No Item Selected &lt;&lt;</string>
   <string name="846">Movie Search Results</string>
   <string name="847">Manual IMDB Entry:</string>
-  <string name="848">Verify</string>
+  <string name="848">Map Video Source by Filename</string>
   <string name="849">Enable Click Scrape</string>
   <string name="850">&amp;Check For Updates...</string>
   <string name="851">No Updates at this time</string>
@@ -854,13 +854,13 @@
   <string name="853">Scraping Media (All Movies - Skip):</string>
   <string name="854">Basic setup</string>
   <string name="855">Creating default options...</string>
-  <string name="856">Loading modules...</string>
+  <string name="856">Loading Addons...</string>
   <string name="857">Creating GUI...</string>
-  <string name="858">Loading database...</string>
+  <string name="858">Loading Database...</string>
   <string name="859">Running Module...</string>
   <string name="860">Loading Media...</string>
   <string name="861">Command Line Scraping...</string>
-  <string name="862">Loading translations...</string>
+  <string name="862">Loading Translations...</string>
   <string name="863">Positioning controls...</string>
   <string name="864">Setting menus...</string>
   <string name="865">Season Title</string>
@@ -929,13 +929,13 @@
   <string name="928">A Poster of your preferred size could not be found. Please choose another.</string>
   <string name="929">No Preferred Size</string>
   <string name="930">A Trailer of your preferred size could not be found. Please choose another.</string>
-  <string name="931">Open In Browser</string>
+  <string name="931">Open in Browser</string>
   <string name="932">TVDB API Key</string>
   <string name="933">TMDB ID</string>
   <string name="934">Update selected</string>
-  <string name="935">Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again.</string>
+  <string name="935"></string>
   <string name="936">Get your API Key from www.themoviedb.org</string>
-  <string name="937">Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again.</string>
+  <string name="937"></string>
   <string name="938">TheMovieDB API is missing or not valid</string>
   <string name="939">Edit Movie Sorting</string>
   <string name="940">Directors</string>
@@ -1016,8 +1016,6 @@
 
     ________Project Main Coders________
     DanCooper
-    Cocotus
-    m.savazzi
 
 
     ______Original Project Coders______
@@ -1075,7 +1073,7 @@
   <string name="983">TV Show List</string>
   <string name="984">Worldwide title as fallback</string>
   <string name="985">Clean Plot/Outline</string>
-  <string name="986">MovieSet Artwork Folder</string>
+  <string name="986"></string>
   <string name="987">Confirm</string>
   <string name="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
   <string name="989">Driveletter</string>
@@ -1097,7 +1095,7 @@
   <string name="1005">New Mapping</string>
   <string name="1006">TV Movie Titles ({0})</string>
   <string name="1007">You've changed a setting that makes it necessary that the database is cleaned up.Please make sure that all sources are available!{0}{0}Should the process be continued?</string>
-  <string name="1008">Sync Full</string>
+  <string name="1008"></string>
   <string name="1009">New version available</string>
   <string name="1010">TV Show Landscape</string>
   <string name="1011">TV Show CharacterArt</string>
@@ -1111,7 +1109,7 @@
   <string name="1019">Season {0} Banner</string>
   <string name="1020">Season {0} Landscape</string>
   <string name="1021">Select Tag</string>
-  <string name="1022">There was a problem communicating with host or there are no sources configured in Kodi</string>
+  <string name="1022"></string>
   <string name="1023">Preselect in "Image Select" dialog</string>
   <string name="1024">Removed</string>
   <string name="1025">All Seasons Banner</string>
@@ -1120,8 +1118,8 @@
   <string name="1028">Select the folder where you wish to store your tv themes...</string>
   <string name="1029">Select the folder where you wish to store your watched files...</string>
   <string name="1030">Select the folder where you wish to store your movie sets images...</string>
-  <string name="1031">Removal OK</string>
-  <string name="1032">Removal failed</string>
+  <string name="1031"></string>
+  <string name="1032"></string>
   <string name="1033">Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database.</string>
   <string name="1034">Force Language</string>
   <string name="1035">Landscape</string>
@@ -1159,11 +1157,11 @@
   <string name="1067">DVD</string>
   <string name="1068">Scrapers - Themes</string>
   <string name="1069">Select Theme</string>
-  <string name="1070">Get Watched State</string>
-  <string name="1071">Watched State</string>
+  <string name="1070"></string>
+  <string name="1071"></string>
   <string name="1072">Mark as Watched</string>
   <string name="1073">Mark as Unwatched</string>
-  <string name="1074">Add Custom Kodi Source</string>
+  <string name="1074"></string>
   <string name="1075">Save extended Collection information to NFO (Kodi 16.0 "Jarvis" and newer)</string>
   <string name="1076">Selected</string>
   <string name="1077">Select the folder where you wish to store your themes...</string>
@@ -1230,8 +1228,8 @@
   <string name="1138">Quality</string>
   <string name="1139">Select None</string>
   <string name="1140">CharacterArt</string>
-  <string name="1141">The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.</string>
-  <string name="1142">PIN Code</string>
+  <string name="1141"></string>
+  <string name="1142"></string>
   <string name="1143">Type</string>
   <string name="1144">Status Mapping</string>
   <string name="1145">Ratings</string>
@@ -1346,7 +1344,7 @@
   <string name="1254">Only data in selected tabs will be used!</string>
   <string name="1255">Display Image Names</string>
   <string name="1256">* All Seasons</string>
-  <string name="1257"></string>
+  <string name="1257">Tagged</string>
   <string name="1258">Store themes in movie directory</string>
   <string name="1259">Store themes in a custom path</string>
   <string name="1260">Store themes in sub directories</string>
@@ -1391,11 +1389,11 @@
   <string name="1299">Cancel Rewriting</string>
   <string name="1300">Canceling Rewriting...</string>
   <string name="1301">Mark New MovieSets</string>
-  <string name="1302">Trakt.tv Manager</string>
+  <string name="1302"></string>
   <string name="1303">Sync Playcount</string>
   <string name="1304">List Viewer</string>
-  <string name="1305">Sync Lists/Tags</string>
-  <string name="1306">Sync lists and playcount with your trakt.tv account.</string>
+  <string name="1305"></string>
+  <string name="1306"></string>
   <string name="1307">Load personal lists</string>
   <string name="1308">Save personal lists</string>
   <string name="1309">Personal trakt.tv Lists</string>
@@ -1403,7 +1401,7 @@
   <string name="1311">Add list to trakt.tv</string>
   <string name="1312">Load trakt.tv lists</string>
   <string name="1313">Sync to trakt.tv</string>
-  <string name="1314">Save tags to database/Nfo</string>
+  <string name="1314"></string>
   <string name="1315">Update listdetails</string>
   <string name="1316">Allow Comments</string>
   <string name="1317">Privacy Level</string>
@@ -1463,7 +1461,7 @@
   <string name="1371">Submit ratings to trakt.tv</string> 
   <string name="1372">Added ratings to trakt.tv!</string> 
   <string name="1373">No ratings submitted!</string>
-  <string name="1374">Manage XBMC tags</string>
+  <string name="1374"></string>
   <string name="1375">Movies in tag</string>
   <string name="1376">Saved changes</string>
   <string name="1377">Query</string>
@@ -1510,39 +1508,39 @@
   <string name="1419">Load your movie comments</string> 
   <string name="1420">!IMPORTANT RULES!\n\n\n\n1. Comments must be at least 5 words\n\n2. Comments 200 words or longer will be automatically marked as a review\n\n3. Correctly indicate if the comment contains spoilers\n\n4. Only write comments in English</string>
   <string name="1421">Load comments</string>
-  <string name="1422">Kodi Interface</string>
-  <string name="1423">Check Connection</string>
-  <string name="1424">Read Sources from Kodi</string>
-  <string name="1425">Kodi Host</string>
-  <string name="1426">Kodi Source type</string>
+  <string name="1422"></string>
+  <string name="1423"></string>
+  <string name="1424"></string>
+  <string name="1425"></string>
+  <string name="1426"></string>
   <string name="1427">Windows UNC/Linux/MacOS X/Openelec</string>
   <string name="1428">Windows Drive Letter (X:\)</string>
-  <string name="1429">Enable Real Time synchronization</string>
-  <string name="1430">Kodi IP</string>
-  <string name="1431">Kodi Port</string>
-  <string name="1432">Ember Source</string>
-  <string name="1433">Kodi Source</string>
-  <string name="1434">There was a problem communicating with host</string>
-  <string name="1435">Connection to host successful!</string>
-  <string name="1436">Please enter a unique name for host!</string>
-  <string name="1437">You must enter an IP for this host!</string>
-  <string name="1438">You must enter a port for this host!</string>
-  <string name="1439">Run Tasks</string>
+  <string name="1429"></string>
+  <string name="1430"></string>
+  <string name="1431"></string>
+  <string name="1432"></string>
+  <string name="1433"></string>
+  <string name="1434"></string>
+  <string name="1435"></string>
+  <string name="1436"></string>
+  <string name="1437"></string>
+  <string name="1438"></string>
+  <string name="1439"></string>
   <string name="1440">Edit</string>
-  <string name="1441">Send Notifications</string>
-  <string name="1442">Unscraped content cannot be synced</string>
-  <string name="1443">Start Syncing</string>
-  <string name="1444">Sync OK</string>
-  <string name="1445">Sync Failed</string>
-  <string name="1446">Sync</string>
-  <string name="1447">No Host Configured!</string>
+  <string name="1441"></string>
+  <string name="1442"></string>
+  <string name="1443"></string>
+  <string name="1444"></string>
+  <string name="1445"></string>
+  <string name="1446"></string>
+  <string name="1447"></string>
   <string name="1448">Updating Video Library</string>
   <string name="1449">Update Failed</string>
   <string name="1450">Cleaning Video Library</string>
   <string name="1451">Cleaning Failed</string>
-  <string name="1452">Watched-State synced</string>
-  <string name="1453">Not Found On Kodi Host</string>
-  <string name="1454">Get Watched State from</string>
+  <string name="1452"></string>
+  <string name="1453"></string>
+  <string name="1454"></string>
   <string name="1455">Filesize [MB]</string>
   <string name="1456">Include Distributors</string>
   <string name="1457">Autoscraper</string>

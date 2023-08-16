@@ -76,7 +76,7 @@ Public Class dlgAddEditActor
 
     Private Sub btnVerify_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnVerify.Click
         If Not String.IsNullOrEmpty(txtThumb.Text) Then
-            If StringUtils.isValidURL(txtThumb.Text) Then
+            If StringUtils.IsValidURL(txtThumb.Text) Then
                 If bwDownloadPic.IsBusy Then
                     bwDownloadPic.CancelAsync()
                 End If

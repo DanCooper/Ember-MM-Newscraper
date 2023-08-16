@@ -24,7 +24,7 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("core.genres")>
-Public Class clsXMLGenreMapping
+Public Class XmlGenreMapping
     Implements ICloneable
 
 #Region "Fields"
@@ -39,13 +39,16 @@ Public Class clsXMLGenreMapping
     Public Property DefaultImage() As String = "default.jpg"
 
     <XmlIgnore>
-    Public ReadOnly Property FileNameFullPath As String = String.Empty
+    Public ReadOnly Property FullName As String = String.Empty
 
     <XmlElement("genre")>
     Public Property Genres() As List(Of GenreProperty) = New List(Of GenreProperty)
 
     <XmlElement("mapping")>
     Public Property Mappings() As List(Of GenreMapping) = New List(Of GenreMapping)
+
+    <XmlIgnore>
+    Public ReadOnly Property Name As String = String.Empty
 
 #End Region 'Properties
 
@@ -57,8 +60,14 @@ Public Class clsXMLGenreMapping
         Clear()
     End Sub
 
-    Public Sub New(ByVal fileNameFullPath As String)
-        Me.FileNameFullPath = fileNameFullPath
+    Public Sub New(ByVal filename As String)
+        Name = filename
+        Dim CallingAssembly = Reflection.Assembly.GetCallingAssembly()
+        If Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location).ToLower = "emberapi" Then
+            FullName = Path.Combine(Master.SettingsPath, filename)
+        Else
+            FullName = Path.Combine(Directory.GetParent(Reflection.Assembly.GetCallingAssembly().Location).FullName, filename)
+        End If
     End Sub
 
 #End Region 'Constructors
@@ -88,10 +97,10 @@ Public Class clsXMLGenreMapping
     End Function
 
     Public Sub Load()
-        If File.Exists(FileNameFullPath) Then
-            Dim objStreamReader = New StreamReader(FileNameFullPath)
+        If File.Exists(FullName) Then
+            Dim objStreamReader = New StreamReader(FullName)
             Try
-                Dim nXML = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLGenreMapping)
+                Dim nXML = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlGenreMapping)
                 DefaultImage = nXML.DefaultImage
                 Genres = nXML.Genres
                 Mappings = nXML.Mappings
@@ -99,11 +108,11 @@ Public Class clsXMLGenreMapping
             Catch ex As Exception
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
                 objStreamReader.Close()
-                FileUtils.Common.CreateFileBackup(FileNameFullPath)
-                File.Delete(FileNameFullPath)
+                FileUtils.Common.CreateFileBackup(FullName)
+                File.Delete(FullName)
                 Clear()
             End Try
-        ElseIf SearchOlderVersions Then
+        ElseIf SearchOlderVersions() Then
             Load()
         Else
             Clear()
@@ -161,19 +170,18 @@ Public Class clsXMLGenreMapping
 
     Public Sub Save()
         Sort()
-        Dim xmlSerial As New XmlSerializer(GetType(clsXMLGenreMapping))
-        Dim xmlWriter As New StreamWriter(FileNameFullPath)
+        Dim xmlSerial As New XmlSerializer([GetType])
+        Dim xmlWriter As New StreamWriter(FullName)
         xmlSerial.Serialize(xmlWriter, Me)
         xmlWriter.Close()
     End Sub
 
     Private Function SearchOlderVersions() As Boolean
-#Disable Warning BC40000 'The type or member is obsolete.
         Dim strVersion1 = Path.Combine(Master.SettingsPath, "Core.Genres.xml")
         Select Case True
             Case File.Exists(strVersion1)
                 Try
-                    File.Move(strVersion1, FileNameFullPath)
+                    File.Move(strVersion1, FullName)
                     Return True
                 Catch ex As Exception
                     _Logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -184,7 +192,6 @@ Public Class clsXMLGenreMapping
             Case Else
                 Return False
         End Select
-#Enable Warning BC40000 'The type or member is obsolete.
     End Function
 
     Public Sub Sort()

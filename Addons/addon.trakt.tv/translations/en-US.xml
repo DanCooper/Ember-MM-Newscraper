@@ -1,0 +1,13 @@
+﻿<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string name="1">Trakt.tv Manager</string>
+  <string name="2">Get Watched-State</string>
+  <string name="3">Open in Browser</string>
+  <string name="4">The Trakt addon CAN NOT be used without authorizing it to access your trakt.tv account.</string>
+  <string name="5">PIN Code</string>
+  <string name="6">Start Syncing</string>
+  <string name="7">Get watched media from Trakt.tv</string>
+  <string name="8">Load database entries</string>
+  <string name="9">Sync Ember with Trakt</string>
+  <string name="10">No watched media found on Trakt</string>
+  <string name="11">Item(s) synced</string>
+</resources>

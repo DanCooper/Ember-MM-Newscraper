@@ -1,3 +1,53 @@
+CREATE TABLE actor_link (
+	person_id	integer,
+	media_id	integer,
+	media_type	text,
+	role		text,
+	cast_order	integer
+	);
+
+CREATE UNIQUE INDEX ix_actor_link_1
+	ON actor_link
+	(person_id, media_type, media_id, role);
+
+CREATE UNIQUE INDEX ix_actor_link_2
+	ON actor_link
+	(media_id, media_type, person_id);
+
+CREATE INDEX ix_actor_link_3
+	ON actor_link
+	(media_type);
+
+
+
+CREATE TABLE art (
+	art_id		integer PRIMARY KEY,
+	media_id	integer,
+	media_type  text,
+	type        text,
+	url         text,
+	width       integer,
+	height      integer
+	);
+
+CREATE INDEX ix_art
+	ON art
+	(media_id, media_type, type);
+
+
+
+CREATE TABLE certification (
+	certification_id	integer PRIMARY KEY,
+	name				text
+	);
+
+CREATE UNIQUE INDEX ix_certification
+	ON certification
+	(name);
+
+
+
+
 CREATE TABLE actors (
         idActor INTEGER PRIMARY KEY AUTOINCREMENT,
         strActor text NOT NULL,

@@ -24,7 +24,7 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("simplemapping")>
-Public Class clsXMLSimpleMapping
+Public Class XmlSimpleMapping
     Implements ICloneable
 
 #Region "Fields"
@@ -36,10 +36,20 @@ Public Class clsXMLSimpleMapping
 #Region "Properties"
 
     <XmlIgnore>
-    Public ReadOnly Property FileNameFullPath As String = String.Empty
+    Public ReadOnly Property DefaultsFileFullName As String
+        Get
+            Return FileUtils.Common.ReturnSettingsFile("Defaults", Name)
+        End Get
+    End Property
+
+    <XmlIgnore>
+    Public ReadOnly Property FullName As String = String.Empty
 
     <XmlElement("mapping")>
     Public Property Mappings() As List(Of SimpleMapping) = New List(Of SimpleMapping)
+
+    <XmlIgnore>
+    Public ReadOnly Property Name As String = String.Empty
 
 #End Region 'Properties
 
@@ -51,8 +61,14 @@ Public Class clsXMLSimpleMapping
         Clear()
     End Sub
 
-    Public Sub New(ByVal fileNameFullPath As String)
-        Me.FileNameFullPath = fileNameFullPath
+    Public Sub New(ByVal filename As String)
+        Name = filename
+        Dim CallingAssembly = Reflection.Assembly.GetCallingAssembly()
+        If Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location).ToLower = "emberapi" Then
+            FullName = Path.Combine(Master.SettingsPath, filename)
+        Else
+            FullName = Path.Combine(Directory.GetParent(Reflection.Assembly.GetCallingAssembly().Location).FullName, filename)
+        End If
     End Sub
 
 #End Region 'Constructors
@@ -79,19 +95,46 @@ Public Class clsXMLSimpleMapping
         Stream.Close()
     End Function
 
-    Public Sub Load()
-        If File.Exists(FileNameFullPath) Then
+    Private Function CopyDefaultsFile() As Boolean
+        If File.Exists(DefaultsFileFullName) Then
             Try
-                Dim objStreamReader = New StreamReader(FileNameFullPath)
-                Mappings = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLSimpleMapping).Mappings
+                File.Copy(DefaultsFileFullName, FullName, True)
+                Return True
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+        End If
+        Return False
+    End Function
+
+    Public Function GetDefaults() As List(Of SimpleMapping)
+        Dim nResults As New List(Of SimpleMapping)
+        If File.Exists(DefaultsFileFullName) Then
+            Try
+                Dim objStreamReader = New StreamReader(DefaultsFileFullName)
+                nResults = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlSimpleMapping).Mappings
                 objStreamReader.Close()
             Catch ex As Exception
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
-                FileUtils.Common.CreateFileBackup(FileNameFullPath)
-                Clear()
+            End Try
+        End If
+        Return nResults
+    End Function
+
+    Public Sub Load()
+        If File.Exists(FullName) Then
+            Try
+                Dim objStreamReader = New StreamReader(FullName)
+                Mappings = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlSimpleMapping).Mappings
+                objStreamReader.Close()
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                FileUtils.Common.CreateFileBackup(FullName)
+                File.Delete(FullName)
+                If CopyDefaultsFile() Then Load()
             End Try
         Else
-            Clear()
+            If CopyDefaultsFile() Then Load()
         End If
     End Sub
 
@@ -171,8 +214,8 @@ Public Class clsXMLSimpleMapping
 
     Public Sub Save()
         Sort()
-        Dim xmlSerial As New XmlSerializer(GetType(clsXMLSimpleMapping))
-        Dim xmlWriter As New StreamWriter(FileNameFullPath)
+        Dim xmlSerial As New XmlSerializer([GetType])
+        Dim xmlWriter As New StreamWriter(FullName)
         xmlSerial.Serialize(xmlWriter, Me)
         xmlWriter.Close()
     End Sub
@@ -186,6 +229,7 @@ Public Class clsXMLSimpleMapping
 End Class
 
 <Serializable()>
+<XmlRoot("simplemapping")>
 Public Class SimpleMapping
     Implements IComparable(Of SimpleMapping)
 

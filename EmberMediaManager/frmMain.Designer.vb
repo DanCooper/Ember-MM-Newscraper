@@ -450,15 +450,15 @@ Partial Class frmMain
         Me.pnlSearchMovies = New System.Windows.Forms.Panel()
         Me.cbSearchMovies = New System.Windows.Forms.ComboBox()
         Me.picSearchMovies = New System.Windows.Forms.PictureBox()
-        Me.txtSearchMovies = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtSearchMovies = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.pnlSearchMovieSets = New System.Windows.Forms.Panel()
         Me.cbSearchMovieSets = New System.Windows.Forms.ComboBox()
         Me.picSearchMovieSets = New System.Windows.Forms.PictureBox()
-        Me.txtSearchMovieSets = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtSearchMovieSets = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.pnlSearchTVShows = New System.Windows.Forms.Panel()
         Me.cbSearchShows = New System.Windows.Forms.ComboBox()
         Me.picSearchTVShows = New System.Windows.Forms.PictureBox()
-        Me.txtSearchShows = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtSearchShows = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.pnlFilter_Movies = New System.Windows.Forms.Panel()
         Me.tblFilter_Movies = New System.Windows.Forms.TableLayoutPanel()
         Me.gbFilterGeneral_Movies = New System.Windows.Forms.GroupBox()
@@ -10597,7 +10597,7 @@ Partial Class frmMain
     Friend WithEvents tmrLoad_Movie As System.Windows.Forms.Timer
     Friend WithEvents pnlSearchMovies As System.Windows.Forms.Panel
     Friend WithEvents picSearchMovies As System.Windows.Forms.PictureBox
-    Friend WithEvents txtSearchMovies As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtSearchMovies As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents tmrSearchWait_Movies As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch_Movies As System.Windows.Forms.Timer
     Friend WithEvents lblNoInfo As System.Windows.Forms.Label
@@ -10853,13 +10853,13 @@ Partial Class frmMain
     Friend WithEvents pnlSearchMovieSets As System.Windows.Forms.Panel
     Friend WithEvents cbSearchMovieSets As System.Windows.Forms.ComboBox
     Friend WithEvents picSearchMovieSets As System.Windows.Forms.PictureBox
-    Friend WithEvents txtSearchMovieSets As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtSearchMovieSets As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents tmrSearchWait_MovieSets As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch_MovieSets As System.Windows.Forms.Timer
     Friend WithEvents pnlSearchTVShows As System.Windows.Forms.Panel
     Friend WithEvents cbSearchShows As System.Windows.Forms.ComboBox
     Friend WithEvents picSearchTVShows As System.Windows.Forms.PictureBox
-    Friend WithEvents txtSearchShows As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtSearchShows As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents tmrSearchWait_Shows As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch_Shows As System.Windows.Forms.Timer
     Friend WithEvents pnlFilter_MovieSets As System.Windows.Forms.Panel

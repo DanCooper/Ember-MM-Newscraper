@@ -90,7 +90,7 @@ Partial Class dlgEdit_Movie
         Me.btnLinkTrailerPlay = New System.Windows.Forms.Button()
         Me.lblMPAADesc = New System.Windows.Forms.Label()
         Me.txtMPAADescription = New System.Windows.Forms.TextBox()
-        Me.txtMPAA = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtMPAA = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.lblOutlineCharacterCount = New System.Windows.Forms.Label()
         Me.lblUserNote = New System.Windows.Forms.Label()
         Me.txtUserNote = New System.Windows.Forms.TextBox()
@@ -4346,7 +4346,7 @@ Partial Class dlgEdit_Movie
     Friend WithEvents colRatingsMax As DataGridViewTextBoxColumn
     Friend WithEvents colRatingsVotes As DataGridViewTextBoxColumn
     Friend WithEvents txtMPAADescription As TextBox
-    Friend WithEvents txtMPAA As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtMPAA As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents dtpDateAdded_Time As DateTimePicker
     Friend WithEvents dtpLastPlayed_Time As DateTimePicker
     Friend WithEvents lblUniqueIds As Label

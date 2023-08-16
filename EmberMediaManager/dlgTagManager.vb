@@ -47,7 +47,7 @@ Public Class dlgTagManager
     Public Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-        FormUtils.Forms.ResizeAndMoveDialog(Me, Me)
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub Dialog_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -71,8 +71,8 @@ Public Class dlgTagManager
 
     Private Sub Setup()
         With Master.eLang
-            btnCancel.Text = .Cancel
-            btnOk.Text = .OK
+            btnCancel.Text = .CommonWordsList.Cancel
+            btnOk.Text = .CommonWordsList.OK
             gbMovies.Text = .GetString(36, "Movies")
             gbTagged.Text = .GetString(1257, "Tagged")
             gbTags.Text = .GetString(243, "Tags")
@@ -125,16 +125,16 @@ Public Class dlgTagManager
                     dbelement = Master.DB.Load_Movie(id)
                     _toProceed_Movies.Add(dbelement)
                 End If
-                If Not String.IsNullOrEmpty(removeTag) Then dbelement.Movie.Tags.Remove(removeTag)
-                If Not String.IsNullOrEmpty(addTag) Then dbelement.Movie.Tags.Add(addTag)
+                If Not String.IsNullOrEmpty(removeTag) Then dbelement.MainDetails.Tags.Remove(removeTag)
+                If Not String.IsNullOrEmpty(addTag) Then dbelement.MainDetails.Tags.Add(addTag)
             Case Enums.ContentType.TVShow
                 Dim dbelement = _toProceed_TVShows.FirstOrDefault(Function(f) f.ID = id)
                 If dbelement Is Nothing Then
                     dbelement = Master.DB.Load_TVShow(id, False, False, False)
                     _toProceed_TVShows.Add(dbelement)
                 End If
-                If Not String.IsNullOrEmpty(removeTag) Then dbelement.TVShow.Tags.Remove(removeTag)
-                If Not String.IsNullOrEmpty(addTag) Then dbelement.TVShow.Tags.Add(addTag)
+                If Not String.IsNullOrEmpty(removeTag) Then dbelement.MainDetails.Tags.Remove(removeTag)
+                If Not String.IsNullOrEmpty(addTag) Then dbelement.MainDetails.Tags.Add(addTag)
         End Select
     End Sub
 
@@ -399,14 +399,14 @@ Public Class dlgTagManager
             bwProcessTags.ReportProgress(-1)
             For Each entry In _toProceed_Movies
                 'report progress to BackgroundWorker
-                bwProcessTags.ReportProgress(processCount, entry.Movie.Title)
+                bwProcessTags.ReportProgress(processCount, entry.MainDetails.Title)
                 'save to db
                 Master.DB.Save_Movie(entry, True, True, False, True, False)
                 processCount += 1
             Next
             For Each entry In _toProceed_TVShows
                 'report progress to BackgroundWorker
-                bwProcessTags.ReportProgress(processCount, entry.TVShow.Title)
+                bwProcessTags.ReportProgress(processCount, entry.MainDetails.Title)
                 'save to db
                 Master.DB.Save_TVShow(entry, True, True, False, False)
                 processCount += 1

@@ -1,0 +1,2608 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v48_to_v49">
+
+    <!-- START art related modifications -->
+    <command type="DB">
+      <description>modify table art, add "width" and "height" to table art</description>
+      <execute>
+        CREATE TABLE art01(
+        art_id,
+        media_id,
+        media_type,
+        type,
+        url
+        );
+
+        INSERT INTO art01
+        SELECT
+        art_id,
+        media_id,
+        media_type,
+        type,
+        url
+        FROM art;
+
+        DROP TABLE art;
+
+        CREATE TABLE art (
+        idArt       integer PRIMARY KEY,
+        idMedia     integer,
+        media_type  text,
+        type        text,
+        url         text,
+        width       integer,
+        height      integer
+        );
+
+        CREATE INDEX ix_art
+        ON art
+        (idMedia, media_type, type);
+
+        INSERT INTO art
+        (idArt,
+        idMedia,
+        media_type,
+        type,
+        url)
+        SELECT
+        art_id,
+        media_id,
+        media_type,
+        type,
+        url
+        FROM art01;
+
+        DROP TABLE art01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>rename media_type "actor" to "person" in table art</description>
+      <execute>
+        UPDATE art SET media_type='person' WHERE media_type='actor';
+      </execute>
+    </command>
+    <command type="DB">
+      <description>rename media_type "set" to "movieset" in table art</description>
+      <execute>
+        UPDATE art SET media_type='movieset' WHERE media_type='set';
+      </execute>
+    </command>
+    <!-- END art related modifications -->
+
+    <!-- START certification related modifications -->
+    <command type="DB">
+      <description>create table certification</description>
+      <execute>
+        CREATE TABLE certification (
+        idCertification  integer PRIMARY KEY,
+        name             text
+        );
+
+        CREATE UNIQUE INDEX ix_certification
+        ON certification
+        (name);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table certification_link</description>
+      <execute>
+        CREATE TABLE certification_link (
+        idCertification     integer,
+        idMedia             integer,
+        media_type          text
+        );
+
+        CREATE UNIQUE INDEX certification_link_1
+        ON certification_link
+        (idCertification, media_type, idMedia);
+
+        CREATE UNIQUE INDEX certification_link_2
+        ON certification_link
+        (idMedia, media_type, idCertification);
+
+        CREATE INDEX certification_link_3
+        ON certification_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move certification entries from table movie to certification_temp</description>
+      <execute>
+        CREATE TABLE certification_temp (
+        idMedia             integer,
+        media_type          text,
+        name                text
+        );
+
+        INSERT INTO certification_temp
+        (idMedia,
+        media_type,
+        name)
+        SELECT
+        idMovie,
+        'movie',
+        Certification
+        FROM
+        movie
+        WHERE
+        Certification IS NOT ''
+      </execute>
+    </command>
+    <!-- END certification related modifications -->
+
+    <!-- START country related modifications -->
+    <command type="DB">
+      <description>rename "strCountry" to "name" in table country</description>
+      <execute>
+        CREATE TABLE country01(
+        idCountry,
+        strCountry
+        );
+
+        INSERT INTO country01
+        SELECT
+        idCountry,
+        strCountry
+        FROM country;
+
+        DROP TABLE country;
+
+        CREATE TABLE country (
+        idCountry  integer PRIMARY KEY,
+        name       text
+        );
+
+        INSERT INTO country
+        (idCountry,
+        name)
+        SELECT
+        idCountry,
+        strCountry
+        FROM country01;
+
+        DROP TABLE country01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table country_link</description>
+      <execute>
+        CREATE TABLE country_link (
+        idCountry   integer,
+        idMedia     integer,
+        media_type  text
+        );
+
+        CREATE UNIQUE INDEX country_link_1
+        ON country_link
+        (idCountry, media_type, idMedia);
+
+        CREATE UNIQUE INDEX country_link_2
+        ON country_link
+        (idMedia, media_type, idCountry);
+
+        CREATE INDEX country_link_3
+        ON country_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table countrylinkmovie entries to country_link</description>
+      <execute>
+        INSERT INTO country_link
+        (idCountry,
+        idMedia,
+        media_type)
+        SELECT
+        idCountry,
+        idMovie,
+        'movie'
+        FROM
+        countrylinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table countrylinktvshow entries to country_link</description>
+      <execute>
+        INSERT INTO country_link
+        (idCountry,
+        idMedia,
+        media_type)
+        SELECT
+        idCountry,
+        idShow,
+        'tvshow'
+        FROM
+        countrylinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table countrylinkmovie</description>
+      <execute>
+        DROP TABLE countrylinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table countrylinktvshow</description>
+      <execute>
+        DROP TABLE countrylinktvshow
+      </execute>
+    </command>
+    <!-- END country related modifications -->
+
+    <!-- START excludepath related modifications -->
+    <command type="DB">
+      <description>rename table ExcludeDir to excludedpath</description>
+      <execute>
+        CREATE TABLE excludedpath (
+        path  text PRIMARY KEY NOT NULL
+        );
+
+        INSERT INTO excludedpath
+        (path)
+        SELECT
+        Dirname
+        FROM ExcludeDir;
+
+        DROP TABLE ExcludeDir;
+      </execute>
+    </command>
+    <!-- END excludepath related modifications -->
+
+    <!-- START file related modifications -->
+    <command type="DB">
+      <description>create table file, delete table files</description>
+      <execute>
+        CREATE TABLE file (
+        idFile            integer PRIMARY KEY,
+        path              text NOT NULL,
+        originalFileName  text,
+        fileSize          integer
+        );
+
+        DROP INDEX UniqueFilename;
+
+        CREATE UNIQUE INDEX UniqueFilename
+        ON file
+        (path);
+
+        CREATE TRIGGER delete_file
+        AFTER DELETE
+        ON file
+        BEGIN
+        DELETE FROM streamdetail WHERE idFile=old.idFile;
+        END;
+
+        INSERT INTO file
+        (idFile,
+        path,
+        originalFileName)
+        SELECT
+        idFile,
+        strFilename,
+        strFilename
+        FROM files;
+
+        DROP TABLE files;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move path entries from table movie to file_temp</description>
+      <execute>
+        CREATE TABLE file_temp (
+        idMovie   integer,
+        path      text
+        );
+
+        INSERT INTO file_temp
+        (idMovie,
+        path)
+        SELECT
+        idMovie,
+        MoviePath
+        FROM
+        movie
+      </execute>
+    </command>
+    <!-- END file related modifications -->
+
+    <!-- START genre related modifications -->
+    <command type="DB">
+      <description>rename "strGenre" to "name" in table genre</description>
+      <execute>
+        CREATE TABLE genre01(
+        idGenre,
+        strGenre
+        );
+
+        INSERT INTO genre01
+        SELECT
+        idGenre,
+        strGenre
+        FROM genre;
+
+        DROP TABLE genre;
+
+        CREATE TABLE genre (
+        idGenre  integer PRIMARY KEY,
+        name     text
+        );
+
+        INSERT INTO genre
+        (idGenre,
+        name)
+        SELECT
+        idGenre,
+        strGenre
+        FROM genre01;
+
+        DROP TABLE genre01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table genre_link</description>
+      <execute>
+        CREATE TABLE genre_link (
+        idGenre     integer,
+        idMedia     integer,
+        media_type  text
+        );
+
+        CREATE UNIQUE INDEX genre_link_1
+        ON genre_link
+        (idGenre, media_type, idMedia);
+
+        CREATE UNIQUE INDEX genre_link_2
+        ON genre_link
+        (idMedia, media_type, idGenre);
+
+        CREATE INDEX genre_link_3
+        ON genre_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table genrelinkmovie entries to genre_link</description>
+      <execute>
+        INSERT INTO genre_link
+        (idGenre,
+        idMedia,
+        media_type)
+        SELECT
+        idGenre,
+        idMovie,
+        'movie'
+        FROM
+        genrelinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table genrelinktvshow entries to genre_link</description>
+      <execute>
+        INSERT INTO genre_link
+        (idGenre,
+        idMedia,
+        media_type)
+        SELECT
+        idGenre,
+        idShow,
+        'tvshow'
+        FROM
+        genrelinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table genrelinkmovie</description>
+      <execute>
+        DROP TABLE genrelinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table genrelinktvshow</description>
+      <execute>
+        DROP TABLE genrelinktvshow
+      </execute>
+    </command>
+    <!-- END genre related modifications -->
+
+    <!-- START movieset_link related modifications -->
+    <command type="DB">
+      <description>create table movieset_link, remove table setlinkmovie</description>
+      <execute>
+        CREATE TABLE movieset_link (
+        idSet       integer NOT NULL,
+        idMovie     integer NOT NULL
+        );
+
+        CREATE UNIQUE INDEX movieset_link_1
+        ON movieset_link
+        (idSet, idMovie);
+
+        CREATE UNIQUE INDEX movieset_link_2
+        ON movieset_link
+        (idMovie, idSet);
+
+        INSERT INTO movieset_link
+        (idSet,
+        idMovie)
+        SELECT
+        idSet,
+        idMovie
+        FROM setlinkmovie;
+
+        DROP TABLE setlinkmovie;
+      </execute>
+    </command>
+    <!-- END movieset_link related modifications -->
+
+    <!-- START moviesource related modifications -->
+    <command type="DB">
+      <description>modify table moviesource</description>
+      <execute>
+        CREATE TABLE moviesource01(
+        idSource,
+        strName,
+        strPath,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        bExclude,
+        bGetYear,
+        strLanguage
+        );
+
+        INSERT INTO moviesource01
+        SELECT
+        idSource,
+        strName,
+        strPath,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        bExclude,
+        bGetYear,
+        strLanguage
+        FROM moviesource;
+
+        DROP TABLE moviesource;
+
+        CREATE TABLE moviesource (
+        idSource          integer PRIMARY KEY,
+        path              text NOT NULL,
+        name              text NOT NULL,
+        scanRecursive     bool NOT NULL DEFAULT 0,
+        useFolderName     bool NOT NULL DEFAULT 0,
+        isSingle          bool NOT NULL DEFAULT 0,
+        exclude           bool NOT NULL DEFAULT 0,
+        getYear           bool NOT NULL DEFAULT 1,
+        language          text NOT NULL DEFAULT 'en-US'
+        );
+
+        CREATE UNIQUE INDEX UniqueMovieSourcePath
+        ON moviesource
+        (path);
+
+        CREATE TRIGGER delete_moviesource
+        AFTER DELETE
+        ON moviesource
+        BEGIN
+        DELETE FROM movie WHERE idSource=old.idSource;
+        END;
+
+        INSERT INTO moviesource
+        (idSource,
+        path,
+        name,
+        scanRecursive,
+        useFolderName,
+        isSingle,
+        exclude,
+        getYear,
+        language)
+        SELECT
+        idSource,
+        strPath,
+        strName,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        bExclude,
+        bGetYear,
+        strLanguage
+        FROM moviesource01;
+
+        DROP TABLE moviesource01;
+      </execute>
+    </command>
+    <!-- END moviesource related modifications -->
+
+    <!-- START rating related modifications -->
+    <command type="DB">
+      <description>create table rating</description>
+      <execute>
+        CREATE TABLE rating (
+        idRating      integer PRIMARY KEY AUTOINCREMENT,
+        idMedia       integer,
+        media_type    text,
+        rating_type   text,
+        rating_max    integer,
+        rating        float(50),
+        votes         integer,
+        isDefault     boolean
+        );
+
+        CREATE INDEX ix_rating
+        ON rating
+        (idMedia, media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy rating from table episode to table rating</description>
+      <execute>
+        INSERT INTO rating
+        (idMedia,
+        media_type,
+        rating_type,
+        rating_max,
+        rating,
+        votes,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        'default',
+        10,
+        Rating,
+        Votes,
+        0
+        FROM
+        episode
+        WHERE
+        Rating IS NOT '' and Votes IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy rating from table movie to table rating</description>
+      <execute>
+        INSERT INTO rating
+        (idMedia,
+        media_type,
+        rating_type,
+        rating_max,
+        rating,
+        votes,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        'default',
+        10,
+        Rating,
+        Votes,
+        0
+        FROM
+        movie
+        WHERE
+        Rating IS NOT '' and Votes IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy rating from table tvshow to table rating</description>
+      <execute>
+        INSERT INTO rating
+        (idMedia,
+        media_type,
+        rating_type,
+        rating_max,
+        rating,
+        votes,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        'default',
+        10,
+        Rating,
+        Votes,
+        0
+        FROM
+        tvshow
+        WHERE
+        Rating IS NOT '' and Votes IS NOT ''
+      </execute>
+    </command>
+    <!-- END rating related modifications -->
+
+    <!-- START streamdetail related modifications-->
+    <command type="DB">
+      <description>create table streamdetail</description>
+      <execute>
+        CREATE TABLE streamdetail (
+        idFile                  integer,
+        streamType              integer,
+        videoCodec              text,
+        videoAspect             float,
+        videoBitrate            integer,
+        videoLanguage           text,
+        videoWidth              integer,
+        videoHeight             integer,
+        videoScantype           text,
+        videoDuration           integer,
+        videoMultiViewCount     integer,
+        videoMultiViewLayout    text,
+        videoStereoMode         text,
+        videoBitDepth           integer,
+        videoChromaSubsampling  text,
+        videoColourPrimaries    text,
+        audioCodec              text,
+        audioChannels           integer,
+        audioBitrate            integer,
+        audioLanguage           text,
+        audioBitDepth           integer,
+        audioAdditionalFeatures text,
+        subtitleLanguage        text,
+        subtitleForced          boolean,
+        subtitlePath            text
+        );
+
+        CREATE INDEX ix_streamdetail
+        ON streamdetail
+        (idFile);
+      </execute>
+    </command>
+    <!-- END streamdetail related modifications -->
+
+    <!-- START studio related modifications -->
+    <command type="DB">
+      <description>rename "strStudio" to "name" in table studio</description>
+      <execute>
+        CREATE TABLE studio01(
+        idStudio,
+        strStudio
+        );
+
+        INSERT INTO studio01
+        SELECT
+        idStudio,
+        strStudio
+        FROM studio;
+
+        DROP TABLE studio;
+
+        CREATE TABLE studio (
+        idStudio  integer PRIMARY KEY,
+        name      text
+        );
+
+        INSERT INTO studio
+        (idStudio,
+        name)
+        SELECT
+        idStudio,
+        strStudio
+        FROM studio01;
+
+        DROP TABLE studio01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table studio_link</description>
+      <execute>
+        CREATE TABLE studio_link (
+        idStudio    integer,
+        idMedia     integer,
+        media_type  text
+        );
+
+        CREATE UNIQUE INDEX ix_studio_link_1
+        ON studio_link
+        (idStudio, media_type, idMedia);
+
+        CREATE UNIQUE INDEX ix_studio_link_2
+        ON studio_link
+        (idMedia, media_type, idStudio);
+
+        CREATE INDEX ix_studio_link_3
+        ON studio_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table studiolinkmovie entries to studio_link</description>
+      <execute>
+        INSERT INTO studio_link
+        (idStudio,
+        idMedia,
+        media_type)
+        SELECT
+        idStudio,
+        idMovie,
+        'movie'
+        FROM
+        studiolinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table studiolinktvshow entries to studio_link</description>
+      <execute>
+        INSERT INTO studio_link
+        (idStudio,
+        idMedia,
+        media_type)
+        SELECT
+        idStudio,
+        idShow,
+        'tvshow'
+        FROM
+        studiolinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table studiolinkmovie</description>
+      <execute>
+        DROP TABLE studiolinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table studiolinktvshow</description>
+      <execute>
+        DROP TABLE studiolinktvshow
+      </execute>
+    </command>
+    <!-- END studio related modifications -->
+
+    <!-- START tag related modifications -->
+    <command type="DB">
+      <description>rename table taglinks to tag_link</description>
+      <execute>
+        ALTER TABLE taglinks
+        RENAME TO tag_link;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>rename "strTag" to "name" in table tag, create trigger delete_tag</description>
+      <execute>
+        CREATE TABLE tag01(
+        idTag,
+        strTag
+        );
+
+        INSERT INTO tag01
+        SELECT
+        idTag,
+        strTag
+        FROM tag;
+
+        DROP TABLE tag;
+
+        CREATE TABLE tag (
+        idTag  integer PRIMARY KEY,
+        name   text
+        );
+
+        CREATE UNIQUE INDEX ix_tag_1
+        ON tag
+        (name);
+
+        DROP TRIGGER delete_tag;
+
+        CREATE TRIGGER delete_tag
+        AFTER DELETE
+        ON tag_link
+        BEGIN DELETE FROM tag WHERE idTag=old.idTag AND idTag NOT IN (SELECT DISTINCT idTag FROM tag_link);
+        END;
+
+        INSERT INTO tag
+        (idTag,
+        name)
+        SELECT
+        idTag,
+        strTag
+        FROM tag01;
+
+        DROP TABLE tag01;
+      </execute>
+    </command>
+    <!-- END tag related modifications -->
+
+    <!-- START tvshow_link related modifications -->
+    <command type="DB">
+      <description>rename table movielinktvshow to tvshow_link</description>
+      <execute>
+        CREATE TABLE tvshow_link (
+        idShow      integer,
+        idMovie     integer
+        );
+
+        CREATE UNIQUE INDEX ix_tvshow_link_1
+        ON tvshow_link
+        (idShow, idMovie);
+
+        CREATE UNIQUE INDEX ix_tvshow_link_2
+        ON tvshow_link
+        (idMovie, idShow);
+
+        INSERT INTO tvshow_link
+        (idShow,
+        idMovie)
+        SELECT
+        idShow,
+        idMovie
+        FROM movielinktvshow;
+
+        DROP TABLE movielinktvshow;
+      </execute>
+    </command>
+    <!-- END tvshow_link related modifications -->
+
+    <!-- START tvshowsource related modifications -->
+    <command type="DB">
+      <description>modify table tvshowsource</description>
+      <execute>
+        CREATE TABLE tvshowsource01(
+        idSource,
+        strName,
+        strPath,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle
+        );
+
+        INSERT INTO tvshowsource01
+        SELECT
+        idSource,
+        strName,
+        strPath,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle
+        FROM tvshowsource;
+
+        DROP TABLE tvshowsource;
+
+        CREATE TABLE tvshowsource (
+        idSource          integer PRIMARY KEY,
+        path              text NOT NULL,
+        name              text NOT NULL,
+        language          text NOT NULL DEFAULT 'en-US',
+        episodeOrdering   integer NOT NULL DEFAULT 0,
+        exclude           bool NOT NULL DEFAULT 0,
+        episodeSorting    integer NOT NULL DEFAULT 0,
+        isSingle          bool NOT NULL DEFAULT 0
+        );
+
+        CREATE UNIQUE INDEX UniqueTVShowSourcePath
+        ON tvshowsource
+        (path);
+
+        CREATE TRIGGER delete_tvshowsource
+        AFTER DELETE
+        ON tvshowsource
+        BEGIN
+        DELETE FROM tvshow WHERE idSource=old.idSource;
+        END;
+
+        INSERT INTO tvshowsource
+        (idSource,
+        path,
+        name,
+        language,
+        episodeOrdering,
+        exclude,
+        episodeSorting,
+        isSingle)
+        SELECT
+        idSource,
+        strPath,
+        strName,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle
+        FROM tvshowsource01;
+
+        DROP TABLE tvshowsource01;
+      </execute>
+    </command>
+    <!-- END tvshowsource related modifications -->
+
+    <!-- START uniqueid related modifications -->
+    <command type="DB">
+      <description>create table uniqueid</description>
+      <execute>
+        CREATE TABLE uniqueid (
+        idUniqueID   integer PRIMARY KEY,
+        idMedia      integer,
+        media_type   text,
+        value        text,
+        type         text,
+        isDefault    boolean DEFAULT 0
+        );
+
+        CREATE INDEX ix_uniqueid1
+        ON uniqueid
+        (idMedia, media_type, type);
+
+        CREATE INDEX ix_uniqueid2
+        ON uniqueid
+        (media_type, value);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy IMDB ID from table actors to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type)
+        SELECT
+        idActor,
+        'person',
+        strIMDB,
+        'imdb'
+        FROM
+        actors
+        WHERE
+        strIMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table actors to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type)
+        SELECT
+        idActor,
+        'person',
+        strTMDB,
+        'tmdb'
+        FROM
+        actors
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TVDB ID from table episode to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        strTVDB,
+        'tvdb',
+        1
+        FROM
+        episode
+        WHERE
+        strTVDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy IMDB ID from table episode to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        strIMDB,
+        'imdb',
+        0
+        FROM
+        episode
+        WHERE
+        strIMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table episode to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idEpisode,
+        'episode',
+        strTMDB,
+        'tmdb',
+        0
+        FROM
+        episode
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy IMDB ID from table movie to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        Imdb,
+        'imdb',
+        1
+        FROM
+        movie
+        WHERE
+        Imdb IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table movie to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        TMDB,
+        'tmdb',
+        0
+        FROM
+        movie
+        WHERE
+        TMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB collection ID from table movie to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idMovie,
+        'movie',
+        TMDBColID,
+        'tmdbcol',
+        0
+        FROM
+        movie
+        WHERE
+        TMDBColID IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table sets to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSet,
+        'movieset',
+        TMDBColID,
+        'tmdb',
+        0
+        FROM
+        sets
+        WHERE
+        TMDBColID IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TVDB ID from table seasons to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSeason,
+        'season',
+        strTVDB,
+        'tvdb',
+        1
+        FROM
+        seasons
+        WHERE
+        strTVDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table seasons to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idSeason,
+        'season',
+        strTMDB,
+        'tmdb',
+        0
+        FROM
+        seasons
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TVDB ID from table tvshow to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        TVDB,
+        'tvdb',
+        1
+        FROM
+        tvshow
+        WHERE
+        TVDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy IMDB ID from table tvshow to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        strIMDB,
+        'imdb',
+        0
+        FROM
+        tvshow
+        WHERE
+        strIMDB IS NOT ''
+      </execute>
+    </command>
+    <command type="DB">
+      <description>copy TMDB ID from table tvshow to table uniqueid</description>
+      <execute>
+        INSERT INTO uniqueid
+        (idMedia,
+        media_type,
+        value,
+        type,
+        isDefault)
+        SELECT
+        idShow,
+        'tvshow',
+        strTMDB,
+        'tmdb',
+        0
+        FROM
+        tvshow
+        WHERE
+        strTMDB IS NOT ''
+      </execute>
+    </command>
+    <!-- END uniqueid related modifications -->
+
+    <!-- START person related modifications-->
+    <command type="DB">
+      <description>create table actor_link</description>
+      <execute>
+        CREATE TABLE actor_link (
+        idPerson    integer,
+        idMedia     integer,
+        media_type  text,
+        role        text,
+        cast_order  integer
+        );
+
+        CREATE UNIQUE INDEX ix_actor_link_1
+        ON actor_link
+        (idPerson, media_type, idMedia);
+
+        CREATE UNIQUE INDEX ix_actor_link_2
+        ON actor_link
+        (idMedia, media_type, idPerson);
+
+        CREATE INDEX ix_actor_link_3
+        ON actor_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table creator_link</description>
+      <execute>
+        CREATE TABLE creator_link (
+        idPerson    integer,
+        idMedia     integer,
+        media_type  text
+        );
+
+        CREATE UNIQUE INDEX ix_creator_link_1
+        ON creator_link
+        (idPerson, media_type, idMedia);
+
+        CREATE UNIQUE INDEX ix_creator_link_2
+        ON creator_link
+        (idMedia, media_type, idPerson);
+
+        CREATE INDEX ix_creator_link_3
+        ON creator_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table director_link</description>
+      <execute>
+        CREATE TABLE director_link (
+        idPerson    integer,
+        idMedia     integer,
+        media_type  text
+        );
+
+        CREATE UNIQUE INDEX ix_director_link_1
+        ON director_link
+        (idPerson, media_type, idMedia);
+
+        CREATE UNIQUE INDEX ix_director_link_2
+        ON director_link
+        (idMedia, media_type, idPerson);
+
+        CREATE INDEX ix_director_link_3
+        ON director_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table gueststar_link</description>
+      <execute>
+        CREATE TABLE gueststar_link (
+        idPerson    integer,
+        idMedia     integer,
+        media_type  text,
+        role        text,
+        cast_order  integer
+        );
+
+        CREATE UNIQUE INDEX ix_gueststar_link_1
+        ON gueststar_link
+        (idPerson, media_type, idMedia);
+
+        CREATE UNIQUE INDEX ix_gueststar_link_2
+        ON gueststar_link
+        (idMedia, media_type, idPerson);
+
+        CREATE INDEX ix_gueststar_link_3
+        ON gueststar_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>create table writer_link</description>
+      <execute>
+        CREATE TABLE writer_link (
+        idPerson    integer,
+        idMedia     integer,
+        media_type  text
+        );
+
+        CREATE UNIQUE INDEX ix_writer_link_1
+        ON writer_link
+        (idPerson, media_type, idMedia);
+
+        CREATE UNIQUE INDEX ix_writer_link_2
+        ON writer_link
+        (idMedia, media_type, idPerson);
+
+        CREATE INDEX ix_writer_link_3
+        ON writer_link
+        (media_type);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table actorlinkepisode entries to actor_link</description>
+      <execute>
+        INSERT INTO actor_link
+        (idPerson,
+        idMedia,
+        media_type,
+        role,
+        cast_order)
+        SELECT
+        idActor,
+        idEpisode,
+        'episode',
+        strRole,
+        iOrder
+        FROM
+        actorlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table actorlinkmovie entries to actor_link</description>
+      <execute>
+        INSERT INTO actor_link
+        (idPerson,
+        idMedia,
+        media_type,
+        role,
+        cast_order)
+        SELECT
+        idActor,
+        idMovie,
+        'movie',
+        strRole,
+        iOrder
+        FROM
+        actorlinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table actorlinktvshow entries to actor_link</description>
+      <execute>
+        INSERT INTO actor_link
+        (idPerson,
+        idMedia,
+        media_type,
+        role,
+        cast_order)
+        SELECT
+        idActor,
+        idShow,
+        'tvshow',
+        strRole,
+        iOrder
+        FROM
+        actorlinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table creatorlinktvshow entries to creator_link</description>
+      <execute>
+        INSERT INTO creator_link
+        (idPerson,
+        idMedia,
+        media_type)
+        SELECT
+        idActor,
+        idShow,
+        'tvshow'
+        FROM
+        creatorlinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table directorlinkepisode entries to director_link</description>
+      <execute>
+        INSERT INTO director_link
+        (idPerson,
+        idMedia,
+        media_type)
+        SELECT
+        idDirector,
+        idEpisode,
+        'episode'
+        FROM
+        directorlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table directorlinkmovie entries to director_link</description>
+      <execute>
+        INSERT INTO director_link
+        (idPerson,
+        idMedia,
+        media_type)
+        SELECT
+        idDirector,
+        idMovie,
+        'movie'
+        FROM
+        directorlinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table gueststarlinkepisode entries to gueststar_link</description>
+      <execute>
+        INSERT INTO gueststar_link
+        (idPerson,
+        idMedia,
+        media_type,
+        role,
+        cast_order)
+        SELECT
+        idActor,
+        idEpisode,
+        'episode',
+        strRole,
+        iOrder
+        FROM
+        gueststarlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table writerlinkepisode entries to writer_link</description>
+      <execute>
+        INSERT INTO writer_link
+        (idPerson,
+        idMedia,
+        media_type)
+        SELECT
+        idWriter,
+        idEpisode,
+        'episode'
+        FROM
+        writerlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>move table writerlinkmovie entries to writer_link</description>
+      <execute>
+        INSERT INTO writer_link
+        (idPerson,
+        idMedia,
+        media_type)
+        SELECT
+        idWriter,
+        idMovie,
+        'movie'
+        FROM
+        writerlinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table actorlinkepisode</description>
+      <execute>
+        DROP TABLE actorlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table actorlinkmovie</description>
+      <execute>
+        DROP TABLE actorlinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table actorlinktvshow</description>
+      <execute>
+        DROP TABLE actorlinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table creatorlinktvshow</description>
+      <execute>
+        DROP TABLE creatorlinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table directorlinkepisode</description>
+      <execute>
+        DROP TABLE directorlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table directorlinkmovie</description>
+      <execute>
+        DROP TABLE directorlinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table directorlinktvshow</description>
+      <execute>
+        DROP TABLE directorlinktvshow
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table gueststarlinkepisode</description>
+      <execute>
+        DROP TABLE gueststarlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table writerlinkepisode</description>
+      <execute>
+        DROP TABLE writerlinkepisode
+      </execute>
+    </command>
+    <command type="DB">
+      <description>delete table writerlinkmovie</description>
+      <execute>
+        DROP TABLE writerlinkmovie
+      </execute>
+    </command>
+    <command type="DB">
+      <description>rename table actors to person, create trigger delete_person</description>
+      <execute>
+        CREATE TABLE person (
+        idPerson  integer PRIMARY KEY AUTOINCREMENT,
+        name      text NOT NULL,
+        thumb     text
+        );
+
+        DROP TRIGGER delete_person;
+
+        CREATE TRIGGER delete_person
+        AFTER DELETE
+        ON person
+        BEGIN
+        DELETE FROM art WHERE idMedia=old.idPerson AND media_type='person';
+        DELETE FROM uniqueid WHERE idMedia=old.idPerson AND media_type='person';
+        END;
+
+        INSERT INTO person
+        (idPerson,
+        name,
+        thumb)
+        SELECT
+        idActor,
+        strActor,
+        strThumb
+        FROM actors;
+
+        DROP TABLE actors;
+      </execute>
+    </command>
+    <!-- END table actors to person modifications-->
+
+    <!-- START table/view episode/episodelist modifications-->
+    <command type="DB">
+      <description>update table episode</description>
+      <execute>
+        CREATE TABLE episode01(
+        idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB,
+        iUserRating
+        );
+
+        INSERT INTO episode01
+        SELECT
+        idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB,
+        iUserRating
+        FROM episode;
+
+        DROP TABLE episode;
+
+        CREATE TABLE episode (
+        idEpisode       integer PRIMARY KEY,
+        idShow          integer NOT NULL,
+        idFile          integer NOT NULL,
+        idSource        integer NOT NULL,
+        episode         integer,
+        title           text,
+        originalTitle   text,
+        "new"           bool DEFAULT 0,
+        marked          bool NOT NULL DEFAULT 0,
+        locked          bool NOT NULL DEFAULT 0,
+        season          integer,
+        plot            text,
+        aired           text,
+        nfoPath         text,
+        playcount       integer,
+        displaySeason   integer,
+        displayEpisode  integer,
+        dateAdded       integer,
+        runtime         text,
+        videoSource     text,
+        hasSub          bool NOT NULL DEFAULT 0,
+        subEpisode      integer,
+        lastPlayed      integer,
+        userRating      integer NOT NULL DEFAULT 0,
+        dateModified    integer
+        );
+
+        CREATE TRIGGER delete_episode
+        AFTER DELETE
+        ON episode
+        BEGIN
+        DELETE FROM actor_link WHERE idMedia=old.idEpisode AND media_type='episode';
+        DELETE FROM art WHERE idMedia=old.idEpisode AND media_type='episode';
+        DELETE FROM director_link WHERE idMedia=old.idEpisode AND media_type='episode';
+        DELETE FROM file WHERE idFile=old.idFile;
+        DELETE FROM gueststar_link WHERE idMedia=old.idEpisode AND media_type='episode';
+        DELETE FROM rating WHERE idMedia=old.idEpisode AND media_type='episode';
+        DELETE FROM uniqueid WHERE idMedia=old.idEpisode AND media_type='episode';
+        DELETE FROM writer_link WHERE idMedia=old.idEpisode AND media_type='episode';
+        END;
+
+        INSERT INTO episode
+        (idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        episode,
+        title,
+        "new",
+        marked,
+        locked,
+        season,
+        plot,
+        aired,
+        nfoPath,
+        playcount,
+        displaySeason,
+        displayEpisode,
+        dateAdded,
+        runtime,
+        videoSource,
+        hasSub,
+        subEpisode,
+        lastPlayed,
+        userRating)
+        SELECT
+        idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        iUserRating
+        FROM episode01;
+
+        DROP TABLE episode01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view episodelist</description>
+      <execute>
+        DROP VIEW episodelist;
+
+        CREATE VIEW episodelist
+        AS
+        SELECT
+        episode.*,
+        file.path AS path,
+        source.name AS source,
+        fanart.url AS fanartPath,
+        poster.url AS posterPath,
+        GROUP_CONCAT(DISTINCT writers.name) AS credits,
+        GROUP_CONCAT(DISTINCT directors.name) AS director,
+        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS missing,
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+        FROM
+        episode
+        LEFT OUTER JOIN file ON (file.idFile=episode.idFile)
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource=episode.idSource)
+        LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=episode.idEpisode)
+        AND (fanart.media_type='episode')
+        AND (fanart.type ='fanart')
+        LEFT OUTER JOIN art AS poster ON (poster.idMedia=episode.idEpisode)
+        AND (poster.media_type='episode')
+        AND (poster.type='thumb')
+        LEFT OUTER JOIN writer_link AS writerlink ON (writerlink.idMedia=episode.idEpisode)
+        AND (writerlink.media_type='episode')
+        LEFT OUTER JOIN person AS writers ON (writers.idPerson=writerlink.idPerson)
+        LEFT OUTER JOIN director_link AS directorlink ON (directorlink.idMedia=episode.idEpisode)
+        AND (writerlink.media_type='episode')
+        LEFT OUTER JOIN person AS directors ON (directors.idPerson=directorlink.idPerson)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=episode.idEpisode)
+        AND (uniqueids.media_type='episode')
+        GROUP BY episode.idEpisode;
+      </execute>
+    </command>
+    <!-- END table/view episode/episodelist modifications-->
+
+    <!-- START table/view movie/movielist modifications-->
+    <command type="DB">
+      <description>update table movie</description>
+      <execute>
+        CREATE TABLE movie01(
+        idMovie,
+        idSource,
+        MoviePath,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Runtime,
+        ReleaseDate,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating
+        );
+
+        INSERT INTO movie01
+        SELECT
+        idMovie,
+        idSource,
+        MoviePath,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Imdb,
+        Lock,
+        Title,
+        OriginalTitle,
+        Rating,
+        Votes,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Certification,
+        Runtime,
+        ReleaseDate,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        FanartURL,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        TMDB,
+        TMDBColID,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating
+        FROM movie;
+
+        DROP TABLE movie;
+
+        CREATE TABLE movie (
+        idMovie         integer PRIMARY KEY,
+        idSource        integer NOT NULL,
+        idFile          integer NOT NULL DEFAULT -1,
+        isSingle        bool,
+        hasSub          bool NOT NULL DEFAULT 0,
+        "new"           bool NOT NULL DEFAULT 0,
+        marked          bool NOT NULL DEFAULT 0,
+        locked          bool,
+        title           text,
+        originalTitle   text,
+        mpaa            text,
+        top250          integer,
+        outline         text,
+        plot            text,
+        tagline         text,
+        runtime         text,
+        premiered       text,
+        playcount       integer,
+        trailer         text,
+        ethumbsPath     text,
+        nfoPath         text,
+        trailerPath     text,
+        subPath         text,
+        outOfTolerance  bool,
+        videoSource     text,
+        sortTitle       text,
+        dateAdded       integer,
+        efanartsPath    text,
+        themePath       text,
+        dateModified    integer,
+        markCustom1     bool NOT NULL DEFAULT 0,
+        markCustom2     bool NOT NULL DEFAULT 0,
+        markCustom3     bool NOT NULL DEFAULT 0,
+        markCustom4     bool NOT NULL DEFAULT 0,
+        hasSet          bool NOT NULL DEFAULT 0,
+        lastPlayed      integer,
+        language        text,
+        userRating      integer NOT NULL DEFAULT 0
+        );
+
+        CREATE UNIQUE INDEX ix_movie_file_1
+        ON movie
+        (idFile, idMovie);
+
+        CREATE UNIQUE INDEX ix_movie_file_2
+        ON movie
+        (idMovie, idFile);
+
+        CREATE TRIGGER delete_movie
+        AFTER DELETE
+        ON movie
+        BEGIN
+        DELETE FROM actor_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM art WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM certification_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM country_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM director_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM file WHERE idFile=old.idFile;
+        DELETE FROM genre_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM movieset_link WHERE idMovie=old.idMovie;
+        DELETE FROM rating WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM studio_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM tag_link WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM tvshow_link WHERE idMovie=old.idMovie;
+        DELETE FROM uniqueid WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM writer_link WHERE idMedia=old.idMovie AND media_type='movie';
+        END;
+
+        INSERT INTO movie
+        (idMovie,
+        idSource,
+        isSingle,
+        hasSub,
+        "new",
+        marked,
+        locked,
+        title,
+        originalTitle,
+        mpaa,
+        top250,
+        outline,
+        plot,
+        tagline,
+        runtime,
+        premiered,
+        playcount,
+        trailer,
+        ethumbsPath,
+        nfoPath,
+        trailerPath,
+        subPath,
+        outOfTolerance,
+        videoSource,
+        sortTitle,
+        dateAdded,
+        efanartsPath,
+        themePath,
+        dateModified,
+        markCustom1,
+        markCustom2,
+        markCustom3,
+        markCustom4,
+        hasSet,
+        lastPlayed,
+        language,
+        userRating)
+        SELECT
+        idMovie,
+        idSource,
+        Type,
+        HasSub,
+        "New",
+        Mark,
+        Lock,
+        Title,
+        OriginalTitle,
+        MPAA,
+        Top250,
+        Outline,
+        Plot,
+        Tagline,
+        Runtime,
+        ReleaseDate,
+        Playcount,
+        Trailer,
+        EThumbsPath,
+        NfoPath,
+        TrailerPath,
+        SubPath,
+        OutOfTolerance,
+        VideoSource,
+        SortTitle,
+        DateAdded,
+        EFanartsPath,
+        ThemePath,
+        DateModified,
+        MarkCustom1,
+        MarkCustom2,
+        MarkCustom3,
+        MarkCustom4,
+        HasSet,
+        iLastPlayed,
+        Language,
+        iUserRating
+        FROM movie01;
+
+        DROP TABLE movie01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view movielist</description>
+      <execute>
+        DROP VIEW movielist;
+
+        CREATE VIEW movielist
+        AS
+        SELECT
+        movie.*,
+        CASE WHEN movie.sortTitle IS NOT '' THEN movie.sortTitle ELSE movie.title END AS sortedTitle,
+        source.name AS source,
+        file.path AS path,
+        banner.url AS bannerPath,
+        clearart.url AS clearartPath,
+        clearlogo.url AS clearlogoPath,
+        discart.url AS discartPath,
+        fanart.url AS fanartPath,
+        keyart.url AS keyartPath,
+        landscape.url AS landscapePath,
+        poster.url AS posterPath,
+        GROUP_CONCAT(DISTINCT certifications.name) AS certification,
+        GROUP_CONCAT(DISTINCT countries.name) AS country,
+        GROUP_CONCAT(DISTINCT credits.name) AS credits,
+        GROUP_CONCAT(DISTINCT directors.name) AS director,
+        GROUP_CONCAT(DISTINCT genres.name) AS genre,
+        GROUP_CONCAT(DISTINCT studios.name) AS studio,
+        GROUP_CONCAT(DISTINCT tags.name) AS 'tag',
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+        FROM
+        movie
+        LEFT OUTER JOIN moviesource AS source ON (source.idSource=movie.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.idMedia=movie.idMovie)
+        AND (banner.media_type='movie')
+        AND (banner.type='banner')
+        LEFT OUTER JOIN art AS clearart ON (clearart.idMedia=movie.idMovie)
+        AND (clearart.media_type='movie')
+        AND (clearart.type='clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.idMedia=movie.idMovie)
+        AND (clearlogo.media_type='movie')
+        AND (clearlogo.type='clearlogo')
+        LEFT OUTER JOIN art AS discart ON (discart.idMedia=movie.idMovie)
+        AND (discart.media_type='movie')
+        AND (discart.type='discart')
+        LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=movie.idMovie)
+        AND (fanart.media_type='movie')
+        AND (fanart.type='fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.idMedia=movie.idMovie)
+        AND (keyart.media_type='movie')
+        AND (keyart.type='keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=movie.idMovie)
+        AND (landscape.media_type='movie')
+        AND (landscape.type='landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.idMedia=movie.idMovie)
+        AND (poster.media_type='movie')
+        AND (poster.type='poster')
+        LEFT OUTER JOIN certification_link AS certificationlink ON (certificationlink.idMedia=movie.idMovie)
+        AND (certificationlink.media_type='movie')
+        LEFT OUTER JOIN certification AS certifications ON (certifications.idCertification=certificationlink.idCertification)
+        LEFT OUTER JOIN country_link AS countrylink ON (countrylink.idMedia=movie.idMovie)
+        AND (countrylink.media_type='movie')
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry=countrylink.idCountry)
+        LEFT OUTER JOIN writer_link AS writerlink ON (writerlink.idMedia=movie.idMovie)
+        AND (writerlink.media_type='movie')
+        LEFT OUTER JOIN person AS credits ON (credits.idPerson=writerlink.idPerson)
+        LEFT OUTER JOIN director_link AS directorlink ON (directorlink.idMedia=movie.idMovie)
+        AND (directorlink.media_type='movie')
+        LEFT OUTER JOIN person AS directors ON (directors.idPerson=directorlink.idPerson)
+        LEFT OUTER JOIN file ON (file.idFile=movie.idFile)
+        LEFT OUTER JOIN genre_link AS genrelink ON (genrelink.idMedia=movie.idMovie)
+        AND (genrelink.media_type='movie')
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre=genrelink.idGenre)
+        LEFT OUTER JOIN studio_link AS studiolink ON (studiolink.idMedia=movie.idMovie)
+        AND (studiolink.media_type='movie')
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio=studiolink.idStudio)
+        LEFT OUTER JOIN tag_link AS taglink ON (taglink.idMedia=movie.idMovie)
+        AND (taglink.media_type='movie')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag=taglink.idTag)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=movie.idMovie)
+        AND (uniqueids.media_type='movie')
+        GROUP BY movie.idMovie;
+      </execute>
+    </command>
+    <!-- END table/view movie/movielist modifications-->
+
+    <!-- START table/view movieset/moviesetlist modifications-->
+    <command type="DB">
+      <description>update table movieset</description>
+      <execute>
+        CREATE TABLE movieset (
+        idSet       integer PRIMARY KEY,
+        nfoPath     text,
+        plot        text,
+        title       text,
+        "new"       bool NOT NULL DEFAULT 0,
+        marked      bool NOT NULL DEFAULT 0,
+        locked      bool NOT NULL DEFAULT 0,
+        sortMethod  integer NOT NULL DEFAULT 0,
+        language    text
+        );
+
+        CREATE TRIGGER delete_movieset
+        AFTER DELETE
+        ON movieset
+        BEGIN
+        DELETE FROM art WHERE idMedia=old.idSet AND media_type='movieset';
+        DELETE FROM movieset_link WHERE idSet=old.idSet;
+        DELETE FROM uniqueid WHERE idMedia=old.idSet AND media_type='movieset';
+        END;
+
+        INSERT INTO movieset
+        (idSet,
+        nfoPath,
+        plot,
+        title,
+        "new",
+        marked,
+        locked,
+        sortMethod,
+        language)
+        SELECT
+        idSet,
+        NfoPath,
+        Plot,
+        SetName,
+        "New",
+        Mark,
+        Lock,
+        SortMethod,
+        Language
+        FROM sets;
+
+        DROP TABLE sets;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view moviesetlist</description>
+      <execute>
+        DROP VIEW setslist;
+
+        CREATE VIEW moviesetlist
+        AS
+        SELECT
+        movieset.*,
+        banner.url AS bannerPath,
+        clearart.url AS clearartPath,
+        clearlogo.url AS clearlogoPath,
+        discart.url AS discartPath,
+        fanart.url AS fanartPath,
+        keyart.url AS keyartPath,
+        landscape.url AS landscapePath,
+        poster.url AS posterPath,
+        COUNT(moviesetlink.idMovie) AS 'movieCount',
+        GROUP_CONCAT(DISTINCT movies.title) AS 'movieTitles',
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+        FROM
+        movieset
+        LEFT OUTER JOIN art AS banner ON (banner.idMedia=movieset.idSet)
+        AND (banner.media_type='movieset')
+        AND (banner.type='banner')
+        LEFT OUTER JOIN art AS clearart ON (clearart.idMedia=movieset.idSet)
+        AND (clearart.media_type='movieset')
+        AND (clearart.type='clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.idMedia=movieset.idSet)
+        AND (clearlogo.media_type='movieset')
+        AND (clearlogo.type='clearlogo')
+        LEFT OUTER JOIN art AS discart ON (discart.idMedia=movieset.idSet)
+        AND (discart.media_type='movieset')
+        AND (discart.type='discart')
+        LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=movieset.idSet)
+        AND (fanart.media_type='movieset')
+        AND (fanart.type='fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.idMedia=movieset.idSet)
+        AND (keyart.media_type='movieset')
+        AND (keyart.type='keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=movieset.idSet)
+        AND (landscape.media_type='movieset')
+        AND (landscape.type='landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.idMedia=movieset.idSet)
+        AND (poster.media_type='movieset')
+        AND (poster.type='poster')
+        LEFT OUTER JOIN movieset_link AS moviesetlink ON (moviesetlink.idSet=movieset.idSet)
+        LEFT OUTER JOIN movie AS movies ON (movies.idMovie=moviesetlink.idMovie)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=movieset.idSet)
+        AND (uniqueids.media_type='movieset')
+        GROUP BY movieset.idSet;
+      </execute>
+    </command>
+    <!-- END table/view movieset/moviesetlist modifications-->
+
+    <!-- START table/view season/seasonlist modifications-->
+    <command type="DB">
+      <description>update table season</description>
+      <execute>
+        CREATE TABLE season (
+        idSeason    integer PRIMARY KEY,
+        idShow      integer,
+        season      integer,
+        title       text,
+        locked      bool NOT NULL DEFAULT 0,
+        marked      bool NOT NULL DEFAULT 0,
+        "new"       bool NOT NULL DEFAULT 0,
+        aired       text,
+        plot        text
+        );
+
+        CREATE UNIQUE INDEX ix_season
+        ON season
+        (idShow, season);
+
+        DROP TRIGGER delete_season;
+
+        CREATE TRIGGER delete_season
+        AFTER DELETE
+        ON season
+        BEGIN
+        DELETE FROM art WHERE idMedia=old.idSeason AND media_type='season';
+        DELETE FROM episode WHERE season=old.season AND idShow=old.idShow;
+        DELETE FROM uniqueid WHERE idMedia=old.idSeason AND media_type='season';
+        END;
+
+        INSERT INTO season
+        (idSeason,
+        idShow,
+        season,
+        title,
+        locked,
+        marked,
+        "new",
+        aired,
+        plot)
+        SELECT
+        idSeason,
+        idShow,
+        Season,
+        SeasonText,
+        Lock,
+        Mark,
+        "New",
+        strAired,
+        strPlot
+        FROM seasons;
+
+        DROP TABLE seasons;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view seasonlist</description>
+      <execute>
+        DROP VIEW seasonslist;
+
+        CREATE VIEW seasonlist
+        AS
+        SELECT
+        season.*,
+        banner.url AS bannerPath,
+        fanart.url AS fanartPath,
+        landscape.url AS landscapePath,
+        poster.url AS posterPath,
+        CASE WHEN season.season IS NOT -1 THEN COUNT(DISTINCT episodelist.idEpisode) ELSE NULL END AS episodes,
+        COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS playcount,
+        CASE WHEN season.season IS NOT -1 THEN CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode)=COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END ELSE 0 END AS hasWatched,
+        COUNT(DISTINCT CASE WHEN episodelist.new IS 1 THEN episodelist.idEpisode ELSE NULL END) AS newEpisodes,
+        CASE WHEN season.season IS -1 OR COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 THEN 0 ELSE 1 END AS missing,
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+        FROM
+        season
+        LEFT OUTER JOIN art AS banner ON (banner.idMedia=season.idSeason)
+        AND (banner.media_type='season')
+        AND (banner.type='banner')
+        LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=season.idSeason)
+        AND (fanart.media_type='season')
+        AND (fanart.type='fanart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=season.idSeason)
+        AND (landscape.media_type='season')
+        AND (landscape.type='landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.idMedia=season.idSeason)
+        AND (poster.media_type='season')
+        AND (poster.type='poster')
+        LEFT OUTER JOIN episodelist ON (season.season=episodelist.season)
+        AND (season.idShow=episodelist.idShow)
+        AND (episodelist.missing=0)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=season.idSeason)
+        AND (uniqueids.media_type='season')
+        GROUP BY
+        season.idSeason;
+      </execute>
+    </command>
+    <!-- END table/view season/seasonlist modifications-->
+
+    <!-- START table/view tvshow/tvshowlist modifications-->
+    <command type="DB">
+      <description>update table tvshow</description>
+      <execute>
+        CREATE TABLE tvshow01(
+        idShow,
+        idSource,
+        "New",
+        Mark,
+        TVShowPath,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB,
+        strOriginalTitle,
+        iUserRating
+        );
+
+        INSERT INTO tvshow01
+        SELECT
+        idShow,
+        idSource,
+        "new",
+        Mark,
+        TVShowPath,
+        TVDB,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        Rating,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        Votes,
+        EpisodeSorting,
+        SortTitle,
+        strIMDB,
+        strTMDB,
+        strOriginalTitle,
+        iUserRating
+        FROM tvshow;
+
+        DROP TABLE tvshow;
+
+        CREATE TABLE tvshow (
+        idShow            integer PRIMARY KEY,
+        idSource          integer NOT NULL,
+        "new"             bool DEFAULT 0,
+        marked            bool NOT NULL DEFAULT 0,
+        path              text NOT NULL,
+        locked            bool NOT NULL DEFAULT 0,
+        episodeGuide      text,
+        plot              text,
+        premiered         text,
+        mpaa              text,
+        nfoPath           text,
+        language          text,
+        episodeOrdering   integer NOT NULL DEFAULT 0,
+        status            text,
+        themePath         text,
+        efanartsPath      text,
+        runtime           text,
+        title             text,
+        episodeSorting    integer NOT NULL DEFAULT 0,
+        sortTitle         text,
+        originalTitle     text,
+        userRating        integer NOT NULL DEFAULT 0,
+        dateModified      integer,
+        dateAdded         integer
+        );
+
+        CREATE UNIQUE INDEX UniquePath
+        ON tvshow
+        (path);
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actor_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM art WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM certification_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM creator_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM country_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM director_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM genre_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM rating WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM season WHERE idShow=old.idShow;
+        DELETE FROM studio_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM tag_link WHERE idMedia=old.idShow AND media_type='tvshow';
+        DELETE FROM tvshow_link WHERE idShow=old.idShow;
+        DELETE FROM uniqueid WHERE idMedia=old.idShow AND media_type='tvshow';
+        END;
+
+        INSERT INTO tvshow
+        (idShow,
+        idSource,
+        "new",
+        marked,
+        path,
+        locked,
+        episodeGuide,
+        plot,
+        premiered,
+        mpaa,
+        nfoPath,
+        language,
+        episodeOrdering,
+        status,
+        themePath,
+        efanartsPath,
+        runtime,
+        title,
+        episodeSorting,
+        sortTitle,
+        originalTitle,
+        userRating)
+        SELECT
+        idShow,
+        idSource,
+        "New",
+        Mark,
+        TVShowPath,
+        Lock,
+        EpisodeGuide,
+        Plot,
+        Premiered,
+        MPAA,
+        NfoPath,
+        Language,
+        Ordering,
+        Status,
+        ThemePath,
+        EFanartsPath,
+        Runtime,
+        Title,
+        EpisodeSorting,
+        SortTitle,
+        strOriginalTitle,
+        iUserRating
+        FROM tvshow01;
+
+        DROP TABLE tvshow01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>update view tvshowlist</description>
+      <execute>
+        DROP VIEW tvshowlist;
+
+        CREATE VIEW tvshowlist
+        AS
+        SELECT
+        tvshow.*,
+        CASE WHEN tvshow.sortTitle IS NOT '' THEN tvshow.sortTitle ELSE tvshow.title END AS sortedTitle,
+        source.name AS source,
+        banner.url AS bannerPath,
+        characterart.url AS characterartPath,
+        clearart.url AS clearartPath,
+        clearlogo.url AS clearlogoPath,
+        fanart.url AS fanartPath,
+        keyart.url AS keyartPath,
+        landscape.url AS landscapePath,
+        poster.url AS posterPath,
+        GROUP_CONCAT(DISTINCT countries.name) AS country,
+        GROUP_CONCAT(DISTINCT creators.name) AS creator,
+        GROUP_CONCAT(DISTINCT genres.name) AS genre,
+        GROUP_CONCAT(DISTINCT studios.name) AS studio,
+        GROUP_CONCAT(DISTINCT tags.name) AS 'tag',
+        COUNT(DISTINCT episodelist.idEpisode) AS episodes,
+        COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode)=COUNT(DISTINCT CASE WHEN episodelist.lastPlayed IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS hasWatched,
+        COUNT(DISTINCT CASE WHEN episodelist.new IS 1 THEN episodelist.idEpisode ELSE NULL END) AS newEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.marked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS markedEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.locked IS 1 THEN episodelist.idEpisode ELSE NULL END) AS lockedEpisodes,
+        GROUP_CONCAT(DISTINCT uniqueids.type || ':' || uniqueids.value) AS uniqueid
+        FROM
+        tvshow
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource=tvshow.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.idMedia=tvshow.idShow)
+        AND (banner.media_type='tvshow')
+        AND (banner.type='banner')
+        LEFT OUTER JOIN art AS characterart ON (characterart.idMedia=tvshow.idShow)
+        AND (characterart.media_type='tvshow')
+        AND (characterart.type='characterart')
+        LEFT OUTER JOIN art AS clearart ON (clearart.idMedia=tvshow.idShow)
+        AND (clearart.media_type='tvshow')
+        AND (clearart.type='clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.idMedia=tvshow.idShow)
+        AND (clearlogo.media_type='tvshow')
+        AND (clearlogo.type='clearlogo')
+        LEFT OUTER JOIN art AS fanart ON (fanart.idMedia=tvshow.idShow)
+        AND (fanart.media_type='tvshow')
+        AND (fanart.type='fanart')
+        LEFT OUTER JOIN art AS keyart ON (keyart.idMedia=tvshow.idShow)
+        AND (keyart.media_type='tvshow')
+        AND (keyart.type='keyart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.idMedia=tvshow.idShow)
+        AND (landscape.media_type='tvshow')
+        AND (landscape.type='landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.idMedia=tvshow.idShow)
+        AND (poster.media_type='tvshow')
+        AND (poster.type='poster')
+        LEFT OUTER JOIN certification_link AS certificationlink ON (certificationlink.idMedia=tvshow.idShow)
+        AND (certificationlink.media_type='tvshow')
+        LEFT OUTER JOIN country_link AS countrylink ON (countrylink.idMedia=tvshow.idShow)
+        AND (countrylink.media_type='tvshow')
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry=countrylink.idCountry)
+        AND (countrylink.media_type='tvshow')
+        LEFT OUTER JOIN creator_link AS creatorlink ON (creatorlink.idMedia=tvshow.idShow)
+        AND (creatorlink.media_type='tvshow')
+        LEFT OUTER JOIN person AS creators ON (creators.idPerson=creatorlink.idPerson)
+        LEFT OUTER JOIN genre_link AS genrelink ON (genrelink.idMedia=tvshow.idShow)
+        AND (genrelink.media_type='tvshow')
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre=genrelink.idGenre)
+        LEFT OUTER JOIN studio_link AS studiolink ON (studiolink.idMedia=tvshow.idShow)
+        AND (studiolink.media_type='tvshow')
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio=studiolink.idStudio)
+        LEFT OUTER JOIN tag_link AS taglink ON (taglink.idMedia=tvshow.idShow)
+        AND (taglink.media_type='tvshow')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag=taglink.idTag)
+        LEFT OUTER JOIN episodelist ON (tvshow.idShow=episodelist.idShow)
+        AND (episodelist.Missing=0)
+        LEFT OUTER JOIN uniqueid AS uniqueids ON (uniqueids.idMedia=tvshow.idShow)
+        AND (uniqueids.media_type='tvshow')
+        GROUP BY
+        tvshow.idShow;
+      </execute>
+    </command>
+    <!-- END table/view tvshow/tvshowlist modifications-->
+
+    <!-- START remove no longer needed tables -->
+    <command type="DB">
+      <description>remove no longer needed tables</description>
+      <execute>
+        DROP TABLE EmberFiles;
+        DROP TABLE ExcludeFiles;
+        DROP TABLE ExcludeFilesInFolders;
+        DROP TABLE OrigPaths;
+      </execute>
+    </command>
+    <!-- END remove no longer needed tables -->
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+  <!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

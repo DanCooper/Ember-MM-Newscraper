@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<simplemapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <mapping input="a_aac">aac</mapping>
+  <mapping input="a_aac-2">aac</mapping>
+  <mapping input="a_ac3">ac3</mapping>
+  <mapping input="a_dts">dca</mapping>
+  <mapping input="a_eac3">eac3</mapping>
+  <mapping input="a_flac">flac</mapping>
+  <mapping input="a_mpeg/l3">mp3</mapping>
+  <mapping input="a_truehd">truehd</mapping>
+  <mapping input="a_vorbis">vorbis</mapping>
+  <mapping input="ac-3">ac3</mapping>
+  <mapping input="atmos / truehd / ac-3">truehd_atmos</mapping>
+  <mapping input="atmos / truehd">truehd_atmos</mapping>
+  <mapping input="e-ac-3">eac3</mapping>
+  <mapping input="e-ac-3+atmos">eac3_atmos</mapping>
+  <mapping input="hra / core">dtshd_hra</mapping>
+  <mapping input="ma / core">dtshd_ma</mapping>
+  <mapping input="truehd / ac-3">truehd</mapping>
+  <mapping input="truehd+atmos / truehd / ac-3">truehd_atmos</mapping>
+  <mapping input="x / hra / core">dtshd_hra_x</mapping>
+  <mapping input="x / ma / core">dtshd_ma_x</mapping>
+</simplemapping>

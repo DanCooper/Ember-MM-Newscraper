@@ -90,8 +90,8 @@ Public Class dlgErrorViewer
         sBuilder.AppendLine("================= <Assembly Versions> =================")
         sBuilder.AppendLine(String.Empty)
         sBuilder.AppendLine("Platform: x86")
-        For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
-            sBuilder.AppendLine(String.Format("{0} (Revision: {1})", v.Name, v.Version))
+        For Each v As Addons.VersionItem In Addons.VersionList
+            sBuilder.AppendLine(String.Format("{0} (Revision: {1})", v.AssemblyFileName, v.Version))
         Next
         sBuilder.AppendLine(String.Empty)
         sBuilder.AppendLine("================= <Assembly Versions> =================")

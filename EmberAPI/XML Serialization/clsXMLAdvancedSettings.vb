@@ -1,195 +1,418 @@
-﻿'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="AdvancedSettings")> _
-Partial Public Class clsXMLAdvancedSettings
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
-    Private _settingField As New List(Of AdvancedSettingsSetting)
+Imports NLog
+Imports System.IO
+Imports System.Xml.Serialization
 
-    Private _complexSettingsField As New List(Of AdvancedSettingsComplexSettings)
+<Serializable()>
+<XmlRoot("AdvancedSettings")>
+Public Class XmlAdvancedSettings
+    Implements ICloneable
+    Implements IDisposable
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Setting")> _
-    Public Property Setting As List(Of AdvancedSettingsSetting)
-        Get
-            Return Me._settingField
-        End Get
-        Set(value As List(Of AdvancedSettingsSetting))
-            Me._settingField = value
-        End Set
-    End Property
+#Region "Fields"
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")> _
-    Public Property ComplexSettings As List(Of AdvancedSettingsComplexSettings)
-        Get
-            Return Me._complexSettingsField
-        End Get
-        Set(value As List(Of AdvancedSettingsComplexSettings))
-            Me._complexSettingsField = value
-        End Set
-    End Property
+    Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
+
+    Private _disposed As Boolean = False
+
+#End Region 'Fields
+
+#Region "Properties"
+
+    <XmlIgnore>
+    Public ReadOnly Property FullName As String = String.Empty
+
+    <XmlElement("Setting")>
+    Public Property Settings As List(Of SingleSetting) = New List(Of SingleSetting)
+
+    <XmlElement("ComplexSettings")>
+    Public Property ComplexSettings As List(Of ComplexSettings) = New List(Of ComplexSettings)
+
+#End Region 'Properties
+
+#Region "Constructors"
+    ''' <summary>
+    ''' Needed for Load Sub
+    ''' </summary>
+    Public Sub New()
+        Return
+    End Sub
+
+    Public Sub New(ByVal fileFullName As String)
+        FullName = fileFullName
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Public Sub Clear()
+        Settings.Clear()
+        ComplexSettings.Clear()
+    End Sub
+
+    Public Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
+        If _disposed Then
+            _logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
+        End If
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = String.Empty Then
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
+            End If
+            Dim v = ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
+            If Not v Is Nothing Then v.Table.Item.Clear()
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Public Sub Close()
+        Disposing(True)
+    End Sub
+
+    Public Function CloneDeep() As Object _
+        Implements ICloneable.Clone
+        ' Gibt eine vollständige Kopie dieses Objekts zurück. 
+        ' Voraussetzung ist die Serialisierbarkeit aller beteiligten 
+        ' Objekte. 
+        Dim Stream As New MemoryStream(50000)
+        Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+        ' Serialisierung über alle Objekte hinweg in einen Stream 
+        Formatter.Serialize(Stream, Me)
+        ' Zurück zum Anfang des Streams und... 
+        Stream.Seek(0, SeekOrigin.Begin)
+        ' ...aus dem Stream in ein Objekt deserialisieren 
+        CloneDeep = Formatter.Deserialize(Stream)
+        Stream.Close()
+    End Function
+
+    Private Overloads Sub Dispose() Implements IDisposable.Dispose
+        Disposing(True)
+    End Sub
+
+    Private Sub Disposing(disposing As Boolean)
+        If disposing Then
+            Save()
+            _disposed = True
+        End If
+    End Sub
+
+    Public Function GetBooleanSetting(ByVal key As String, ByVal defaultValue As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = String.Empty Then
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
+            End If
+
+            If cContent = Enums.ContentType.None Then
+                Dim v = From e In Settings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+                Return If(v(0) Is Nothing, defaultValue, Convert.ToBoolean(v(0).Value.ToString))
+            Else
+                Dim v = From e In Settings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
+                Return If(v(0) Is Nothing, defaultValue, Convert.ToBoolean(v(0).Value.ToString))
+            End If
+
+        Catch ex As Exception
+            _Logger.Info(ex, New StackFrame().GetMethod().Name)
+            Return defaultValue
+        End Try
+    End Function
+
+    Public Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As List(Of TableItem)
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = String.Empty Then
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
+            End If
+            Dim v = ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
+            Return If(v Is Nothing, Nothing, v.Table.Item)
+        Catch ex As Exception
+            _logger.Info(ex, New StackFrame().GetMethod().Name)
+            Return Nothing
+        End Try
+    End Function
+
+    Public Function GetStringSetting(ByVal key As String, ByVal defaultValue As String, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As String
+        Dim Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+        Try
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+
+            If cContent = Enums.ContentType.None Then
+                Dim v = From e In Settings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+                Return If(v(0) Is Nothing, defaultValue, If(v(0).Value Is Nothing, String.Empty, v(0).Value.ToString))
+            Else
+                Dim v = From e In Settings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
+                Return If(v(0) Is Nothing, defaultValue, If(v(0).Value Is Nothing, String.Empty, v(0).Value.ToString))
+            End If
+
+        Catch ex As Exception
+            _Logger.Info(ex, "Key: " & key & " DefValue: " & defaultValue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name)
+            Return defaultValue
+        End Try
+    End Function
+
+    Public Overridable Sub Load()
+        If File.Exists(FullName) Then
+            Try
+                Dim objStreamReader = New StreamReader(FullName)
+                Dim nAdvancedSettings = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlAdvancedSettings)
+                ComplexSettings = nAdvancedSettings.ComplexSettings
+                Settings = nAdvancedSettings.Settings
+                objStreamReader.Close()
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                FileUtils.Common.CreateFileBackup(FullName)
+                Clear()
+            End Try
+        Else
+            Clear()
+        End If
+    End Sub
+
+    Public Sub RemoveComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
+        If _disposed Then
+            _logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
+        End If
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = String.Empty Then
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
+            End If
+            Dim v = ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
+            If Not v Is Nothing Then ComplexSettings.Remove(v)
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Public Sub RemoveStringSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
+        If _disposed Then
+            _logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
+        End If
+        Dim Assembly As String = cAssembly
+        If Assembly = String.Empty Then
+            Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+        End If
+        Dim v = From e In Settings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        If Not v(0) Is Nothing Then
+            'todo: why not remove all?
+            Settings.Remove(v(0))
+            'If Not _DoNotSave Then Save()
+        End If
+    End Sub
+
+    Public Sub Save()
+        Try
+            If Not Directory.Exists(Directory.GetParent(FullName).FullName) Then
+                Directory.CreateDirectory(Directory.GetParent(FullName).FullName)
+            End If
+
+            Dim xmlSerial As New XmlSerializer([GetType])
+            Dim xmlWriter As New StreamWriter(FullName)
+            xmlSerial.Serialize(xmlWriter, Me)
+            xmlWriter.Close()
+        Catch ex As Exception
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+    End Sub
+
+    Public Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.SetBooleanSetting on disposed object")
+        End If
+        Try
+            Dim Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+
+            If cContent = Enums.ContentType.None Then
+                Dim v = Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+                If v Is Nothing Then
+                    Settings.Add(New SingleSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value),
+                                                                                    .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty)})
+                Else
+                    Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
+                End If
+            Else
+                Dim v = Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Content = cContent AndAlso f.Section = Assembly)
+                If v Is Nothing Then
+                    Settings.Add(New SingleSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value),
+                                                                                    .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty), .Content = cContent})
+                Else
+                    Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = Convert.ToString(value)
+                End If
+            End If
+
+            'If Not _DoNotSave Then Save()
+        Catch ex As Exception
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+        Return True
+    End Function
+
+    Public Function SetComplexSetting(ByVal key As String, ByVal value As List(Of TableItem)) As Boolean
+        If _disposed Then
+            _Logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.SetComplexSetting on disposed object")
+        End If
+        Try
+            Dim Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+            Dim v = ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
+            If v Is Nothing Then
+                ComplexSettings.Add(New ComplexSettings With {.Table = New Table With {.Section = Assembly, .Name = key, .Item = value}})
+            Else
+                ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly).Table.Item = value
+            End If
+
+        Catch ex As Exception
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+        Return True
+    End Function
+
+    Public Function SetStringSetting(ByVal key As String, ByVal value As String, Optional ByVal isDefault As Boolean = False, Optional ByVal cContent As Enums.ContentType = Enums.ContentType.None) As Boolean
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.SetSetting on disposed object")
+        End If
+        Try
+            Dim Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+
+            If cContent = Enums.ContentType.None Then
+
+                Dim v = Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+                If v Is Nothing Then
+                    Settings.Add(New SingleSetting With {.Section = Assembly, .Name = key, .Value = value,
+                                                                                    .DefaultValue = If(isDefault, value, String.Empty)})
+                Else
+                    Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
+                End If
+            Else
+                Dim v = Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
+                If v Is Nothing Then
+                    Settings.Add(New SingleSetting With {.Section = Assembly, .Name = key, .Value = value,
+                                                                                    .DefaultValue = If(isDefault, value, String.Empty), .Content = cContent})
+                Else
+                    Settings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = value
+                End If
+            End If
+
+            'If Not _DoNotSave Then Save()
+        Catch ex As Exception
+            _Logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+        Return True
+    End Function
+
+#End Region 'Methods
+
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class AdvancedSettingsSetting
+<Serializable()>
+Partial Public Class SingleSetting
 
-    Private _sectionField As String
+#Region "Properties"
 
-    Private _nameField As String
+    <XmlAttribute("Section")>
+    Public Property Section() As String = String.Empty
 
-    Private _contentField As Enums.ContentType
-
-    Private _valueField As String
-
-    Private _defaultValueField As String
-
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property Section() As String
-        Get
-            Return Me._sectionField
-        End Get
-        Set(value As String)
-            Me._sectionField = Value
-        End Set
-    End Property
-
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    <XmlAttribute("Content")>
     Public Property Content() As Enums.ContentType
-        Get
-            Return Me._contentField
-        End Get
-        Set(value As Enums.ContentType)
-            Me._contentField = value
-        End Set
-    End Property
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property Name() As String
-        Get
-            Return Me._nameField
-        End Get
-        Set(value As String)
-            Me._nameField = Value
-        End Set
-    End Property
+    <XmlAttribute("Name")>
+    Public Property Name() As String = String.Empty
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlTextAttribute()> _
-    Public Property Value() As String
-        Get
-            Return Me._valueField
-        End Get
-        Set(value As String)
-            Me._valueField = Value
-        End Set
-    End Property
+    <XmlAttribute("DefaultValue")>
+    Public Property DefaultValue() As String = String.Empty
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property DefaultValue() As String
-        Get
-            Return Me._defaultValueField
-        End Get
-        Set(value As String)
-            Me._defaultValueField = value
-        End Set
-    End Property
+    <XmlText()>
+    Public Property Value() As String = String.Empty
+
+#End Region 'Properties
+
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class AdvancedSettingsComplexSettings
+<Serializable()>
+Partial Public Class ComplexSettings
 
-    Private _tableField As AdvancedSettingsComplexSettingsTable
+#Region "Properties"
 
-    '''<remarks/>
-    Public Property Table() As AdvancedSettingsComplexSettingsTable
-        Get
-            Return Me._tableField
-        End Get
-        Set(value As AdvancedSettingsComplexSettingsTable)
-            Me._tableField = Value
-        End Set
-    End Property
+    <XmlElement("Table")>
+    Public Property Table() As Table = New Table
+
+#End Region 'Properties
+
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class AdvancedSettingsComplexSettingsTable
+<Serializable()>
+Partial Public Class Table
 
-    Private _itemField As List(Of AdvancedSettingsComplexSettingsTableItem)
+#Region "Properties"
 
-    Private _sectionField As String
+    <XmlAttribute("Section")>
+    Public Property Section() As String = String.Empty
 
-    Private _nameField As String
+    <XmlAttribute("Name")>
+    Public Property Name() As String = String.Empty
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Item")> _
-    Public Property Item() As List(Of AdvancedSettingsComplexSettingsTableItem)
-        Get
-            Return Me._itemField
-        End Get
-        Set(value As List(Of AdvancedSettingsComplexSettingsTableItem))
-            Me._itemField = value
-        End Set
-    End Property
+    <XmlElement("Item")>
+    Public Property Item() As List(Of TableItem) = New List(Of TableItem)
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property Section() As String
-        Get
-            Return Me._sectionField
-        End Get
-        Set(value As String)
-            Me._sectionField = Value
-        End Set
-    End Property
+#End Region 'Properties
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property Name() As String
-        Get
-            Return Me._nameField
-        End Get
-        Set(value As String)
-            Me._nameField = Value
-        End Set
-    End Property
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class AdvancedSettingsComplexSettingsTableItem
+<Serializable()>
+Partial Public Class TableItem
 
-    Private _nameField As String
+#Region "Properties"
 
-    Private _valueField As String
+    <XmlAttribute("Name")>
+    Public Property Name() As String = String.Empty
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property Name() As String
-        Get
-            Return Me._nameField
-        End Get
-        Set(value As String)
-            Me._nameField = Value
-        End Set
-    End Property
+    <XmlText()>
+    Public Property Value() As String = String.Empty
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlTextAttribute()> _
-    Public Property Value() As String
-        Get
-            Return Me._valueField
-        End Get
-        Set(value As String)
-            Me._valueField = Value
-        End Set
-    End Property
+#End Region 'Properties
+
 End Class
-
-

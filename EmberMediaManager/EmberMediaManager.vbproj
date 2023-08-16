@@ -216,6 +216,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="clsManager.vb" />
+    <Compile Include="clsScraperGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="clsSettings.vb" />
     <Compile Include="clsTheming.vb" />
     <Compile Include="dlgEdit_TVEpisode.Designer.vb">
       <DependentUpon>dlgEdit_TVEpisode.vb</DependentUpon>
@@ -319,10 +324,10 @@
     <Compile Include="dlgProfileSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgSourceMovie.Designer.vb">
-      <DependentUpon>dlgSourceMovie.vb</DependentUpon>
+    <Compile Include="dlgSource_Movie.Designer.vb">
+      <DependentUpon>dlgSource_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgSourceMovie.vb">
+    <Compile Include="dlgSource_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgNewSet.Designer.vb">
@@ -373,10 +378,10 @@
     <Compile Include="dlgTVRegExProfiles.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgSourceTVShow.Designer.vb">
-      <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
+    <Compile Include="dlgSource_TVShow.Designer.vb">
+      <DependentUpon>dlgSource_TVShow.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgSourceTVShow.vb">
+    <Compile Include="dlgSource_TVShow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgImgSelect.Designer.vb">
@@ -391,10 +396,154 @@
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.Designer.vb">
-      <DependentUpon>frmTV_Data_SeasonTitleBlacklist.vb</DependentUpon>
+    <Compile Include="MasterSettingsPanels\frmMovieset_Information.Designer.vb">
+      <DependentUpon>frmMovieset_Information.vb</DependentUpon>
     </Compile>
-    <Compile Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.vb">
+    <Compile Include="MasterSettingsPanels\frmMovieset_Information.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieset_FileNaming.Designer.vb">
+      <DependentUpon>frmMovieset_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieset_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieset_GUI.Designer.vb">
+      <DependentUpon>frmMovieset_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieset_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieset_Image.Designer.vb">
+      <DependentUpon>frmMovieset_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieset_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Information.Designer.vb">
+      <DependentUpon>frmMovie_Information.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Information.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Information_TagsWhitelist.Designer.vb">
+      <DependentUpon>frmMovie_Information_TagsWhitelist.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Information_TagsWhitelist.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.Designer.vb">
+      <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_GUI.Designer.vb">
+      <DependentUpon>frmMovie_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Image.Designer.vb">
+      <DependentUpon>frmMovie_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Source.Designer.vb">
+      <DependentUpon>frmMovie_Source.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Theme.Designer.vb">
+      <DependentUpon>frmMovie_Theme.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Theme.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Trailer.Designer.vb">
+      <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovie_Trailer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_AVCodecMapping.Designer.vb">
+      <DependentUpon>frmOption_AVCodecMapping.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_AVCodecMapping.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_Connection.Designer.vb">
+      <DependentUpon>frmOption_Connection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_Connection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_FileSystem.Designer.vb">
+      <DependentUpon>frmOption_FileSystem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_FileSystem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_Global.Designer.vb">
+      <DependentUpon>frmOption_Global.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_Global.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_GUI.Designer.vb">
+      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Information.Designer.vb">
+      <DependentUpon>frmTV_Information.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Information.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Information_SeasonTitleBlacklist.Designer.vb">
+      <DependentUpon>frmTV_Information_SeasonTitleBlacklist.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Information_SeasonTitleBlacklist.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_FileNaming.Designer.vb">
+      <DependentUpon>frmTV_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_GUI.Designer.vb">
+      <DependentUpon>frmTV_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Image.Designer.vb">
+      <DependentUpon>frmTV_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Source.Designer.vb">
+      <DependentUpon>frmTV_Source.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Source_Regex.Designer.vb">
+      <DependentUpon>frmTV_Source_Regex.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Source_Regex.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Theme.Designer.vb">
+      <DependentUpon>frmTV_Theme.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Theme.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -467,8 +616,8 @@
     <EmbeddedResource Include="dlgProfileSelect.resx">
       <DependentUpon>dlgProfileSelect.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgSourceMovie.resx">
-      <DependentUpon>dlgSourceMovie.vb</DependentUpon>
+    <EmbeddedResource Include="dlgSource_Movie.resx">
+      <DependentUpon>dlgSource_Movie.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgNewSet.resx">
       <DependentUpon>dlgNewSet.vb</DependentUpon>
@@ -497,8 +646,8 @@
     <EmbeddedResource Include="dlgTVRegExProfiles.resx">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgSourceTVShow.resx">
-      <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
+    <EmbeddedResource Include="dlgSource_TVShow.resx">
+      <DependentUpon>dlgSource_TVShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgImgSelect.resx">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
@@ -507,8 +656,80 @@
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Data_SeasonTitleBlacklist.resx">
-      <DependentUpon>frmTV_Data_SeasonTitleBlacklist.vb</DependentUpon>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieset_Information.resx">
+      <DependentUpon>frmMovieset_Information.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieset_FileNaming.resx">
+      <DependentUpon>frmMovieset_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieset_GUI.resx">
+      <DependentUpon>frmMovieset_GUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieset_Image.resx">
+      <DependentUpon>frmMovieset_Image.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Information.resx">
+      <DependentUpon>frmMovie_Information.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Information_TagsWhitelist.resx">
+      <DependentUpon>frmMovie_Information_TagsWhitelist.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_FileNaming.resx">
+      <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_GUI.resx">
+      <DependentUpon>frmMovie_GUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Image.resx">
+      <DependentUpon>frmMovie_Image.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Source.resx">
+      <DependentUpon>frmMovie_Source.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Theme.resx">
+      <DependentUpon>frmMovie_Theme.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Trailer.resx">
+      <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_AVCodecMapping.resx">
+      <DependentUpon>frmOption_AVCodecMapping.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_Connection.resx">
+      <DependentUpon>frmOption_Connection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_FileSystem.resx">
+      <DependentUpon>frmOption_FileSystem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_Global.resx">
+      <DependentUpon>frmOption_Global.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
+      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Information.resx">
+      <DependentUpon>frmTV_Information.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Information_SeasonTitleBlacklist.resx">
+      <DependentUpon>frmTV_Information_SeasonTitleBlacklist.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_FileNaming.resx">
+      <DependentUpon>frmTV_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_GUI.resx">
+      <DependentUpon>frmTV_GUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Image.resx">
+      <DependentUpon>frmTV_Image.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Source.resx">
+      <DependentUpon>frmTV_Source.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Source_Regex.resx">
+      <DependentUpon>frmTV_Source_Regex.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Theme.resx">
+      <DependentUpon>frmTV_Theme.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -614,6 +835,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\hasKeyart.png" />
+    <None Include="Resources\edit.png" />
     <Content Include="Themes\FullHD-DarkBlue.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

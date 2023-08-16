@@ -49,20 +49,20 @@ Partial Class dlgClearOrReplace
         Me.chkGuestStars = New System.Windows.Forms.CheckBox()
         Me.chkCreators = New System.Windows.Forms.CheckBox()
         Me.chkPremiered = New System.Windows.Forms.CheckBox()
-        Me.txtPremiered = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtUserRating = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtAired = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtPremiered = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtUserRating = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtAired = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.chkStatus = New System.Windows.Forms.CheckBox()
         Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.txtCertifications = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtCountries = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtCreators = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtDirectors = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtGenres = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtStudios = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtTags = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.txtWriters = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtCertifications = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtCountries = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtCreators = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtDirectors = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtGenres = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtStudios = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtTags = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
+        Me.txtWriters = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lblGuestStars = New System.Windows.Forms.Label()
@@ -866,20 +866,20 @@ Partial Class dlgClearOrReplace
     Friend WithEvents chkGuestStars As CheckBox
     Friend WithEvents chkCreators As CheckBox
     Friend WithEvents chkPremiered As CheckBox
-    Friend WithEvents txtPremiered As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtUserRating As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtAired As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtPremiered As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtUserRating As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtAired As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents chkStatus As CheckBox
     Friend WithEvents txtStatus As TextBox
     Friend WithEvents chkTitle As CheckBox
-    Friend WithEvents txtCertifications As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtCountries As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtCreators As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtDirectors As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtGenres As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtStudios As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtTags As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents txtWriters As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtCertifications As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtCountries As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtCreators As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtDirectors As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtGenres As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtStudios As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtTags As EmberAPI.AdvancedControls.TextBox_with_Watermark
+    Friend WithEvents txtWriters As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents lblActors As Label
     Friend WithEvents lblGuestStars As Label
     Friend WithEvents lblOriginalTitle As Label

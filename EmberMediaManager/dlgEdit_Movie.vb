@@ -32,10 +32,8 @@ Public Class dlgEdit_Movie
     Private tmpDBElement As Database.DBElement
 
     Private dragBoxFromMouseDown As Rectangle
-    Private fResults As New Containers.ImgResult
     Private iPreviousFrameValue As Integer
     Private lvwActorsSorter As ListViewColumnSorter
-    Private pResults As New Containers.ImgResult
 
     'Extrafanarts/Extrathumbs list settings
     Private iImageList_DistanceLeft As Integer = 1
@@ -75,11 +73,11 @@ Public Class dlgEdit_Movie
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        FormUtils.Forms.ResizeAndMoveDialog(Me, Me)
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Private Sub Dialog_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tmpDBElement, True) Then
+        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
             pbBanner.AllowDrop = True
             pbClearArt.AllowDrop = True
             pbClearLogo.AllowDrop = True
@@ -101,7 +99,7 @@ Public Class dlgEdit_Movie
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.Movie.FileInfo) With {
+            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement.MainDetails.FileInfo) With {
                 .BackColor = Color.White,
                 .Dock = DockStyle.Fill,
                 .FormBorderStyle = FormBorderStyle.None,
@@ -140,15 +138,15 @@ Public Class dlgEdit_Movie
 
     Private Sub Setup()
         With Master.eLang
-            Dim mTitle As String = tmpDBElement.Movie.Title
+            Dim mTitle As String = tmpDBElement.MainDetails.Title
             Text = String.Concat(.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-            btnCancel.Text = .Cancel
+            btnCancel.Text = .CommonWordsList.Cancel
             btnChange.Text = .GetString(32, "Change Movie")
             btnFrameLoadVideo.Text = .GetString(307, "Load Video")
             btnFrameSaveAsExtrafanart.Text = .GetString(1050, "Save as Extrafanart")
             btnFrameSaveAsExtrathumb.Text = .GetString(305, "Save as Extrathumb")
             btnFrameSaveAsFanart.Text = .GetString(1049, "Save as Fanart")
-            btnOK.Text = .OK
+            btnOK.Text = .CommonWordsList.OK
             btnRescrape.Text = .GetString(716, "Re-Scrape")
             chkLocked.Text = .GetString(43, "Locked")
             chkMarked.Text = .GetString(48, "Marked")
@@ -196,7 +194,7 @@ Public Class dlgEdit_Movie
             lblPlot.Text = String.Concat(.GetString(65, "Plot"), ":")
             lblPoster.Text = .GetString(148, "Poster")
             lblPremiered.Text = String.Concat(.GetString(724, "Premiered"), ":")
-            lblRatings.Text = String.Concat(.GetString(245, "Ratings"), ":")
+            lblRatings.Text = String.Concat(.GetString(1145, "Ratings"), ":")
             lblRuntime.Text = String.Concat(.GetString(238, "Runtime"), ":")
             lblSortTilte.Text = String.Concat(.GetString(642, "Sort Title"), ":")
             lblStudios.Text = String.Concat(.GetString(226, "Studios"), ":")
@@ -401,8 +399,8 @@ Public Class dlgEdit_Movie
     Private Sub Data_Fill(Optional ByVal DoAll As Boolean = True)
         'Database related part
         With tmpDBElement
-            chkLocked.Checked = .IsLock
-            chkMarked.Checked = .IsMark
+            chkLocked.Checked = .IsLocked
+            chkMarked.Checked = .IsMarked
             chkMarkedCustom1.Checked = .IsMarkCustom1
             chkMarkedCustom2.Checked = .IsMarkCustom2
             chkMarkedCustom3.Checked = .IsMarkCustom3
@@ -424,7 +422,7 @@ Public Class dlgEdit_Movie
         End With
 
         'Information part
-        With tmpDBElement.Movie
+        With tmpDBElement.MainDetails
             'Actors
             Dim lvItem As ListViewItem
             lvActors.Items.Clear()
@@ -469,7 +467,7 @@ Public Class dlgEdit_Movie
             'Genres
             Genres_Fill()
             'Moviesets
-            If Not Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+            If Not Master.eSettings.Movie.InformationSettings.Collection.SaveYAMJCompatible Then
                 lblMoviesetAdditional.Visible = False
                 clbMoviesets.Visible = False
             End If
@@ -511,9 +509,9 @@ Public Class dlgEdit_Movie
             'Top250
             txtTop250.Text = .Top250.ToString
             'Trailer Link
-            txtLinkTrailer.Text = tmpDBElement.Movie.Trailer
-            btnLinkTrailerPlay.Enabled = tmpDBElement.Movie.TrailerSpecified
-            btnLinkTrailerGet.Enabled = Master.eSettings.MovieScraperTrailer
+            txtLinkTrailer.Text = tmpDBElement.MainDetails.Trailer
+            btnLinkTrailerPlay.Enabled = tmpDBElement.MainDetails.TrailerSpecified
+            btnLinkTrailerGet.Enabled = True 'Master.eSettings.MovieScraperTrailer
             'TV Show Links
             TVShowLinks_Fill()
             'Unique IDs
@@ -553,7 +551,7 @@ Public Class dlgEdit_Movie
 
                 'Banner
                 If Master.eSettings.MovieBannerAnyEnabled Then
-                    btnScrapeBanner.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    btnScrapeBanner.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
                     If .Banner.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainBanner)
                     End If
@@ -564,7 +562,7 @@ Public Class dlgEdit_Movie
 
                 'ClearArt
                 If Master.eSettings.MovieClearArtAnyEnabled Then
-                    btnScrapeClearArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    btnScrapeClearArt.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
                     If .ClearArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainClearArt)
                     End If
@@ -575,7 +573,7 @@ Public Class dlgEdit_Movie
 
                 'ClearLogo
                 If Master.eSettings.MovieClearLogoAnyEnabled Then
-                    btnScrapeClearLogo.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    btnScrapeClearLogo.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
                     If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainClearLogo)
                     End If
@@ -586,7 +584,7 @@ Public Class dlgEdit_Movie
 
                 'DiscArt
                 If Master.eSettings.MovieDiscArtAnyEnabled Then
-                    btnScrapeDiscArt.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    btnScrapeDiscArt.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
                     If .DiscArt.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainDiscArt)
                     End If
@@ -597,7 +595,7 @@ Public Class dlgEdit_Movie
 
                 'Extrafanarts
                 If Master.eSettings.MovieExtrafanartsAnyEnabled Then
-                    btnScrapeExtrafanarts.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
+                    btnScrapeExtrafanarts.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     If .Extrafanarts.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrafanarts
@@ -612,7 +610,7 @@ Public Class dlgEdit_Movie
 
                 'Extrathumbs
                 If Master.eSettings.MovieExtrathumbsAnyEnabled Then
-                    btnScrapeExtrathumbs.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
+                    btnScrapeExtrathumbs.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
                     If .Extrathumbs.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)
@@ -627,7 +625,7 @@ Public Class dlgEdit_Movie
 
                 'Fanart
                 If Master.eSettings.MovieFanartAnyEnabled Then
-                    btnScrapeFanart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    btnScrapeFanart.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     If .Fanart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainFanart)
                     End If
@@ -638,7 +636,7 @@ Public Class dlgEdit_Movie
 
                 'Keyart
                 If Master.eSettings.MovieKeyartAnyEnabled Then
-                    btnScrapeKeyart.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyart)
+                    btnScrapeKeyart.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainKeyart)
                     If .Keyart.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainKeyart)
                     End If
@@ -649,7 +647,7 @@ Public Class dlgEdit_Movie
 
                 'Landscape
                 If Master.eSettings.MovieLandscapeAnyEnabled Then
-                    btnScrapeLandscape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    btnScrapeLandscape.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     If .Landscape.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainLandscape)
                     End If
@@ -660,7 +658,7 @@ Public Class dlgEdit_Movie
 
                 'Poster
                 If Master.eSettings.MoviePosterAnyEnabled Then
-                    btnScrapePoster.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    btnScrapePoster.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     If .Poster.ImageOriginal.Image IsNot Nothing Then
                         Image_LoadPictureBox(Enums.ModifierType.MainPoster)
                     End If
@@ -697,7 +695,7 @@ Public Class dlgEdit_Movie
 
             'Theme
             If Master.eSettings.MovieThemeAnyEnabled Then
-                btnSetThemeScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                btnSetThemeScrape.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie()
                 If tmpDBElement.Theme.LocalFilePathSpecified OrElse tmpDBElement.Theme.UrlAudioStreamSpecified Then
                     Theme_Load(tmpDBElement.Theme)
                 End If
@@ -708,7 +706,7 @@ Public Class dlgEdit_Movie
 
             'Trailer
             If Master.eSettings.MovieTrailerAnyEnabled Then
-                btnSetTrailerScrape.Enabled = ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+                btnSetTrailerScrape.Enabled = Addons.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie()
                 If tmpDBElement.Trailer.LocalFilePathSpecified OrElse tmpDBElement.Trailer.UrlVideoStreamSpecified Then
                     Trailer_Load(tmpDBElement.Trailer)
                 End If
@@ -737,10 +735,10 @@ Public Class dlgEdit_Movie
         With tmpDBElement
             'Edition
             .Edition = cbEdition.Text.Trim
-            .Movie.Edition = .Edition
+            .MainDetails.Edition = .Edition
             'States
-            .IsLock = chkLocked.Checked
-            .IsMark = chkMarked.Checked
+            .IsLocked = chkLocked.Checked
+            .IsMarked = chkMarked.Checked
             .IsMarkCustom1 = chkMarkedCustom1.Checked
             .IsMarkCustom2 = chkMarkedCustom2.Checked
             .IsMarkCustom3 = chkMarkedCustom3.Checked
@@ -748,18 +746,18 @@ Public Class dlgEdit_Movie
             'Language
             If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
                 .Language = APIXML.ScraperLanguages.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-                .Movie.Language = .Language
+                .MainDetails.Language = .Language
             Else
                 .Language = "en-US"
-                .Movie.Language = .Language
+                .MainDetails.Language = .Language
             End If
             'Videosource
             .VideoSource = cbVideoSource.Text.Trim
-            .Movie.VideoSource = .VideoSource
+            .MainDetails.VideoSource = .VideoSource
         End With
 
         'Information part
-        With tmpDBElement.Movie
+        With tmpDBElement.MainDetails
             'Actors
             .Actors.Clear()
             If lvActors.Items.Count > 0 Then
@@ -791,7 +789,7 @@ Public Class dlgEdit_Movie
             Dim cIndex = pnlFileInfo.Controls.IndexOfKey("dlgFileInfo")
             If Not cIndex = -1 Then
                 Dim nResult = DirectCast(pnlFileInfo.Controls.Item(cIndex), dlgFileInfo)
-                tmpDBElement.Movie.FileInfo = nResult.Result
+                tmpDBElement.MainDetails.FileInfo = nResult.Result
             End If
             'Genres
             If lbGenres.Items.Count > 0 Then
@@ -898,9 +896,6 @@ Public Class dlgEdit_Movie
             End If
             tmpDBElement.Subtitles.Remove(Subtitle)
         Next
-
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then tmpDBElement.Movie.Thumb = pResults.Posters
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then tmpDBElement.Movie.Fanart = pResults.Fanart
     End Sub
 
     Private Sub DataGridView_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRatings.CellValueChanged
@@ -953,9 +948,9 @@ Public Class dlgEdit_Movie
     'End Sub
 
     Private Sub Editions_Fill()
-        If tmpDBElement.Movie.EditionSpecified Then
-            cbEdition.Items.Add(tmpDBElement.Movie.Edition)
-            cbEdition.SelectedItem = tmpDBElement.Movie.Edition
+        If tmpDBElement.MainDetails.EditionSpecified Then
+            cbEdition.Items.Add(tmpDBElement.MainDetails.Edition)
+            cbEdition.SelectedItem = tmpDBElement.MainDetails.Edition
         End If
         cbEdition.Items.AddRange(Master.DB.GetAll_Editions_Movie.Where(Function(f) Not cbEdition.Items.Contains(f)).ToArray)
     End Sub
@@ -1076,8 +1071,8 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Genres_Fill()
-        If tmpDBElement.Movie.GenresSpecified Then
-            lbGenres.Items.AddRange(tmpDBElement.Movie.Genres.ToArray)
+        If tmpDBElement.MainDetails.GenresSpecified Then
+            lbGenres.Items.AddRange(tmpDBElement.MainDetails.Genres.ToArray)
         End If
         'add the rest of all genres to the ComboBox
         cbGenres.Items.AddRange(APIXML.GetGenreList.ToArray)
@@ -1620,63 +1615,60 @@ Public Class dlgEdit_Movie
         btnScrapePoster.Click
 
         Cursor = Cursors.WaitCursor
-        Dim nContainer As New MediaContainers.SearchResultsContainer
-        Dim nScrapeModifiers As New Structures.ScrapeModifiers
 
         Dim eImageType As Enums.ModifierType = ConvertControlToImageType(sender)
-        Functions.SetScrapeModifiers(nScrapeModifiers, eImageType, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, nContainer, nScrapeModifiers, True) Then
-            Dim iImageCount = 0
-            Dim strNoImagesFound As String = String.Empty
-            Select Case eImageType
-                Case Enums.ModifierType.MainBanner
-                    iImageCount = nContainer.MainBanners.Count
-                    strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
-                Case Enums.ModifierType.MainClearArt
-                    iImageCount = nContainer.MainClearArts.Count
-                    strNoImagesFound = Master.eLang.GetString(1102, "No ClearArts found")
-                Case Enums.ModifierType.MainClearLogo
-                    iImageCount = nContainer.MainClearLogos.Count
-                    strNoImagesFound = Master.eLang.GetString(1103, "No ClearLogos found")
-                Case Enums.ModifierType.MainDiscArt
-                    iImageCount = nContainer.MainDiscArts.Count
-                    strNoImagesFound = Master.eLang.GetString(1104, "No DiscArts found")
-                Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs, Enums.ModifierType.MainFanart
-                    iImageCount = nContainer.MainFanarts.Count
-                    strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
-                Case Enums.ModifierType.MainKeyart
-                    iImageCount = nContainer.MainKeyarts.Count
-                    strNoImagesFound = Master.eLang.GetString(1239, "No Keyarts found")
-                Case Enums.ModifierType.MainLandscape
-                    iImageCount = nContainer.MainLandscapes.Count
-                    strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
-                Case Enums.ModifierType.MainPoster
-                    iImageCount = nContainer.MainPosters.Count
-                    strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
-            End Select
-            If iImageCount > 0 Then
-                Dim dlgImgS = New dlgImgSelect
-                If dlgImgS.ShowDialog(tmpDBElement, nContainer, nScrapeModifiers) = DialogResult.OK Then
-                    Select Case eImageType
-                        Case Enums.ModifierType.MainExtrafanarts
-                            tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
-                            Image_Extrafanarts_Refresh()
-                        Case Enums.ModifierType.MainExtrathumbs
-                            tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
-                            Image_Extrathumbs_Refresh()
-                        Case Else
-                            tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
-                            If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
+        Functions.SetScrapeModifiers(tmpDBElement.ScrapeModifiers, eImageType, True)
+        Dim ScrapeResults = Scraper.Run(tmpDBElement)
+        Dim iImageCount = 0
+        Dim strNoImagesFound As String = String.Empty
+        Select Case eImageType
+            Case Enums.ModifierType.MainBanner
+                iImageCount = ScrapeResults.Images.MainBanners.Count
+                strNoImagesFound = Master.eLang.GetString(1363, "No Banners found")
+            Case Enums.ModifierType.MainClearArt
+                iImageCount = ScrapeResults.Images.MainClearArts.Count
+                strNoImagesFound = Master.eLang.GetString(1102, "No ClearArts found")
+            Case Enums.ModifierType.MainClearLogo
+                iImageCount = ScrapeResults.Images.MainClearLogos.Count
+                strNoImagesFound = Master.eLang.GetString(1103, "No ClearLogos found")
+            Case Enums.ModifierType.MainDiscArt
+                iImageCount = ScrapeResults.Images.MainDiscArts.Count
+                strNoImagesFound = Master.eLang.GetString(1104, "No DiscArts found")
+            Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs, Enums.ModifierType.MainFanart
+                iImageCount = ScrapeResults.Images.MainFanarts.Count
+                strNoImagesFound = Master.eLang.GetString(970, "No Fanarts found")
+            Case Enums.ModifierType.MainKeyart
+                iImageCount = ScrapeResults.Images.MainKeyarts.Count
+                strNoImagesFound = Master.eLang.GetString(1239, "No Keyarts found")
+            Case Enums.ModifierType.MainLandscape
+                iImageCount = ScrapeResults.Images.MainLandscapes.Count
+                strNoImagesFound = Master.eLang.GetString(1197, "No Landscapes found")
+            Case Enums.ModifierType.MainPoster
+                iImageCount = ScrapeResults.Images.MainPosters.Count
+                strNoImagesFound = Master.eLang.GetString(972, "No Posters found")
+        End Select
+        If iImageCount > 0 Then
+            Dim dlgImgS = New dlgImgSelect
+            If dlgImgS.ShowDialog(tmpDBElement, ScrapeResults.Images) = DialogResult.OK Then
+                Select Case eImageType
+                    Case Enums.ModifierType.MainExtrafanarts
+                        tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
+                        Image_Extrafanarts_Refresh()
+                    Case Enums.ModifierType.MainExtrathumbs
+                        tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
+                        Image_Extrathumbs_Refresh()
+                    Case Else
+                        tmpDBElement.ImagesContainer.SetImageByType(dlgImgS.Result.ImagesContainer.GetImageByType(eImageType), eImageType)
+                        If tmpDBElement.ImagesContainer.GetImageByType(eImageType) IsNot Nothing AndAlso
                                 tmpDBElement.ImagesContainer.GetImageByType(eImageType).ImageOriginal.LoadFromMemoryStream Then
-                                Image_LoadPictureBox(eImageType)
-                            Else
-                                Image_Remove_Click(sender, e)
-                            End If
-                    End Select
-                End If
-            Else
-                MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                            Image_LoadPictureBox(eImageType)
+                        Else
+                            Image_Remove_Click(sender, e)
+                        End If
+                End Select
             End If
+        Else
+            MessageBox.Show(strNoImagesFound, String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
         Cursor = Cursors.Default
     End Sub
@@ -1684,11 +1676,11 @@ Public Class dlgEdit_Movie
     Private Sub Moviesets_Fill()
         'primary movieset
         Dim primaryItems As New Dictionary(Of MediaContainers.MoviesetDetails, String) From {
-            {New MediaContainers.MoviesetDetails, Master.eLang.None}
+            {New MediaContainers.MoviesetDetails, Master.eLang.CommonWordsList.None}
         }
         'load primary movieset into DropDownList
-        If tmpDBElement.Movie.SetsSpecified Then
-            primaryItems.Add(tmpDBElement.Movie.Sets.Items.OrderBy(Function(f) f.Order).First, tmpDBElement.Movie.Sets.Items.OrderBy(Function(f) f.Order).First.Title)
+        If tmpDBElement.MainDetails.SetsSpecified Then
+            primaryItems.Add(tmpDBElement.MainDetails.Sets.Items.OrderBy(Function(f) f.Order).First, tmpDBElement.MainDetails.Sets.Items.OrderBy(Function(f) f.Order).First.Title)
         End If
         'load all other moviesets into DropDownList
         For Each nSet In Master.DB.GetAll_MoviesetDetails.Where(Function(f) Not primaryItems.Keys.Contains(f) AndAlso Not primaryItems.Values.Contains(f.Title))
@@ -1699,20 +1691,20 @@ Public Class dlgEdit_Movie
         cbMovieset.DisplayMember = "Value"
         cbMovieset.ValueMember = "Key"
         'select DropDownList entry if needed
-        If tmpDBElement.Movie.SetsSpecified Then
+        If tmpDBElement.MainDetails.SetsSpecified Then
             cbMovieset.SelectedIndex = 1
         Else
             cbMovieset.SelectedIndex = 0
         End If
 
         'additional moviesets
-        If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+        If Master.eSettings.Movie.InformationSettings.Collection.SaveYAMJCompatible Then
             Dim additionalItems As New Dictionary(Of MediaContainers.MoviesetDetails, String) From {
-                {New MediaContainers.MoviesetDetails, Master.eLang.None}
+                {New MediaContainers.MoviesetDetails, Master.eLang.CommonWordsList.None}
             }
             'load additional moviesets into CheckedListBox 
-            For i As Integer = 1 To tmpDBElement.Movie.Sets.Items.Count - 1
-                additionalItems.Add(tmpDBElement.Movie.Sets.Items(i), tmpDBElement.Movie.Sets.Items(i).Title)
+            For i As Integer = 1 To tmpDBElement.MainDetails.Sets.Items.Count - 1
+                additionalItems.Add(tmpDBElement.MainDetails.Sets.Items(i), tmpDBElement.MainDetails.Sets.Items(i).Title)
             Next
             'load all other moviesets into CheckedListBox
             For Each nSet In Master.DB.GetAll_MoviesetDetails.Where(Function(f) Not additionalItems.Keys.Contains(f) AndAlso Not additionalItems.Values.Contains(f.Title))
@@ -1723,8 +1715,8 @@ Public Class dlgEdit_Movie
             clbMoviesets.DisplayMember = "Value"
             clbMoviesets.ValueMember = "Key"
             'set all additional moviesets to "Checked"
-            If tmpDBElement.Movie.Sets.Items.Count > 1 Then
-                For i As Integer = 1 To tmpDBElement.Movie.Sets.Items.Count - 1
+            If tmpDBElement.MainDetails.Sets.Items.Count > 1 Then
+                For i As Integer = 1 To tmpDBElement.MainDetails.Sets.Items.Count - 1
                     clbMoviesets.SetItemChecked(i, True)
                 Next
             Else
@@ -1759,8 +1751,8 @@ Public Class dlgEdit_Movie
                 iOrder += 1
         End Select
         'additional moviesets
-        If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
-            Dim checkedSets = clbMoviesets.CheckedItems.Cast(Of KeyValuePair(Of MediaContainers.MoviesetDetails, String)).Where(Function(f) f.Value IsNot Master.eLang.None).Select(Function(f) f.Key)
+        If Master.eSettings.Movie.InformationSettings.Collection.SaveYAMJCompatible Then
+            Dim checkedSets = clbMoviesets.CheckedItems.Cast(Of KeyValuePair(Of MediaContainers.MoviesetDetails, String)).Where(Function(f) f.Value IsNot Master.eLang.CommonWordsList.None).Select(Function(f) f.Key)
             For i As Integer = 0 To checkedSets.Count - 1
                 If checkedSets(i) IsNot Nothing Then
 
@@ -1794,18 +1786,18 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub MPAA_Fill()
-        lbMPAA.Items.Add(Master.eLang.None)
-        If Master.eSettings.MovieScraperMPAANotRatedSpecified Then lbMPAA.Items.Add(Master.eSettings.MovieScraperMPAANotRated)
+        lbMPAA.Items.Add(Master.eLang.CommonWordsList.None)
+        If Master.eSettings.Movie.InformationSettings.MPAA.NotRatedValueSpecified Then lbMPAA.Items.Add(Master.eSettings.Movie.InformationSettings.MPAA.NotRatedValue)
         lbMPAA.Items.AddRange(APIXML.GetRatingList_Movie)
     End Sub
 
     Private Sub MPAA_Select()
-        If tmpDBElement.Movie.MPAASpecified Then
-            If Master.eSettings.MovieScraperCertOnlyValue Then
+        If tmpDBElement.MainDetails.MPAASpecified Then
+            If Master.eSettings.Movie.InformationSettings.CertificationsOnlyValue Then
                 Dim sItem As String = String.Empty
                 For i As Integer = 0 To lbMPAA.Items.Count - 1
                     sItem = lbMPAA.Items(i).ToString
-                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.Movie.MPAA Then
+                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.MainDetails.MPAA Then
                         lbMPAA.SelectedIndex = i
                         lbMPAA.TopIndex = i
                         Exit For
@@ -1814,7 +1806,7 @@ Public Class dlgEdit_Movie
             Else
                 Dim i As Integer = 0
                 For ctr As Integer = 0 To lbMPAA.Items.Count - 1
-                    If tmpDBElement.Movie.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                    If tmpDBElement.MainDetails.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                         i = ctr
                         Exit For
                     End If
@@ -1823,9 +1815,9 @@ Public Class dlgEdit_Movie
                 lbMPAA.TopIndex = i
 
                 If i > 0 Then
-                    txtMPAADescription.Text = tmpDBElement.Movie.MPAA.Replace(lbMPAA.Items.Item(i).ToString, String.Empty).Trim
+                    txtMPAADescription.Text = tmpDBElement.MainDetails.MPAA.Replace(lbMPAA.Items.Item(i).ToString, String.Empty).Trim
                 Else
-                    txtMPAA.Text = tmpDBElement.Movie.MPAA
+                    txtMPAA.Text = tmpDBElement.MainDetails.MPAA
                 End If
             End If
         End If
@@ -1843,7 +1835,7 @@ Public Class dlgEdit_Movie
     Private Sub Ratings_Fill()
         dgvRatings.SuspendLayout()
 
-        For Each tRating In tmpDBElement.Movie.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
+        For Each tRating In tmpDBElement.MainDetails.Ratings.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvRatings.Rows.Add
             dgvRatings.Rows(i).Tag = tRating
             dgvRatings.Rows(i).Cells(colRatingsDefault.Name).Value = tRating.IsDefault
@@ -2027,8 +2019,8 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Tags_Fill()
-        If tmpDBElement.Movie.TagsSpecified Then
-            lbTags.Items.AddRange(tmpDBElement.Movie.Tags.ToArray)
+        If tmpDBElement.MainDetails.TagsSpecified Then
+            lbTags.Items.AddRange(tmpDBElement.MainDetails.Tags.ToArray)
         End If
         'add the rest of all tags to the ComboBox
         cbTags.Items.AddRange(Master.DB.GetAll_Tags)
@@ -2142,7 +2134,7 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub Trailer_Local_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetTrailerLocal.Click
-        Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
+        Dim strValidExtesions As String() = Master.eSettings.Options.FileSystem.ValidVideoExtensions.ToArray
         With ofdLocalFiles
             .InitialDirectory = tmpDBElement.Filename
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
@@ -2229,7 +2221,7 @@ Public Class dlgEdit_Movie
     End Sub
 
     Private Sub TrailerLink_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtLinkTrailer.TextChanged
-        If StringUtils.isValidURL(txtLinkTrailer.Text) Then
+        If StringUtils.IsValidURL(txtLinkTrailer.Text) Then
             btnLinkTrailerPlay.Enabled = True
         Else
             btnLinkTrailerPlay.Enabled = False
@@ -2239,10 +2231,10 @@ Public Class dlgEdit_Movie
     ''' Fills the genre list with selected genres first in list and all known genres from database as second
     ''' </summary>
     Private Sub TVShowLinks_Fill()
-        clbTVShowLinks.Items.Add(Master.eLang.None)
-        If tmpDBElement.Movie.ShowLinksSpecified Then
-            tmpDBElement.Movie.ShowLinks.Sort()
-            clbTVShowLinks.Items.AddRange(tmpDBElement.Movie.ShowLinks.ToArray)
+        clbTVShowLinks.Items.Add(Master.eLang.CommonWordsList.None)
+        If tmpDBElement.MainDetails.ShowLinksSpecified Then
+            tmpDBElement.MainDetails.ShowLinks.Sort()
+            clbTVShowLinks.Items.AddRange(tmpDBElement.MainDetails.ShowLinks.ToArray)
             'enable all selected tv shows, skip the first entry "[none]"
             For i As Integer = 1 To clbTVShowLinks.Items.Count - 1
                 clbTVShowLinks.SetItemChecked(i, True)
@@ -2258,7 +2250,7 @@ Public Class dlgEdit_Movie
     Private Sub UniqueIds_Fill()
         dgvUniqueIds.SuspendLayout()
 
-        For Each tId In tmpDBElement.Movie.UniqueIDs.Items.OrderBy(Function(f) Not f.IsDefault)
+        For Each tId In tmpDBElement.MainDetails.UniqueIDs.Items.OrderBy(Function(f) Not f.IsDefault)
             Dim i As Integer = dgvUniqueIds.Rows.Add
             dgvUniqueIds.Rows(i).Tag = tId
             dgvUniqueIds.Rows(i).Cells(colUniqueIdsDefault.Name).Value = tId.IsDefault
@@ -2289,9 +2281,9 @@ Public Class dlgEdit_Movie
     End Function
 
     Private Sub Videosources_Fill()
-        If tmpDBElement.Movie.VideoSourceSpecified Then
-            cbVideoSource.Items.Add(tmpDBElement.Movie.VideoSource)
-            cbVideoSource.SelectedItem = tmpDBElement.Movie.VideoSource
+        If tmpDBElement.MainDetails.VideoSourceSpecified Then
+            cbVideoSource.Items.Add(tmpDBElement.MainDetails.VideoSource)
+            cbVideoSource.SelectedItem = tmpDBElement.MainDetails.VideoSource
         End If
         cbVideoSource.Items.AddRange(Master.DB.GetAll_VideoSources_Movie.Where(Function(f) Not cbVideoSource.Items.Contains(f)).ToArray)
     End Sub

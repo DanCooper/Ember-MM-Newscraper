@@ -145,9 +145,11 @@ Namespace My
 
             Master.fLoading.SetLoadingMesg("Loading settings...")
             Master.eSettings.Load()
+            Master.eAdvancedSettings.Load()
+            Manager.mSettings.Load()
 
             Master.fLoading.SetLoadingMesg("Caching XMLs...")
-            APIXML.CacheXMLs()
+            APIXML.CacheAll()
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1164, "Loading Main Form. Please wait..."))
             frmEmber = New frmMain

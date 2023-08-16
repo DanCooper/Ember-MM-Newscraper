@@ -87,7 +87,7 @@ Partial Class dlgEdit_TVShow
         Me.btnCertificationsAsMPAARating = New System.Windows.Forms.Button()
         Me.lblMPAADesc = New System.Windows.Forms.Label()
         Me.txtMPAADescription = New System.Windows.Forms.TextBox()
-        Me.txtMPAA = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.txtMPAA = New EmberAPI.AdvancedControls.TextBox_with_Watermark()
         Me.lblUserRating = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
@@ -3236,7 +3236,7 @@ Partial Class dlgEdit_TVShow
     Friend WithEvents btnCertificationsAsMPAARating As Button
     Friend WithEvents lblMPAADesc As Label
     Friend WithEvents txtMPAADescription As TextBox
-    Friend WithEvents txtMPAA As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtMPAA As EmberAPI.AdvancedControls.TextBox_with_Watermark
     Friend WithEvents lblUserRating As Label
     Friend WithEvents lblRuntime As Label
     Friend WithEvents txtRuntime As TextBox

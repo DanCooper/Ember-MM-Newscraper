@@ -35,7 +35,7 @@ Public Class dlgFIStreamEditor
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        FormUtils.Forms.ResizeAndMoveDialog(Me, Me)
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
     End Sub
 
     Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaContainers.Fileinfo, ByVal idx As Integer) As Object
@@ -94,15 +94,15 @@ Public Class dlgFIStreamEditor
         If ShowDialog() = Windows.Forms.DialogResult.OK Then
             If stream_type = Master.eLang.GetString(595, "Video Streams") Then
                 stream_v.Codec = If(cbVideoCodec.SelectedItem Is Nothing, String.Empty, cbVideoCodec.SelectedItem.ToString)
-                stream_v.Aspect = txtVideoAspect.Text
-                stream_v.Width = txtVideoWidth.Text
-                stream_v.Height = txtVideoHeight.Text
+                stream_v.Aspect = CDbl(txtVideoAspect.Text.Trim)
+                stream_v.Width = CInt(txtVideoWidth.Text.Trim)
+                stream_v.Height = CInt(txtVideoHeight.Text.Trim)
                 'cocotus, 2013/09 Fix for Progressive setting in metadata - don't use language specific name!!
                 'see thread: http://forum.xbmc.org/showthread.php?tid=172326
                 stream_v.Scantype = If(rbVideoProgressive.Checked, "Progressive", "Interlaced")
-                stream_v.Duration = txtVideoDuration.Text
-                stream_v.Bitrate = txtVideoBitrate.Text
-                stream_v.MultiViewCount = txtVideoMultiViewCount.Text
+                stream_v.Duration = CInt(txtVideoDuration.Text.Trim)
+                stream_v.Bitrate = CInt(txtVideoBitrate.Text.Trim)
+                stream_v.MultiViewCount = CInt(txtVideoMultiViewCount.Text.Trim)
                 stream_v.MultiViewLayout = cbVideoMultiViewLayout.Text
                 stream_v.StereoMode = txtVideoStereoMode.Text
                 If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
@@ -113,8 +113,8 @@ Public Class dlgFIStreamEditor
                 stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, String.Empty, cbAudioCodec.SelectedItem.ToString)
                 If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
                 If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = Localization.Languages.Get_Alpha3_T_By_Name(cbAudioLanguage.SelectedItem.ToString)
-                stream_a.Channels = If(cbAudioChannels.SelectedItem Is Nothing, String.Empty, cbAudioChannels.SelectedItem.ToString)
-                stream_a.Bitrate = txtAudioBitrate.Text
+                stream_a.Channels = If(cbAudioChannels.SelectedItem Is Nothing, 0, CInt(cbAudioChannels.SelectedItem.ToString.Trim))
+                stream_a.Bitrate = CInt(txtAudioBitrate.Text.Trim)
                 Return stream_a
             End If
             If stream_type = Master.eLang.GetString(597, "Subtitle Streams") Then
@@ -143,7 +143,7 @@ Public Class dlgFIStreamEditor
     Private Sub cbVideoMultiViewLayout_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVideoMultiViewLayout.SelectedIndexChanged
         If Not cbVideoMultiViewLayout.Text = String.Empty Then
             txtVideoMultiViewCount.Text = "2"
-            txtVideoStereoMode.Text = MediaInfo.ConvertVStereoMode(cbVideoMultiViewLayout.Text)
+            txtVideoStereoMode.Text = MediaInfo.Convert_VideoMultiViewLayout_To_StereoMode(cbVideoMultiViewLayout.Text)
         Else
             txtVideoStereoMode.Text = String.Empty
         End If
@@ -171,28 +171,30 @@ Public Class dlgFIStreamEditor
     End Sub
 
     Private Sub SetUp()
-        btnCancel.Text = Master.eLang.Cancel
-        btnOK.Text = Master.eLang.OK
-        Text = Master.eLang.GetString(613, "Stream Editor")
-        chkSubtitleForced.Text = Master.eLang.GetString(1287, "Forced")
-        gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")
-        gbSubtitleStreams.Text = Master.eLang.GetString(597, "Subtitle  Streams")
-        gbVideoStreams.Text = Master.eLang.GetString(595, "Video Streams")
-        lblAudioChannels.Text = Master.eLang.GetString(611, "Channels")
-        lblAudioCodec.Text = lblVideoCodec.Text
-        lblAudioLanguage.Text = Master.eLang.GetString(610, "Language")
-        lblSubtitleLanguage.Text = lblAudioLanguage.Text
-        lblVideoAspect.Text = Master.eLang.GetString(614, "Aspect Ratio")
-        lblVideoCodec.Text = Master.eLang.GetString(604, "Codec")
-        lblVideoDuration.Text = Master.eLang.GetString(609, "Duration")
-        lblVideoHeight.Text = Master.eLang.GetString(607, "Height")
-        lblVideoLanguage.Text = lblAudioLanguage.Text
-        lblVideoMultiViewCount.Text = Master.eLang.GetString(1156, "MultiView Count")
-        lblVideoMultiViewLayout.Text = Master.eLang.GetString(1157, "MultiView Layout")
-        lblVideoStereoMode.Text = Master.eLang.GetString(1286, "StereoMode")
-        lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
-        rbVideoInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
-        rbVideoProgressive.Text = Master.eLang.GetString(616, "Progressive")
+        With Master.eLang
+            btnCancel.Text = .CommonWordsList.Cancel
+            btnOK.Text = .CommonWordsList.OK
+            Text = .GetString(613, "Stream Editor")
+            chkSubtitleForced.Text = .GetString(1287, "Forced")
+            gbAudioStreams.Text = .GetString(596, "Audio Streams")
+            gbSubtitleStreams.Text = .GetString(597, "Subtitle  Streams")
+            gbVideoStreams.Text = .GetString(595, "Video Streams")
+            lblAudioChannels.Text = .GetString(611, "Channels")
+            lblAudioCodec.Text = lblVideoCodec.Text
+            lblAudioLanguage.Text = .GetString(610, "Language")
+            lblSubtitleLanguage.Text = lblAudioLanguage.Text
+            lblVideoAspect.Text = .GetString(614, "Aspect Ratio")
+            lblVideoCodec.Text = .GetString(604, "Codec")
+            lblVideoDuration.Text = .GetString(609, "Duration")
+            lblVideoHeight.Text = .GetString(607, "Height")
+            lblVideoLanguage.Text = lblAudioLanguage.Text
+            lblVideoMultiViewCount.Text = .GetString(1156, "MultiView Count")
+            lblVideoMultiViewLayout.Text = .GetString(1157, "MultiView Layout")
+            lblVideoStereoMode.Text = .GetString(1286, "StereoMode")
+            lblVideoWidth.Text = .GetString(606, "Width")
+            rbVideoInterlaced.Text = .GetString(615, "Interlaced")
+            rbVideoProgressive.Text = .GetString(616, "Progressive")
+        End With
     End Sub
 
 #End Region 'Methods

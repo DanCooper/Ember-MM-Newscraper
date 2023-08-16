@@ -153,6 +153,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property edit() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("edit", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property EmberSplashScreen() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EmberSplashScreen", resourceCulture)
@@ -373,9 +383,9 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property haswatched() As System.Drawing.Bitmap
+        Friend ReadOnly Property hasWatched() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("haswatched", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("hasWatched", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

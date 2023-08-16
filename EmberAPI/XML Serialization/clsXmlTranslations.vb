@@ -22,7 +22,7 @@ Imports NLog
 Imports System.IO
 Imports System.Xml.Serialization
 
-Public Class clsXmlTranslations
+Public Class XmlTranslations
 
 #Region "Fields"
 
@@ -31,15 +31,23 @@ Public Class clsXmlTranslations
 #End Region 'Fields
 
 #Region "Properties"
+    ''' <summary>
+    ''' Provides common used words translated by main translation file like "OK", "Cancel" and so on
+    ''' </summary>
+    Public ReadOnly Property CommonWordsList As New CommonWords
 
     Public ReadOnly Property Translations As List(Of TranslationProperty) = New List(Of TranslationProperty)
+    ''' <summary>
+    ''' Provides words used in scrapers and scraper settings panels translated by main translation file like "Actor", "Studio" and so on
+    ''' </summary>
+    Public ReadOnly Property ScraperWordsList As New ScraperWords
 
 #End Region 'Properties
 
 #Region "Constructors"
 
     Public Sub New()
-        For Each file In Directory.GetFiles(Path.Combine(Directory.GetParent(Reflection.Assembly.GetCallingAssembly().Location).FullName, "Translations"))
+        For Each file In Directory.GetFiles(Path.Combine(Directory.GetParent(Reflection.Assembly.GetCallingAssembly().Location).FullName, "translations"))
             Translations.Add(New TranslationProperty(New FileInfo(file)))
         Next
     End Sub
@@ -48,48 +56,11 @@ Public Class clsXmlTranslations
 
 #Region "Methods"
 
-    Public Function Abort() As String
-        Return Master.eLang.GetString(1171, "Abort")
-    End Function
-
-
-    Public Function All() As String
-        Return String.Format("[{0}]", Master.eLang.GetString(569, "All"))
-    End Function
-
-    Public Function Apply() As String
-        Return Master.eLang.GetString(276, "Apply")
-    End Function
-
-    Public Function Cancel() As String
-        Return Master.eLang.GetString(167, "Cancel")
-    End Function
-
-    Public Function Close() As String
-        Return Master.eLang.GetString(19, "Close")
-    End Function
-
-    Public Function Disabled() As String
-        Return Master.eLang.GetString(571, "[Disabled]")
-    End Function
-
-    Public Function None() As String
-        Return Master.eLang.GetString(570, "[none]")
-    End Function
-
-    Public Function OK() As String
-        Return Master.eLang.GetString(179, "OK")
-    End Function
-
-    Public Function Skip() As String
-        Return Master.eLang.GetString(1228, "Skip")
-    End Function
-
     Public Function GetString(ByVal id As UInteger, ByVal defaultValue As String) As String
         Dim translation = Translations.FirstOrDefault(Function(f) f.Language = Master.eSettings.GeneralLanguage)
         If translation IsNot Nothing Then
             Dim str = translation.Strings.FirstOrDefault(Function(f) f.Id = id)
-            If str IsNot Nothing Then Return str.Value
+            If str IsNot Nothing AndAlso Not String.IsNullOrEmpty(str.Value) Then Return str.Value
         End If
         Return defaultValue
     End Function
@@ -97,6 +68,178 @@ Public Class clsXmlTranslations
 #End Region 'Methods
 
 #Region "Nested Types"
+    ''' <summary>
+    ''' Provides common used words translated by main translation file like "OK", "Cancel" and so on
+    ''' </summary>
+    Public Class CommonWords
+
+#Region "Methods"
+
+        Public Function Abort() As String
+            Return Master.eLang.GetString(1171, "Abort")
+        End Function
+
+        Public Function Add() As String
+            Return Master.eLang.GetString(28, "Add")
+        End Function
+
+        Public Function After_Edit() As String
+            Return Master.eLang.GetString(1054, "After Edit")
+        End Function
+
+        Public Function All() As String
+            Return String.Format("[{0}]", Master.eLang.GetString(569, "All"))
+        End Function
+
+        Public Function Apply() As String
+            Return Master.eLang.GetString(276, "Apply")
+        End Function
+
+        Public Function Before_Edit() As String
+            Return Master.eLang.GetString(1055, "Before Edit")
+        End Function
+
+        Public Function Cancel() As String
+            Return Master.eLang.GetString(167, "Cancel")
+        End Function
+
+        Public Function Cancelled() As String
+            Return Master.eLang.GetString(396, "Cancelled")
+        End Function
+
+        Public Function Close() As String
+            Return Master.eLang.GetString(19, "Close")
+        End Function
+
+        Public Function During_Multi_Scraping() As String
+            Return Master.eLang.GetString(1056, "During Multi-Scraping")
+        End Function
+
+        Public Function During_Single_Scraping() As String
+            Return Master.eLang.GetString(1057, "During Single-Scraping")
+        End Function
+
+        Public Function Disabled() As String
+            Return Master.eLang.GetString(571, "[Disabled]")
+        End Function
+
+        Public Function Done() As String
+            Return Master.eLang.GetString(362, "Done")
+        End Function
+
+        Public Function Edit() As String
+            Return Master.eLang.GetString(1440, "Edit")
+        End Function
+
+        Public Function Enabled() As String
+            Return Master.eLang.GetString(774, "Enabled")
+        End Function
+
+        Public Function Episodes() As String
+            Return Master.eLang.GetString(682, "Episodes")
+        End Function
+
+        Public Function [Error]() As String
+            Return Master.eLang.GetString(1134, "Error")
+        End Function
+
+        Public Function Name() As String
+            Return Master.eLang.GetString(232, "Name")
+        End Function
+
+        Public Function None() As String
+            Return Master.eLang.GetString(570, "[none]")
+        End Function
+
+        Public Function Movies() As String
+            Return Master.eLang.GetString(36, "Movies")
+        End Function
+
+        Public Function OK() As String
+            Return Master.eLang.GetString(179, "OK")
+        End Function
+
+        Public Function Password() As String
+            Return Master.eLang.GetString(426, "Password")
+        End Function
+
+        Public Function Remove() As String
+            Return Master.eLang.GetString(30, "Remove")
+        End Function
+
+        Public Function Settings() As String
+            Return Master.eLang.GetString(420, "Settings")
+        End Function
+
+        Public Function Skip() As String
+            Return Master.eLang.GetString(1228, "Skip")
+        End Function
+
+        Public Function TV_Shows() As String
+            Return Master.eLang.GetString(653, "TV Shows")
+        End Function
+
+        Public Function Username() As String
+            Return Master.eLang.GetString(425, "Username")
+        End Function
+
+        Public Function Warning() As String
+            Return Master.eLang.GetString(356, "Warning")
+        End Function
+
+#End Region 'Methods
+
+    End Class
+    ''' <summary>
+    ''' Provides words used in scrapers and scraper settings panels translated by main translation file like "Actor", "Studio" and so on
+    ''' </summary>
+    Public Class ScraperWords
+
+        Public Function Actors() As String
+            Return Master.eLang.GetString(231, "Actors")
+        End Function
+
+        Public Function Certifications() As String
+            Return Master.eLang.GetString(56, "Certifications")
+        End Function
+
+        Public Function Countries() As String
+            Return Master.eLang.GetString(237, "Countries")
+        End Function
+
+        Public Function Creators() As String
+            Return Master.eLang.GetString(744, "Creators")
+        End Function
+
+        Public Function Genres() As String
+            Return Master.eLang.GetString(725, "Genres")
+        End Function
+
+        Public Function Original_Title() As String
+            Return Master.eLang.GetString(302, "Original Title")
+        End Function
+
+        Public Function Plot() As String
+            Return Master.eLang.GetString(65, "Plot")
+        End Function
+
+        Public Function Plot_Outline() As String
+            Return Master.eLang.GetString(64, "Plot Outline")
+        End Function
+
+        Public Function Premiered() As String
+            Return Master.eLang.GetString(724, "Premiered")
+        End Function
+
+        Public Function Scraper_Fields_Scraper_Specific() As String
+            Return Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        End Function
+
+        Public Function Scraper_Options() As String
+            Return Master.eLang.GetString(1186, "Scraper Options")
+        End Function
+
+    End Class
 
     <Serializable()>
     <XmlRoot("resources")>

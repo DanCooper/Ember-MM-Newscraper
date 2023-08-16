@@ -25,36 +25,32 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("regexmapping")>
-Public Class clsXMLRegexMapping
+Public Class XmlRegexMapping
     Implements ICloneable
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _FileName As String = String.Empty
-
 #End Region 'Fields
 
 #Region "Properties"
 
     <XmlIgnore>
-    Public ReadOnly Property DefaultFile As String
+    Public ReadOnly Property DefaultsFileFullName As String
         Get
-            Return FileUtils.Common.ReturnSettingsFile("Defaults", _FileName)
+            Return FileUtils.Common.ReturnSettingsFile("Defaults", Name)
         End Get
     End Property
 
     <XmlIgnore>
-    Public ReadOnly Property FileNameFullPath As String
-        Get
-            Return Path.Combine(Master.SettingsPath, _FileName)
-        End Get
-    End Property
-
+    Public ReadOnly Property FullName As String = String.Empty
 
     <XmlElement("mapping")>
     Public Property Mappings() As List(Of RegexMapping) = New List(Of RegexMapping)
+
+    <XmlIgnore>
+    Public ReadOnly Property Name As String = String.Empty
 
 #End Region 'Properties
 
@@ -66,8 +62,14 @@ Public Class clsXMLRegexMapping
         Clear()
     End Sub
 
-    Public Sub New(ByVal fileName As String)
-        _FileName = fileName
+    Public Sub New(ByVal filename As String)
+        Name = filename
+        Dim CallingAssembly = Reflection.Assembly.GetCallingAssembly()
+        If Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location).ToLower = "emberapi" Then
+            FullName = Path.Combine(Master.SettingsPath, filename)
+        Else
+            FullName = Path.Combine(Directory.GetParent(Reflection.Assembly.GetCallingAssembly().Location).FullName, filename)
+        End If
     End Sub
 
 #End Region 'Constructors
@@ -94,10 +96,10 @@ Public Class clsXMLRegexMapping
         Stream.Close()
     End Function
 
-    Private Function CopyDefaultFile() As Boolean
-        If File.Exists(DefaultFile) Then
+    Private Function CopyDefaultsFile() As Boolean
+        If File.Exists(DefaultsFileFullName) Then
             Try
-                File.Copy(DefaultFile, FileNameFullPath, True)
+                File.Copy(DefaultsFileFullName, FullName, True)
                 Return True
             Catch ex As Exception
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -106,20 +108,34 @@ Public Class clsXMLRegexMapping
         Return False
     End Function
 
-    Public Sub Load()
-        If File.Exists(FileNameFullPath) Then
+    Public Function GetDefaults() As List(Of RegexMapping)
+        Dim nResults As New List(Of RegexMapping)
+        If File.Exists(DefaultsFileFullName) Then
             Try
-                Dim objStreamReader = New StreamReader(FileNameFullPath)
-                Mappings = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLRegexMapping).Mappings
+                Dim objStreamReader = New StreamReader(DefaultsFileFullName)
+                nResults = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlRegexMapping).Mappings
                 objStreamReader.Close()
             Catch ex As Exception
                 _Logger.Error(ex, New StackFrame().GetMethod().Name)
-                FileUtils.Common.CreateFileBackup(FileNameFullPath)
-                File.Delete(FileNameFullPath)
-                If CopyDefaultFile() Then Load()
+            End Try
+        End If
+        Return nResults
+    End Function
+
+    Public Sub Load()
+        If File.Exists(FullName) Then
+            Try
+                Dim objStreamReader = New StreamReader(FullName)
+                Mappings = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlRegexMapping).Mappings
+                objStreamReader.Close()
+            Catch ex As Exception
+                _Logger.Error(ex, New StackFrame().GetMethod().Name)
+                FileUtils.Common.CreateFileBackup(FullName)
+                File.Delete(FullName)
+                If CopyDefaultsFile() Then Load()
             End Try
         Else
-            If CopyDefaultFile() Then Load()
+            If CopyDefaultsFile() Then Load()
         End If
     End Sub
 
@@ -136,8 +152,8 @@ Public Class clsXMLRegexMapping
 
     Public Sub Save()
         Sort()
-        Dim xmlSerial As New XmlSerializer(GetType(clsXMLRegexMapping))
-        Dim xmlWriter As New StreamWriter(FileNameFullPath)
+        Dim xmlSerial As New XmlSerializer([GetType])
+        Dim xmlWriter As New StreamWriter(FullName)
         xmlSerial.Serialize(xmlWriter, Me)
         xmlWriter.Close()
     End Sub

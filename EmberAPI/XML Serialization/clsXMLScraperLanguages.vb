@@ -25,13 +25,13 @@ Imports System.Xml.Serialization
 
 <Serializable()>
 <XmlRoot("core.languages.scrapers")>
-Public Class clsXMLScraperLanguages
+Public Class XmlScraperLanguages
 
 #Region "Fields"
 
     Shared _Logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private Const _FileName As String = "Core.Languages.Scrapers.xml"
+    Private Const _FileName As String = "core.languages.scrapers.xml"
     Private _UserFile As String = Path.Combine(Master.SettingsPath, _FileName)
     Private _DefaultFile As String = FileUtils.Common.ReturnSettingsFile("Defaults", _FileName)
 
@@ -60,7 +60,7 @@ Public Class clsXMLScraperLanguages
         If File.Exists(_UserFile) Then
             Dim objStreamReader = New StreamReader(_UserFile)
             Try
-                Languages = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), clsXMLScraperLanguages).Languages
+                Languages = CType(New XmlSerializer([GetType]).Deserialize(objStreamReader), XmlScraperLanguages).Languages
                 objStreamReader.Close()
                 Languages.Sort()
             Catch ex As Exception
@@ -95,7 +95,7 @@ Public Class clsXMLScraperLanguages
             Case File.Exists(strVersion1)
                 Dim objStreamReader = New StreamReader(strVersion1)
                 Try
-                    Languages = CType(New XmlSerializer(GetType(clsXMLScraperLanguagesOld)).Deserialize(objStreamReader), clsXMLScraperLanguagesOld).Languages
+                    Languages = CType(New XmlSerializer(GetType(XMLScraperLanguagesOld)).Deserialize(objStreamReader), XMLScraperLanguagesOld).Languages
                     objStreamReader.Close()
                     Save()
                     File.Delete(strVersion1)
@@ -167,12 +167,12 @@ End Class
 
 <XmlRoot("core.scraperlanguages")>
 <Obsolete("This class is only to load old versions of this XML")>
-Public Class clsXMLScraperLanguagesOld
+Public Class XMLScraperLanguagesOld
 
 #Region "Properties"
 
     <XmlElement("language")>
-    Public Property Languages() As List(Of clsXMLScraperLanguages.LanguageProperty) = New List(Of clsXMLScraperLanguages.LanguageProperty)
+    Public Property Languages() As List(Of XmlScraperLanguages.LanguageProperty) = New List(Of XmlScraperLanguages.LanguageProperty)
 
 #End Region 'Properties
 

@@ -315,7 +315,7 @@
   <data name="colUserRating" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\colUserRating.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="haswatched" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="hasWatched" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\haswatched.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="hasLanguage" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -348,5 +348,8 @@
   </data>
   <data name="hasKeyart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hasKeyart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

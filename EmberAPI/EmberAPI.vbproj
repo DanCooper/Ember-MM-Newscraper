@@ -125,8 +125,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libvideo, Version=3.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VideoLibrary.3.1.9\lib\netstandard1.3\libvideo.dll</HintPath>
+    <Reference Include="Jurassic, Version=3.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jurassic.3.2.6\lib\netstandard2.0\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="libvideo, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VideoLibrary.3.2.2\lib\netstandard2.0\libvideo.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -252,38 +255,55 @@
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsAPIAdvancedSettings.vb" />
-    <Compile Include="clsAPICommandLine.vb" />
-    <Compile Include="clsAPIFFmpeg.vb" />
-    <Compile Include="clsAPIFormsUtils.vb" />
-    <Compile Include="clsAPIProfiles.vb" />
-    <Compile Include="clsAPITaskManager.vb" />
-    <Compile Include="clsAPICommon.vb" />
-    <Compile Include="clsAPIDatabase.vb" />
-    <Compile Include="clsAPIDVD.vb" />
-    <Compile Include="clsAPIFileUtils.vb" />
-    <Compile Include="clsAPIHTTP.vb" />
-    <Compile Include="clsAPIImages.vb" />
-    <Compile Include="clsAPIImageUtils.vb" />
-    <Compile Include="clsAPIInterfaces.vb" />
-    <Compile Include="clsAPILocalization.vb" />
-    <Compile Include="clsAPIMaster.vb" />
-    <Compile Include="clsAPIMediaContainers.vb" />
-    <Compile Include="clsAPIMediaInfo.vb" />
-    <Compile Include="clsAPIMediaStub.vb" />
-    <Compile Include="clsAPIModules.vb" />
-    <Compile Include="clsAPINFO.vb" />
-    <Compile Include="clsAPINumUtils.vb" />
-    <Compile Include="clsAPIScanner.vb" />
-    <Compile Include="clsAPISettings.vb" />
-    <Compile Include="clsAPISorter.vb" />
-    <Compile Include="clsAPIStringUtils.vb" />
-    <Compile Include="clsAPIXML.vb" />
-    <Compile Include="clsAPIYouTube.vb" />
-    <Compile Include="clsAPIMediaFiles.vb" />
-    <Compile Include="clsAPINotifications.vb" />
+    <Compile Include="clsAdvancedControls.Designer.vb">
+      <DependentUpon>clsAdvancedControls.vb</DependentUpon>
+    </Compile>
+    <Compile Include="clsAdvancedControls.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="clsAdvancedSettings.vb" />
+    <Compile Include="clsCommandLine.vb" />
+    <Compile Include="clsFFmpeg.vb" />
+    <Compile Include="clsFileItem.vb" />
+    <Compile Include="clsFormsUtils.vb" />
+    <Compile Include="clsMetaData.vb" />
+    <Compile Include="clsProfiles.vb" />
+    <Compile Include="clsScraper.vb" />
+    <Compile Include="clsTaskManager.vb" />
+    <Compile Include="clsCommon.vb" />
+    <Compile Include="clsDatabase.vb" />
+    <Compile Include="clsDVD.vb" />
+    <Compile Include="clsFileUtils.vb" />
+    <Compile Include="clsHTTP.vb" />
+    <Compile Include="clsImages.vb" />
+    <Compile Include="clsImageUtils.vb" />
+    <Compile Include="clsInterfaces.vb" />
+    <Compile Include="clsLocalization.vb" />
+    <Compile Include="clsMaster.vb" />
+    <Compile Include="clsMediaContainers.vb" />
+    <Compile Include="clsMediaInfo.vb" />
+    <Compile Include="clsMediaStub.vb" />
+    <Compile Include="clsAddons.vb" />
+    <Compile Include="clsNFO.vb" />
+    <Compile Include="clsNumUtils.vb" />
+    <Compile Include="clsScanner.vb" />
+    <Compile Include="clsSettings.vb" />
+    <Compile Include="clsSorter.vb" />
+    <Compile Include="clsStringUtils.vb" />
+    <Compile Include="clsXML.vb" />
+    <Compile Include="clsYouTube.vb" />
+    <Compile Include="clsMediaFiles.vb" />
+    <Compile Include="clsNotifications.vb" />
+    <Compile Include="clsInformation.vb" />
+    <Compile Include="dlgSearchResults.Designer.vb">
+      <DependentUpon>dlgSearchResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgSearchResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgVersions.Designer.vb">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </Compile>
@@ -311,15 +331,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="XML Serialization\clsXMLRegexMapping.vb" />
-    <Compile Include="XML Serialization\clsXMLSimpleMapping.vb" />
-    <Compile Include="XML Serialization\clsXMLAdvancedSettings.vb" />
-    <Compile Include="XML Serialization\clsXMLGenreMapping.vb" />
+    <Compile Include="XML Serialization\clsXmlRegexMapping.vb" />
+    <Compile Include="XML Serialization\clsXmlSimpleMapping.vb" />
+    <Compile Include="XML Serialization\clsXmlAdvancedSettings.vb" />
+    <Compile Include="XML Serialization\clsXmlGenreMapping.vb" />
     <Compile Include="XML Serialization\clsXmlTranslations.vb" />
-    <Compile Include="XML Serialization\clsXMLRatings.vb" />
-    <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
+    <Compile Include="XML Serialization\clsXmlRatings.vb" />
+    <Compile Include="XML Serialization\clsXmlScraperLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgSearchResults.resx">
+      <DependentUpon>dlgSearchResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgVersions.resx">
       <DependentUpon>dlgVersions.vb</DependentUpon>
     </EmbeddedResource>
@@ -353,13 +377,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Defaults\Core.Languages.Scrapers.xml">
+    <Content Include="DB\MyVideosDBSQL_v48_Patch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Defaults\core.languages.scrapers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="translations\db-DB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Translations\db-DB.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Translations\en-US.xml">
+    <Content Include="translations\en-US.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -532,14 +561,17 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Defaults\Core.Mapping.Editions.xml">
+    <Content Include="Defaults\core.mapping.editions.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
-    <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConverts.xml">
+    <Content Include="Defaults\core.mapping.audiocodecs.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
-    <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConverts.xml">
+    <Content Include="Defaults\core.mapping.videocodecs.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -590,8 +622,9 @@
     <None Include="DB\JobsDatabaseSQL_v1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Defaults\DefaultAdvancedSettings - VideoSourceMapping.xml">
+    <Content Include="Defaults\core.mapping.videosourcesbyname.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Defaults\DefaultRatings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

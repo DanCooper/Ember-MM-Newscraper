@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<simplemapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <mapping input="avc">h264</mapping>
+  <mapping input="avc1">h264</mapping>
+  <mapping input="hvc1">hevc</mapping>
+  <mapping input="v_mpeg2">mpeg2video</mapping>
+  <mapping input="v_mpeg4/iso/avc">h264</mapping>
+  <mapping input="v_mpegh/iso/hevc">hevc</mapping>
+  <mapping input="v_ms/vfw/fourcc / dx50">dx50</mapping>
+  <mapping input="v_ms/vfw/fourcc / xvid">xvid</mapping>
+  <mapping input="v_vp7">vp7</mapping>
+  <mapping input="v_vp8">vp8</mapping>
+  <mapping input="v_vp9">vp9</mapping>
+  <mapping input="x264">h264</mapping>
+</simplemapping>

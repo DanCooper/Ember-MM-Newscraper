@@ -86,15 +86,15 @@ Public Class dlgMediaFileSelect
             Case Enums.ContentType.Movie
                 Select Case _MediaType
                     Case Enums.ModifierType.MainTheme
-                        txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.Movie.Title, Master.eSettings.MovieThemeDefaultSearch)
+                        txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.MainDetails.Title, Master.eSettings.MovieThemeDefaultSearch)
                     Case Enums.ModifierType.MainTrailer
-                        txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.Movie.Title, Master.eSettings.MovieTrailerDefaultSearch)
+                        txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.MainDetails.Title, Master.eSettings.MovieTrailerDefaultSearch)
                         _PreferredVideoResolution = Master.eSettings.MovieTrailerPrefVideoQual
                 End Select
             Case Enums.ContentType.TVShow
                 Select Case _MediaType
                     Case Enums.ModifierType.MainTheme
-                        txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.TVShow.Title, Master.eSettings.TVShowThemeDefaultSearch)
+                        txtYouTubeSearch.Text = String.Format("{0} {1}", dbElement.MainDetails.Title, Master.eSettings.TVShowThemeDefaultSearch)
                 End Select
         End Select
 
@@ -242,19 +242,14 @@ Public Class dlgMediaFileSelect
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Select Case Args.Type
                 Case CompileType.Scrape
+                    Functions.SetScrapeModifiers(_TmpDBElement.ScrapeModifiers, _MediaType, True)
                     Select Case _MediaType
                         Case Enums.ModifierType.MainTheme
-                            Select Case _TmpDBElement.ContentType
-                                Case Enums.ContentType.Movie
-                                    e.Result = Not ModulesManager.Instance.ScrapeTheme_Movie(_TmpDBElement, Enums.ModifierType.MainTheme, _MediaFileList)
-                                Case Enums.ContentType.TVShow
-                                    e.Result = Not ModulesManager.Instance.ScrapeTheme_TVShow(_TmpDBElement, Enums.ModifierType.MainTrailer, _MediaFileList)
-                            End Select
+                            _MediaFileList = Scraper.Run(_TmpDBElement).Themes
+                            e.Result = _MediaFileList.Count > 0
                         Case Enums.ModifierType.MainTrailer
-                            Select Case _TmpDBElement.ContentType
-                                Case Enums.ContentType.Movie
-                                    e.Result = Not ModulesManager.Instance.ScrapeTrailer_Movie(_TmpDBElement, Enums.ModifierType.MainTrailer, _MediaFileList)
-                            End Select
+                            _MediaFileList = Scraper.Run(_TmpDBElement).Trailers
+                            e.Result = _MediaFileList.Count > 0
                     End Select
                 Case CompileType.YouTubeParse
                     If Not String.IsNullOrEmpty(Args.SearchString) Then
@@ -430,7 +425,7 @@ Public Class dlgMediaFileSelect
                 'Local file
                 '
                 lblStatus.Text = String.Concat(Master.eLang.GetString(907, "Copying specified file"), "...")
-                If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(txtCustomLocalFile.Text.Trim)) AndAlso File.Exists(txtCustomLocalFile.Text.Trim) Then
+                If Master.eSettings.Options.FileSystem.ValidVideoExtensions.Contains(Path.GetExtension(txtCustomLocalFile.Text.Trim)) AndAlso File.Exists(txtCustomLocalFile.Text.Trim) Then
                     If _NoDownload Then
                         Result = New MediaContainers.MediaFile With {
                             .UrlForNfo = txtCustomLocalFile.Text.Trim
@@ -467,7 +462,7 @@ Public Class dlgMediaFileSelect
                 bwCompileList.RunWorkerAsync(New Arguments With {
                                      .SearchString = strYouTubeUrl,
                                      .Type = CompileType.YouTubeParse})
-            Case StringUtils.isValidURL(txtCustomURL.Text.Trim)
+            Case StringUtils.IsValidURL(txtCustomURL.Text.Trim)
                 '
                 'Manual direct URL
                 '
@@ -546,7 +541,7 @@ Public Class dlgMediaFileSelect
     End Sub
 
     Private Sub SetEnabled()
-        If StringUtils.isValidURL(txtCustomURL.Text) OrElse
+        If StringUtils.IsValidURL(txtCustomURL.Text) OrElse
             dgvMediaFiles.SelectedRows.Count > 0 OrElse
             txtCustomLocalFile.Text.Length > 0 Then
             btnOK.Enabled = True

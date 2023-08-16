@@ -55,8 +55,8 @@ Public Class dlgFileInfo
     End Sub
 
     Private Sub Setup()
-        btnOK.Text = Master.eLang.OK
-        btnCancel.Text = Master.eLang.Cancel
+        btnOK.Text = Master.eLang.CommonWordsList.OK
+        btnCancel.Text = Master.eLang.CommonWordsList.Cancel
         cbStreamType.Items.Clear()
         cbStreamType.Items.Add(Master.eLang.GetString(595, "Video Streams"))
         cbStreamType.Items.Add(Master.eLang.GetString(596, "Audio Streams"))
@@ -67,7 +67,7 @@ Public Class dlgFileInfo
 
     Public Overloads Function ShowDialog() As DialogResult
         'only if the dialog has used a "standalone" dialog
-        FormUtils.Forms.ResizeAndMoveDialog(Me, Me)
+        FormsUtils.ResizeAndMoveDialog(Me, Me)
         btnCancel.Visible = True
         btnOK.Visible = True
         ssBottom.Visible = True

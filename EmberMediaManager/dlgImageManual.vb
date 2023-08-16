@@ -104,7 +104,7 @@ Public Class dlgImageManual
     End Sub
 
     Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged
-        If Not String.IsNullOrEmpty(txtURL.Text) AndAlso StringUtils.isValidURL(txtURL.Text) Then
+        If Not String.IsNullOrEmpty(txtURL.Text) AndAlso StringUtils.IsValidURL(txtURL.Text) Then
             btnPreview.Enabled = True
             OK_Button.Enabled = True
         Else
